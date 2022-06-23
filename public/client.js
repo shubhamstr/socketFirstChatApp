@@ -1,12 +1,14 @@
 const socket = io();
 
 let username;
+let userTitle = document.querySelector('.userTitle')
 let sendMsgBtn = document.querySelector('.sendMsgBtn')
 let inputMsg = document.querySelector('#inputMsg')
 let msgArea = document.querySelector('.msgArea')
 
 do {
     username = prompt('Please enter your username: ')
+    userTitle.innerHTML = "Welcome, " + username;
 } while (!username)
 
 inputMsg.addEventListener('keyup', (e) => {
