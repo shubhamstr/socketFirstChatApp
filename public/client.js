@@ -11,6 +11,10 @@ do {
     userTitle.innerHTML = "Welcome, " + username;
 } while (!username)
 
+if(username){
+    socket.emit('connected', username);
+}
+
 inputMsg.addEventListener('keyup', (e) => {
     if(e.key === 'Enter') {
         sendMsg(e.target.value);
@@ -49,11 +53,26 @@ function appendMsg(msg, type) {
 }
 
 
+function appendUser(user) {
+    let mainDiv = document.createElement('div');
+    mainDiv.classList.add('connected');
+    let markup = `<h6>${user} connected</h6>`;
+    mainDiv.innerHTML = markup;
+    msgArea.appendChild(mainDiv);
+}
+
+
 // recieve message from server
 
 socket.on("message", (msg) => {
     // console.log(msg);
     appendMsg(msg, 'incoming');
+    scrollToBottom();
+})
+
+socket.on("connected", (user) => {
+    // console.log(user);
+    appendUser(user);
     scrollToBottom();
 })
 

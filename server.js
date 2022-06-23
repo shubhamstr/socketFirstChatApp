@@ -23,6 +23,10 @@ const io = require('socket.io')(http)
 io.on("connection", (socket) => {
     console.log('connected..');
 
+    socket.on("connected", (username) => {
+        socket.broadcast.emit("connected", username);
+    })
+
     socket.on("message", (msg) => {
         // console.log(msg);
         socket.broadcast.emit("message", msg);
