@@ -1,16 +1,19 @@
-.msg-area {
+.msgArea {
     height:400px;
-    overflow-x: auto;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
+    padding-top: 20px !important;
 }
 .msg {
-    padding: 20px;
+    padding: 2px 20px;
     border-radius: 5px;
     margin-bottom: 40px;
     max-width: 300px;
     position: relative;
+}
+.msg p {
+    margin: 0px;
 }
 .msg h5{
     position: absolute;
@@ -28,8 +31,4 @@
     background: #cbcadd;
     color:rgb(154, 111, 223);
     margin-left: auto;
-}
-
-.card-body {
-    min-height: 300px;
 }

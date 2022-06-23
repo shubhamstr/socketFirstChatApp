@@ -1,28 +1,39 @@
 const socket = io();
 
 let username;
-let textarea = document.querySelector('#inputMsg')
+let sendMsgBtn = document.querySelector('.sendMsgBtn')
+let inputMsg = document.querySelector('#inputMsg')
 let msgArea = document.querySelector('.msgArea')
 
 do {
     username = prompt('Please enter your username: ')
 } while (!username)
 
-textarea.addEventListener('keyup', (e) => {
+inputMsg.addEventListener('keyup', (e) => {
     if(e.key === 'Enter') {
         sendMsg(e.target.value);
     }
+})
+
+sendMsgBtn.addEventListener('click', () => {
+    sendMsg(document.querySelector('#inputMsg').value);
 })
 
 
 function sendMsg(msg) {
     let data = {
         user: username,
-        message: msg
+        message: msg.trim()
     }
 
     // append to chat
     appendMsg(data, 'outgoing');
+    scrollToBottom()
+
+    inputMsg.value = '';
+
+    // send to server
+    socket.emit('message', data);
 }
 
 
@@ -33,4 +44,17 @@ function appendMsg(msg, type) {
     let markup = `<h5>${msg.user}</h5><p>${msg.message}</p>`;
     mainDiv.innerHTML = markup;
     msgArea.appendChild(mainDiv);
+}
+
+
+// recieve message from server
+
+socket.on("message", (msg) => {
+    // console.log(msg);
+    appendMsg(msg, 'incoming');
+    scrollToBottom();
+})
+
+function scrollToBottom() {
+    msgArea.scrollTop = msgArea.scrollHeight;
 }
