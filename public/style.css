@@ -29,3 +29,7 @@
     color:rgb(154, 111, 223);
     margin-left: auto;
 }
+
+.card-body {
+    min-height: 300px;
+}

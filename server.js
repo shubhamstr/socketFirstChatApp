@@ -15,3 +15,11 @@ app.get('/', (req, res) => {
     // res.send('hello world');
     res.sendFile(__dirname + '/index.html');
 })
+
+
+// socket code
+
+const io = require('socket.io')(http)
+io.on("connection", (socket) => {
+    console.log('connected..');
+})

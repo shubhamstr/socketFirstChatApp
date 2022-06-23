@@ -15,28 +15,28 @@
                 <div class="card-title text-center bg-info">
                     <div class="row mt-3">
                         <div class="col-4">
-                            <img class="img-fluid w-25" src="https://cdn-icons-png.flaticon.com/512/724/724715.png" alt="">
+                            <img class="img-fluid w-25" src="chat.png" alt="">
                         </div>
                         <div class="col-8">
                             <h3>Welcome to Chatting App</h3>
                         </div>
                     </div>
                 </div>
-                <div class="card-body msg-area">
-                    <div class="msg incoming">
+                <div class="card-body msgArea">
+                    <!-- <div class="msg incoming">
                         <h5>user 1</h5>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit quibusdam consequatur officiis sapiente. Atque, consequatur vitae assumenda perferendis, doloremque debitis aliquam pariatur dicta cupiditate autem, inventore dolorum ex quia commodi?</p>
                     </div>
                     <div class="msg outgoing">
                         <h5>user 2</h5>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit quibusdam consequatur officiis sapiente. Atque, consequatur vitae assumenda perferendis, doloremque debitis aliquam pariatur dicta cupiditate autem, inventore dolorum ex quia commodi?</p>
-                    </div>
+                    </div> -->
 
                 </div>
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-10">
-                            <textarea name="" id="" cols="30" rows="1" class="form-control" placeholder="Write a Message"></textarea>
+                            <textarea name="" id="inputMsg" cols="30" rows="1" class="form-control" placeholder="Write a Message"></textarea>
                         </div>
                         <div class="col-2">
                             <button class="btn btn-info">Send</button>
@@ -47,6 +47,7 @@
         </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/client.js"></script>
 </body>
 </html>
