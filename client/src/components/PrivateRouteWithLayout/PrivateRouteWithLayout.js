@@ -18,7 +18,7 @@ const PrivateRouteWithLayout = props => {
         ) : (
           <Redirect
             to={{
-              pathname: '/sign-in',
+              pathname: '/log-in',
             }}
           />
         )
