@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
-import { RouteWithLayout } from './components';
+import { RouteWithLayout, PrivateRouteWithLayout } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 
 import {
@@ -20,53 +20,7 @@ import {
 const Routes = () => {
   return (
     <Switch>
-      <Redirect
-        exact
-        from="/"
-        to="/dashboard"
-      />
-      <RouteWithLayout
-        component={DashboardView}
-        exact
-        layout={MainLayout}
-        path="/dashboard"
-      />
-      <RouteWithLayout
-        component={UserListView}
-        exact
-        layout={MainLayout}
-        path="/users"
-      />
-      <RouteWithLayout
-        component={ProductListView}
-        exact
-        layout={MainLayout}
-        path="/products"
-      />
-      <RouteWithLayout
-        component={TypographyView}
-        exact
-        layout={MainLayout}
-        path="/typography"
-      />
-      <RouteWithLayout
-        component={IconsView}
-        exact
-        layout={MainLayout}
-        path="/icons"
-      />
-      <RouteWithLayout
-        component={AccountView}
-        exact
-        layout={MainLayout}
-        path="/account"
-      />
-      <RouteWithLayout
-        component={SettingsView}
-        exact
-        layout={MainLayout}
-        path="/settings"
-      />
+      <Redirect exact from="/" to="/sign-in" />
       <RouteWithLayout
         component={SignUpView}
         exact
@@ -86,6 +40,49 @@ const Routes = () => {
         path="/not-found"
       />
       <Redirect to="/not-found" />
+
+      <PrivateRouteWithLayout
+        component={DashboardView}
+        exact
+        layout={MainLayout}
+        path="/dashboard"
+      />
+      <PrivateRouteWithLayout
+        component={UserListView}
+        exact
+        layout={MainLayout}
+        path="/users"
+      />
+      <PrivateRouteWithLayout
+        component={ProductListView}
+        exact
+        layout={MainLayout}
+        path="/products"
+      />
+      <PrivateRouteWithLayout
+        component={TypographyView}
+        exact
+        layout={MainLayout}
+        path="/typography"
+      />
+      <PrivateRouteWithLayout
+        component={IconsView}
+        exact
+        layout={MainLayout}
+        path="/icons"
+      />
+      <PrivateRouteWithLayout
+        component={AccountView}
+        exact
+        layout={MainLayout}
+        path="/account"
+      />
+      <PrivateRouteWithLayout
+        component={SettingsView}
+        exact
+        layout={MainLayout}
+        path="/settings"
+      />
     </Switch>
   );
 };
