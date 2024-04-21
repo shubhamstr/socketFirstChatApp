@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { logIn } from '../../store/authSlice';
+import { logIn, setUserType } from '../../store/authSlice';
 // eslint-disable-next-line no-unused-vars
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -226,6 +226,9 @@ const LogIn = props => {
     // eslint-disable-next-line no-console
     console.log('handleLogIn');
     dispatch(logIn());
+    dispatch(setUserType({
+      userType: 'user'
+    }));
     history.push('/dashboard');
   };
 

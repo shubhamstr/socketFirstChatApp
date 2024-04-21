@@ -5,13 +5,14 @@ import { makeStyles } from '@material-ui/styles';
 import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
-import TextFieldsIcon from '@material-ui/icons/TextFields';
-import ImageIcon from '@material-ui/icons/Image';
+// import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+// import TextFieldsIcon from '@material-ui/icons/TextFields';
+// import ImageIcon from '@material-ui/icons/Image';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import SettingsIcon from '@material-ui/icons/Settings';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+// import LockOpenIcon from '@material-ui/icons/LockOpen';
 
+// eslint-disable-next-line no-unused-vars
 import { Profile, SidebarNav, UpgradePlan } from './components';
 
 const useStyles = makeStyles(theme => ({
@@ -46,42 +47,46 @@ const Sidebar = props => {
     {
       title: 'Dashboard',
       href: '/dashboard',
-      icon: <DashboardIcon />
+      icon: <DashboardIcon />,
+      allowedUsers: ['admin']
     },
     {
       title: 'Users',
       href: '/users',
-      icon: <PeopleIcon />
+      icon: <PeopleIcon />,
+      allowedUsers: ['admin']
     },
-    {
-      title: 'Products',
-      href: '/products',
-      icon: <ShoppingBasketIcon />
-    },
-    {
-      title: 'Authentication',
-      href: '/sign-in',
-      icon: <LockOpenIcon />
-    },
-    {
-      title: 'Typography',
-      href: '/typography',
-      icon: <TextFieldsIcon />
-    },
-    {
-      title: 'Icons',
-      href: '/icons',
-      icon: <ImageIcon />
-    },
+    // {
+    //   title: 'Products',
+    //   href: '/products',
+    //   icon: <ShoppingBasketIcon />
+    // },
+    // {
+    //   title: 'Authentication',
+    //   href: '/admin/sign-in',
+    //   icon: <LockOpenIcon />
+    // },
+    // {
+    //   title: 'Typography',
+    //   href: '/typography',
+    //   icon: <TextFieldsIcon />
+    // },
+    // {
+    //   title: 'Icons',
+    //   href: '/icons',
+    //   icon: <ImageIcon />
+    // },
     {
       title: 'Account',
       href: '/account',
-      icon: <AccountBoxIcon />
+      icon: <AccountBoxIcon />,
+      allowedUsers: ['admin', 'user']
     },
     {
       title: 'Settings',
       href: '/settings',
-      icon: <SettingsIcon />
+      icon: <SettingsIcon />,
+      allowedUsers: ['admin', 'user']
     }
   ];
 
@@ -103,7 +108,7 @@ const Sidebar = props => {
           className={classes.nav}
           pages={pages}
         />
-        <UpgradePlan />
+        {/* <UpgradePlan /> */}
       </div>
     </Drawer>
   );

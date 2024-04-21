@@ -21,19 +21,8 @@ import {
 const Routes = () => {
   return (
     <Switch>
+      {/* guest routes */}
       <Redirect exact from="/" to="/log-in" />
-      <RouteWithLayout
-        component={SignUpView}
-        exact
-        layout={MinimalLayout}
-        path="/sign-up"
-      />
-      <RouteWithLayout
-        component={SignInView}
-        exact
-        layout={MinimalLayout}
-        path="/sign-in"
-      />
       <RouteWithLayout
         component={LogInView}
         exact
@@ -47,7 +36,21 @@ const Routes = () => {
         path="/not-found"
       />
       {/* <Redirect to="/not-found" /> */}
+      <Redirect exact from="/admin/" to="/admin/sign-in" />
+      <RouteWithLayout
+        component={SignUpView}
+        exact
+        layout={MinimalLayout}
+        path="/admin/sign-up"
+      />
+      <RouteWithLayout
+        component={SignInView}
+        exact
+        layout={MinimalLayout}
+        path="/admin/sign-in"
+      />
 
+      {/* protected routes */}
       <PrivateRouteWithLayout
         component={DashboardView}
         exact
