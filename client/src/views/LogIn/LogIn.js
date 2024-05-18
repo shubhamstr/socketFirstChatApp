@@ -155,39 +155,19 @@ const LogIn = props => {
 
   const [loginType, setLoginType] = useState('social');
 
-  const [formState, setFormState] = useState({
+  const [formStateEmail, setFormStateEmail] = useState({
     isValid: false,
     values: {},
     touched: {},
     errors: {}
   });
 
-  const [formStateNew, setFormStateNew] = useState({
+  const [formStateGuest, setFormStateGuest] = useState({
     isValid: false,
     values: {},
     touched: {},
     errors: {}
   });
-
-  useEffect(() => {
-    const errors = validate(formState.values, schema);
-
-    setFormState(formState => ({
-      ...formState,
-      isValid: errors ? false : true,
-      errors: errors || {}
-    }));
-  }, [formState.values]);
-
-  useEffect(() => {
-    const errorsNew = validate(formStateNew.values, schemaNew);
-
-    setFormStateNew(formStateNew => ({
-      ...formStateNew,
-      isValid: errorsNew ? false : true,
-      errors: errorsNew || {}
-    }));
-  }, [formStateNew.values]);
 
   // const handleBack = () => {
   //   history.goBack();
@@ -197,42 +177,48 @@ const LogIn = props => {
     setLoginType(loginType);
   };
 
-  const handleChange = event => {
+  const handleChangeEmail = event => {
     event.persist();
 
-    setFormState(formState => ({
-      ...formState,
+    setFormStateEmail(formStateEmail => ({
+      ...formStateEmail,
       values: {
-        ...formState.values,
+        ...formStateEmail.values,
         [event.target.name]:
           event.target.type === 'checkbox'
             ? event.target.checked
             : event.target.value
       },
       touched: {
-        ...formState.touched,
+        ...formStateEmail.touched,
         [event.target.name]: true
       }
     }));
   };
 
-  const handleChangeNew = event => {
+  const handleChangeGuest = event => {
     event.persist();
 
-    setFormStateNew(formState => ({
-      ...formState,
+    setFormStateGuest(formStateEmail => ({
+      ...formStateEmail,
       values: {
-        ...formState.values,
+        ...formStateEmail.values,
         [event.target.name]:
           event.target.type === 'checkbox'
             ? event.target.checked
             : event.target.value
       },
       touched: {
-        ...formState.touched,
+        ...formStateEmail.touched,
         [event.target.name]: true
       }
     }));
+  };
+
+  const handleSocialLogIn = event => {
+    event.preventDefault();
+    // eslint-disable-next-line no-console
+    console.log('handleSocialLogIn');
   };
 
   const handleLogIn = event => {
@@ -249,10 +235,34 @@ const LogIn = props => {
   };
 
   const hasError = field =>
-    formState.touched[field] && formState.errors[field] ? true : false;
+    formStateEmail.touched[field] && formStateEmail.errors[field]
+      ? true
+      : false;
 
   const hasErrorNew = field =>
-    formStateNew.touched[field] && formStateNew.errors[field] ? true : false;
+    formStateGuest.touched[field] && formStateGuest.errors[field]
+      ? true
+      : false;
+
+  useEffect(() => {
+    const errors = validate(formStateEmail.values, schema);
+
+    setFormStateEmail(formStateEmail => ({
+      ...formStateEmail,
+      isValid: errors ? false : true,
+      errors: errors || {}
+    }));
+  }, [formStateEmail.values]);
+
+  useEffect(() => {
+    const errorsNew = validate(formStateGuest.values, schemaNew);
+
+    setFormStateGuest(formStateGuest => ({
+      ...formStateGuest,
+      isValid: errorsNew ? false : true,
+      errors: errorsNew || {}
+    }));
+  }, [formStateGuest.values]);
 
   return (
     <div className={classes.root}>
@@ -316,7 +326,7 @@ const LogIn = props => {
                       {/* <Grid item>
                     <Button
                       color="primary"
-                      onClick={handleLogIn}
+                      onClick={handleSocialLogIn}
                       size="large"
                       variant="contained"
                     >
@@ -327,7 +337,7 @@ const LogIn = props => {
                       <Grid container>
                         <Button
                           fullWidth
-                          onClick={handleLogIn}
+                          onClick={handleSocialLogIn}
                           size="large"
                           variant="contained">
                           <GoogleIcon className={classes.socialIcon} />
@@ -353,20 +363,20 @@ const LogIn = props => {
                       fullWidth
                       helperText={
                         hasErrorNew('username')
-                          ? formStateNew.errors.username[0]
+                          ? formStateGuest.errors.username[0]
                           : null
                       }
                       label="Username"
                       name="username"
-                      onChange={handleChangeNew}
+                      onChange={handleChangeGuest}
                       type="username"
-                      value={formStateNew.values.username || ''}
+                      value={formStateGuest.values.username || ''}
                       variant="outlined"
                     />
                     <Button
                       className={classes.logInButton}
                       color="primary"
-                      disabled={!formStateNew.isValid}
+                      disabled={!formStateGuest.isValid}
                       fullWidth
                       size="large"
                       type="submit"
@@ -390,13 +400,15 @@ const LogIn = props => {
                       error={hasError('email')}
                       fullWidth
                       helperText={
-                        hasError('email') ? formState.errors.email[0] : null
+                        hasError('email')
+                          ? formStateEmail.errors.email[0]
+                          : null
                       }
                       label="Email address"
                       name="email"
-                      onChange={handleChange}
+                      onChange={handleChangeEmail}
                       type="text"
-                      value={formState.values.email || ''}
+                      value={formStateEmail.values.email || ''}
                       variant="outlined"
                     />
                     <TextField
@@ -405,20 +417,20 @@ const LogIn = props => {
                       fullWidth
                       helperText={
                         hasError('password')
-                          ? formState.errors.password[0]
+                          ? formStateEmail.errors.password[0]
                           : null
                       }
                       label="Password"
                       name="password"
-                      onChange={handleChange}
+                      onChange={handleChangeEmail}
                       type="password"
-                      value={formState.values.password || ''}
+                      value={formStateEmail.values.password || ''}
                       variant="outlined"
                     />
                     <Button
                       className={classes.logInButton}
                       color="primary"
-                      disabled={!formState.isValid}
+                      disabled={!formStateEmail.isValid}
                       fullWidth
                       size="large"
                       type="submit"
