@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { logIn, setUserType } from '../../store/authSlice';
+import { logIn, setDetails } from '../../store/authSlice';
 // eslint-disable-next-line no-unused-vars
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -221,25 +221,34 @@ const LogIn = props => {
     console.log('handleSocialLogIn');
   };
 
-  const handleLogIn = event => {
+  const handleLogIn = (event, type) => {
     event.preventDefault();
     // eslint-disable-next-line no-console
-    console.log('handleLogIn');
+    console.log('handleLogIn', type);
+    // eslint-disable-next-line no-console
     dispatch(logIn());
+    let token = '';
+    if (type === 'guest') {
+      token = formStateGuest.values.username;
+    } else if (type === 'email') {
+      token = formStateEmail.values.email;
+    }
+    localStorage.setItem('token', token);
     dispatch(
-      setUserType({
-        userType: 'user'
+      setDetails({
+        type: 'userType',
+        value: 'user'
       })
     );
     history.push('/dashboard');
   };
 
-  const hasError = field =>
+  const hasErrorEmail = field =>
     formStateEmail.touched[field] && formStateEmail.errors[field]
       ? true
       : false;
 
-  const hasErrorNew = field =>
+  const hasErrorGuest = field =>
     formStateGuest.touched[field] && formStateGuest.errors[field]
       ? true
       : false;
@@ -293,7 +302,7 @@ const LogIn = props => {
               </IconButton>
             </div> */}
             <div className={classes.contentBody}>
-              <form className={classes.form} onSubmit={handleLogIn}>
+              <form className={classes.form}>
                 <Typography className={classes.title} variant="h2">
                   Log in
                 </Typography>
@@ -359,10 +368,10 @@ const LogIn = props => {
                     </Typography>
                     <TextField
                       className={classes.textField}
-                      error={hasErrorNew('username')}
+                      error={hasErrorGuest('username')}
                       fullWidth
                       helperText={
-                        hasErrorNew('username')
+                        hasErrorGuest('username')
                           ? formStateGuest.errors.username[0]
                           : null
                       }
@@ -378,8 +387,9 @@ const LogIn = props => {
                       color="primary"
                       disabled={!formStateGuest.isValid}
                       fullWidth
+                      onClick={e => handleLogIn(e, 'guest')}
                       size="large"
-                      type="submit"
+                      type="button"
                       variant="contained">
                       Log in
                     </Button>
@@ -397,10 +407,10 @@ const LogIn = props => {
                     </Typography>
                     <TextField
                       className={classes.textField}
-                      error={hasError('email')}
+                      error={hasErrorEmail('email')}
                       fullWidth
                       helperText={
-                        hasError('email')
+                        hasErrorEmail('email')
                           ? formStateEmail.errors.email[0]
                           : null
                       }
@@ -413,10 +423,10 @@ const LogIn = props => {
                     />
                     <TextField
                       className={classes.textField}
-                      error={hasError('password')}
+                      error={hasErrorEmail('password')}
                       fullWidth
                       helperText={
-                        hasError('password')
+                        hasErrorEmail('password')
                           ? formStateEmail.errors.password[0]
                           : null
                       }
@@ -432,6 +442,7 @@ const LogIn = props => {
                       color="primary"
                       disabled={!formStateEmail.isValid}
                       fullWidth
+                      onClick={e => handleLogIn(e, 'email')}
                       size="large"
                       type="submit"
                       variant="contained">
