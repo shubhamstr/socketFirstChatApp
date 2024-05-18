@@ -36,19 +36,6 @@ const Routes = () => {
         path="/not-found"
       />
       {/* <Redirect to="/not-found" /> */}
-      <Redirect exact from="/admin/" to="/admin/sign-in" />
-      <RouteWithLayout
-        component={SignUpView}
-        exact
-        layout={MinimalLayout}
-        path="/admin/sign-up"
-      />
-      <RouteWithLayout
-        component={SignInView}
-        exact
-        layout={MinimalLayout}
-        path="/admin/sign-in"
-      />
 
       {/* protected routes */}
       <PrivateRouteWithLayout
@@ -92,6 +79,21 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/settings"
+      />
+
+      {/* admin routes */}
+      <Redirect exact from="/admin/" to="/admin/sign-in" />
+      <RouteWithLayout
+        component={SignUpView}
+        exact
+        layout={MinimalLayout}
+        path="/admin/sign-up"
+      />
+      <RouteWithLayout
+        component={SignInView}
+        exact
+        layout={MinimalLayout}
+        path="/admin/sign-in"
       />
     </Switch>
   );
