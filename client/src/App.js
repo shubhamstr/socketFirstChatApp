@@ -35,9 +35,10 @@ class App extends Component {
 
     if (token) {
       this.props.logIn();
+      let value = token === 'admin@gmail.com' ? 'admin' : 'user';
       this.props.setDetails({
         type: 'userType',
-        value: 'user'
+        value: value
       });
       browserHistory.push('/dashboard');
     }

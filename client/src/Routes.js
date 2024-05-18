@@ -13,7 +13,7 @@ import {
   Icons as IconsView,
   Account as AccountView,
   Settings as SettingsView,
-  SignUp as SignUpView,
+  // SignUp as SignUpView,
   SignIn as SignInView,
   LogIn as LogInView,
   NotFound as NotFoundView
@@ -24,7 +24,7 @@ const Routes = () => {
   return (
     <Switch>
       {/* guest routes */}
-      <Redirect exact from="/" to={auth.isLoggedIn ? '/dashboard': 'log-in'} />
+      <Redirect exact from="/" to={auth.isLoggedIn ? '/dashboard' : 'log-in'} />
       <RouteWithLayout
         component={LogInView}
         exact
@@ -85,12 +85,12 @@ const Routes = () => {
 
       {/* admin routes */}
       <Redirect exact from="/admin/" to="/admin/sign-in" />
-      <RouteWithLayout
+      {/* <RouteWithLayout
         component={SignUpView}
         exact
         layout={MinimalLayout}
         path="/admin/sign-up"
-      />
+      /> */}
       <RouteWithLayout
         component={SignInView}
         exact

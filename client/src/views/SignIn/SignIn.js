@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { logIn, setDetails } from '../../store/authSlice';
+// eslint-disable-next-line no-unused-vars
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
@@ -6,14 +9,14 @@ import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Button,
-  IconButton,
+  // IconButton,
   TextField,
-  Link,
+  // Link,
   Typography
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+// import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+// import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 
 const schema = {
   email: {
@@ -126,6 +129,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SignIn = props => {
+  const dispatch = useDispatch();
+
   const { history } = props;
 
   const classes = useStyles();
@@ -147,9 +152,9 @@ const SignIn = props => {
     }));
   }, [formState.values]);
 
-  const handleBack = () => {
-    history.goBack();
-  };
+  // const handleBack = () => {
+  //   history.goBack();
+  // };
 
   const handleChange = event => {
     event.persist();
@@ -172,7 +177,16 @@ const SignIn = props => {
 
   const handleSignIn = event => {
     event.preventDefault();
-    history.push('/');
+    let token = formState.values.email;
+    localStorage.setItem('token', token);
+    dispatch(logIn());
+    dispatch(
+      setDetails({
+        type: 'userType',
+        value: 'admin'
+      })
+    );
+    history.push('/dashboard');
   };
 
   const hasError = field =>
@@ -180,82 +194,47 @@ const SignIn = props => {
 
   return (
     <div className={classes.root}>
-      <Grid
-        className={classes.grid}
-        container
-      >
-        <Grid
-          className={classes.quoteContainer}
-          item
-          lg={5}
-        >
+      <Grid className={classes.grid} container>
+        <Grid className={classes.quoteContainer} item lg={5}>
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
-              <Typography
-                className={classes.quoteText}
-                variant="h1"
-              >
+              <Typography className={classes.quoteText} variant="h1">
                 Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
                 they sold out High Life.
               </Typography>
               <div className={classes.person}>
-                <Typography
-                  className={classes.name}
-                  variant="body1"
-                >
+                <Typography className={classes.name} variant="body1">
                   Takamaru Ayako
                 </Typography>
-                <Typography
-                  className={classes.bio}
-                  variant="body2"
-                >
+                <Typography className={classes.bio} variant="body2">
                   Manager at inVision
                 </Typography>
               </div>
             </div>
           </div>
         </Grid>
-        <Grid
-          className={classes.content}
-          item
-          lg={7}
-          xs={12}
-        >
+        <Grid className={classes.content} item lg={7} xs={12}>
           <div className={classes.content}>
-            <div className={classes.contentHeader}>
+            {/* <div className={classes.contentHeader}>
               <IconButton onClick={handleBack}>
                 <ArrowBackIcon />
               </IconButton>
-            </div>
+            </div> */}
             <div className={classes.contentBody}>
-              <form
-                className={classes.form}
-                onSubmit={handleSignIn}
-              >
-                <Typography
-                  className={classes.title}
-                  variant="h2"
-                >
+              <form className={classes.form} onSubmit={handleSignIn}>
+                <Typography className={classes.title} variant="h2">
                   Sign in
                 </Typography>
-                <Typography
-                  color="textSecondary"
-                  gutterBottom
-                >
+                {/* <Typography color="textSecondary" gutterBottom>
                   Sign in with social media
-                </Typography>
-                <Grid
-                  className={classes.socialButtons}
-                  container
-                  spacing={2}
-                >
+                </Typography> */}
+                {/* <Grid className={classes.socialButtons} container spacing={2}>
                   <Grid item>
                     <Button
                       color="primary"
                       onClick={handleSignIn}
                       size="large"
-                      variant="contained"
-                    >
+                      variant="contained">
                       <FacebookIcon className={classes.socialIcon} />
                       Login with Facebook
                     </Button>
@@ -264,20 +243,18 @@ const SignIn = props => {
                     <Button
                       onClick={handleSignIn}
                       size="large"
-                      variant="contained"
-                    >
+                      variant="contained">
                       <GoogleIcon className={classes.socialIcon} />
                       Login with Google
                     </Button>
                   </Grid>
-                </Grid>
+                </Grid> */}
                 <Typography
                   align="center"
                   className={classes.sugestion}
                   color="textSecondary"
-                  variant="body1"
-                >
-                  or login with email address
+                  variant="body1">
+                  Log In with email address
                 </Typography>
                 <TextField
                   className={classes.textField}
@@ -314,23 +291,15 @@ const SignIn = props => {
                   fullWidth
                   size="large"
                   type="submit"
-                  variant="contained"
-                >
+                  variant="contained">
                   Sign in now
                 </Button>
-                <Typography
-                  color="textSecondary"
-                  variant="body1"
-                >
+                {/* <Typography color="textSecondary" variant="body1">
                   Don't have an account?{' '}
-                  <Link
-                    component={RouterLink}
-                    to="/sign-up"
-                    variant="h6"
-                  >
+                  <Link component={RouterLink} to="/sign-up" variant="h6">
                     Sign up
                   </Link>
-                </Typography>
+                </Typography> */}
               </form>
             </div>
           </div>
