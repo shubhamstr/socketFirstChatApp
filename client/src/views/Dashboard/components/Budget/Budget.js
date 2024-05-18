@@ -53,7 +53,7 @@ const Budget = props => {
       <CardContent>
         <Grid
           container
-          justify="space-between"
+          justifyContent="space-between"
         >
           <Grid item>
             <Typography
