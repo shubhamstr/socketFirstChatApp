@@ -226,7 +226,6 @@ const LogIn = props => {
     // eslint-disable-next-line no-console
     console.log('handleLogIn', type);
     // eslint-disable-next-line no-console
-    dispatch(logIn());
     let token = '';
     if (type === 'guest') {
       token = formStateGuest.values.username;
@@ -234,6 +233,7 @@ const LogIn = props => {
       token = formStateEmail.values.email;
     }
     localStorage.setItem('token', token);
+    dispatch(logIn());
     dispatch(
       setDetails({
         type: 'userType',
