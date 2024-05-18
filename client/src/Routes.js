@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { RouteWithLayout, PrivateRouteWithLayout } from './components';
 import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
@@ -19,10 +20,11 @@ import {
 } from './views';
 
 const Routes = () => {
+  const auth = useSelector(state => state.auth);
   return (
     <Switch>
       {/* guest routes */}
-      <Redirect exact from="/" to="/log-in" />
+      <Redirect exact from="/" to={auth.isLoggedIn ? '/dashboard': 'log-in'} />
       <RouteWithLayout
         component={LogInView}
         exact

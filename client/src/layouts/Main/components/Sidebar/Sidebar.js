@@ -48,7 +48,7 @@ const Sidebar = props => {
       title: 'Dashboard',
       href: '/dashboard',
       icon: <DashboardIcon />,
-      allowedUsers: ['admin']
+      allowedUsers: ['admin', 'user']
     },
     {
       title: 'Users',
