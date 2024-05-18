@@ -12,6 +12,7 @@ import {
   // IconButton,
   TextField,
   // Link,
+  ButtonGroup,
   Typography
 } from '@material-ui/core';
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -135,6 +136,13 @@ const useStyles = makeStyles(theme => ({
   },
   logInButton: {
     margin: theme.spacing(2, 0)
+  },
+  btnGroup: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
   }
 }));
 
@@ -144,6 +152,8 @@ const LogIn = props => {
   const { history } = props;
 
   const classes = useStyles();
+
+  const [loginType, setLoginType] = useState('social');
 
   const [formState, setFormState] = useState({
     isValid: false,
@@ -182,6 +192,10 @@ const LogIn = props => {
   // const handleBack = () => {
   //   history.goBack();
   // };
+
+  const changeLoginType = loginType => {
+    setLoginType(loginType);
+  };
 
   const handleChange = event => {
     event.persist();
@@ -226,9 +240,11 @@ const LogIn = props => {
     // eslint-disable-next-line no-console
     console.log('handleLogIn');
     dispatch(logIn());
-    dispatch(setUserType({
-      userType: 'user'
-    }));
+    dispatch(
+      setUserType({
+        userType: 'user'
+      })
+    );
     history.push('/dashboard');
   };
 
@@ -271,11 +287,33 @@ const LogIn = props => {
                 <Typography className={classes.title} variant="h2">
                   Log in
                 </Typography>
-                <Typography color="textSecondary" gutterBottom>
-                  Log in with social media
-                </Typography>
-                <Grid className={classes.socialButtons} container spacing={2}>
-                  {/* <Grid item>
+                <ButtonGroup
+                  aria-label="outlined primary button group"
+                  className={classes.btnGroup}
+                  color="primary">
+                  <Button onClick={() => changeLoginType('social')}>
+                    With Social Media
+                  </Button>
+                  <Button onClick={() => changeLoginType('guest')}>
+                    As Guest
+                  </Button>
+                  <Button onClick={() => changeLoginType('email')}>
+                    With Email
+                  </Button>
+                </ButtonGroup>
+                {loginType === 'social' && (
+                  <>
+                    <Typography
+                      align="center"
+                      className={classes.sugestion}
+                      color="textSecondary">
+                      Log in with social media
+                    </Typography>
+                    <Grid
+                      className={classes.socialButtons}
+                      container
+                      spacing={2}>
+                      {/* <Grid item>
                     <Button
                       color="primary"
                       onClick={handleLogIn}
@@ -286,94 +324,109 @@ const LogIn = props => {
                       Login with Facebook
                     </Button>
                   </Grid> */}
-                  <Grid item>
+                      <Grid container>
+                        <Button
+                          fullWidth
+                          onClick={handleLogIn}
+                          size="large"
+                          variant="contained">
+                          <GoogleIcon className={classes.socialIcon} />
+                          Login with Google
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </>
+                )}
+
+                {loginType === 'guest' && (
+                  <>
+                    <Typography
+                      align="center"
+                      className={classes.sugestion}
+                      color="textSecondary"
+                      variant="body1">
+                      Log in as guest
+                    </Typography>
+                    <TextField
+                      className={classes.textField}
+                      error={hasErrorNew('username')}
+                      fullWidth
+                      helperText={
+                        hasErrorNew('username')
+                          ? formStateNew.errors.username[0]
+                          : null
+                      }
+                      label="Username"
+                      name="username"
+                      onChange={handleChangeNew}
+                      type="username"
+                      value={formStateNew.values.username || ''}
+                      variant="outlined"
+                    />
                     <Button
-                      onClick={handleLogIn}
+                      className={classes.logInButton}
+                      color="primary"
+                      disabled={!formStateNew.isValid}
+                      fullWidth
                       size="large"
+                      type="submit"
                       variant="contained">
-                      <GoogleIcon className={classes.socialIcon} />
-                      Login with Google
+                      Log in
                     </Button>
-                  </Grid>
-                </Grid>
-                <Typography
-                  align="center"
-                  className={classes.sugestion}
-                  color="textSecondary"
-                  variant="body1">
-                  or login as guest
-                </Typography>
-                <TextField
-                  className={classes.textField}
-                  error={hasErrorNew('username')}
-                  fullWidth
-                  helperText={
-                    hasErrorNew('username')
-                      ? formStateNew.errors.username[0]
-                      : null
-                  }
-                  label="Username"
-                  name="username"
-                  onChange={handleChangeNew}
-                  type="username"
-                  value={formStateNew.values.username || ''}
-                  variant="outlined"
-                />
-                <Button
-                  className={classes.logInButton}
-                  color="primary"
-                  disabled={!formStateNew.isValid}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained">
-                  Log in
-                </Button>
-                <Typography
-                  align="center"
-                  className={classes.sugestion}
-                  color="textSecondary"
-                  variant="body1">
-                  or login with email address
-                </Typography>
-                <TextField
-                  className={classes.textField}
-                  error={hasError('email')}
-                  fullWidth
-                  helperText={
-                    hasError('email') ? formState.errors.email[0] : null
-                  }
-                  label="Email address"
-                  name="email"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.email || ''}
-                  variant="outlined"
-                />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('password')}
-                  fullWidth
-                  helperText={
-                    hasError('password') ? formState.errors.password[0] : null
-                  }
-                  label="Password"
-                  name="password"
-                  onChange={handleChange}
-                  type="password"
-                  value={formState.values.password || ''}
-                  variant="outlined"
-                />
-                <Button
-                  className={classes.logInButton}
-                  color="primary"
-                  disabled={!formState.isValid}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained">
-                  Log in
-                </Button>
+                  </>
+                )}
+
+                {loginType === 'email' && (
+                  <>
+                    <Typography
+                      align="center"
+                      className={classes.sugestion}
+                      color="textSecondary"
+                      variant="body1">
+                      Log in with email address
+                    </Typography>
+                    <TextField
+                      className={classes.textField}
+                      error={hasError('email')}
+                      fullWidth
+                      helperText={
+                        hasError('email') ? formState.errors.email[0] : null
+                      }
+                      label="Email address"
+                      name="email"
+                      onChange={handleChange}
+                      type="text"
+                      value={formState.values.email || ''}
+                      variant="outlined"
+                    />
+                    <TextField
+                      className={classes.textField}
+                      error={hasError('password')}
+                      fullWidth
+                      helperText={
+                        hasError('password')
+                          ? formState.errors.password[0]
+                          : null
+                      }
+                      label="Password"
+                      name="password"
+                      onChange={handleChange}
+                      type="password"
+                      value={formState.values.password || ''}
+                      variant="outlined"
+                    />
+                    <Button
+                      className={classes.logInButton}
+                      color="primary"
+                      disabled={!formState.isValid}
+                      fullWidth
+                      size="large"
+                      type="submit"
+                      variant="contained">
+                      Log in
+                    </Button>
+                  </>
+                )}
                 {/* <Typography
                   color="textSecondary"
                   variant="body1"
