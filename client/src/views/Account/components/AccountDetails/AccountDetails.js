@@ -38,45 +38,29 @@ const AccountDetails = props => {
     });
   };
 
-  const states = [
-    {
-      value: 'alabama',
-      label: 'Alabama'
-    },
-    {
-      value: 'new-york',
-      label: 'New York'
-    },
-    {
-      value: 'san-francisco',
-      label: 'San Francisco'
-    }
-  ];
+  // const states = [
+  //   {
+  //     value: 'alabama',
+  //     label: 'Alabama'
+  //   },
+  //   {
+  //     value: 'new-york',
+  //     label: 'New York'
+  //   },
+  //   {
+  //     value: 'san-francisco',
+  //     label: 'San Francisco'
+  //   }
+  // ];
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
-      <form
-        autoComplete="off"
-        noValidate
-      >
-        <CardHeader
-          subheader="The information can be edited"
-          title="Profile"
-        />
+    <Card {...rest} className={clsx(classes.root, className)}>
+      <form autoComplete="off" noValidate>
+        <CardHeader subheader="The information can be edited" title="Profile" />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-          >
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+          <Grid container spacing={3}>
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 helperText="Please specify the first name"
@@ -89,11 +73,7 @@ const AccountDetails = props => {
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Last name"
@@ -105,11 +85,7 @@ const AccountDetails = props => {
                 variant="outlined"
               />
             </Grid>
-            <Grid
-              item
-              md={6}
-              xs={12}
-            >
+            <Grid item md={6} xs={12}>
               <TextField
                 fullWidth
                 label="Email Address"
@@ -121,7 +97,7 @@ const AccountDetails = props => {
                 variant="outlined"
               />
             </Grid>
-            <Grid
+            {/* <Grid
               item
               md={6}
               xs={12}
@@ -136,8 +112,8 @@ const AccountDetails = props => {
                 value={values.phone}
                 variant="outlined"
               />
-            </Grid>
-            <Grid
+            </Grid> */}
+            {/* <Grid
               item
               md={6}
               xs={12}
@@ -164,8 +140,8 @@ const AccountDetails = props => {
                   </option>
                 ))}
               </TextField>
-            </Grid>
-            <Grid
+            </Grid> */}
+            {/* <Grid
               item
               md={6}
               xs={12}
@@ -180,15 +156,12 @@ const AccountDetails = props => {
                 value={values.country}
                 variant="outlined"
               />
-            </Grid>
+            </Grid> */}
           </Grid>
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            color="primary"
-            variant="contained"
-          >
+          <Button color="primary" variant="contained">
             Save details
           </Button>
         </CardActions>

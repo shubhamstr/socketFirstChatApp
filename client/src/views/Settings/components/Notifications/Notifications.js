@@ -29,10 +29,7 @@ const Notifications = props => {
   const classes = useStyles();
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card {...rest} className={clsx(classes.root, className)}>
       <form>
         <CardHeader
           subheader="Manage the notifications"
@@ -40,22 +37,9 @@ const Notifications = props => {
         />
         <Divider />
         <CardContent>
-          <Grid
-            container
-            spacing={6}
-            wrap="wrap"
-          >
-            <Grid
-              className={classes.item}
-              item
-              md={4}
-              sm={6}
-              xs={12}
-            >
-              <Typography
-                gutterBottom
-                variant="h6"
-              >
+          <Grid container spacing={6} wrap="wrap">
+            <Grid className={classes.item} item md={4} sm={6} xs={12}>
+              <Typography gutterBottom variant="h6">
                 Notifications
               </Typography>
               <FormControlLabel
@@ -76,11 +60,11 @@ const Notifications = props => {
                 }
                 label="Push Notifications"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox color="primary" />}
                 label="Text Messages"
-              />
-              <FormControlLabel
+              /> */}
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     color="primary"
@@ -88,19 +72,10 @@ const Notifications = props => {
                   />
                 }
                 label="Phone calls"
-              />
+              /> */}
             </Grid>
-            <Grid
-              className={classes.item}
-              item
-              md={4}
-              sm={6}
-              xs={12}
-            >
-              <Typography
-                gutterBottom
-                variant="h6"
-              >
+            <Grid className={classes.item} item md={4} sm={6} xs={12}>
+              <Typography gutterBottom variant="h6">
                 Messages
               </Typography>
               <FormControlLabel
@@ -116,7 +91,7 @@ const Notifications = props => {
                 control={<Checkbox color="primary" />}
                 label="Push Notifications"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={
                   <Checkbox
                     color="primary"
@@ -124,16 +99,13 @@ const Notifications = props => {
                   />
                 }
                 label="Phone calls"
-              />
+              /> */}
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            color="primary"
-            variant="outlined"
-          >
+          <Button color="primary" variant="outlined">
             Save
           </Button>
         </CardActions>
