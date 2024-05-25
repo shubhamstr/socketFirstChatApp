@@ -67,7 +67,7 @@ content-type: {{contentType}}
 }
 ###
 
-### delete users
+### delete user
 POST {{protocol}}://{{host}}/users/delete HTTP/1.1
 content-type: {{contentType}}
 

@@ -86,4 +86,18 @@ router.post("/update-password", (req, res) => {
   })
 })
 
+router.post("/delete", (req, res) => {
+  // console.log(req.body);
+  var sql = `DELETE FROM users WHERE id = ${req.body.id}`
+  db.query(sql, function (err, result) {
+    if (err) throw err
+    console.log(result)
+    res.send({
+      err: false,
+      msg: "User Deleted Successfully!!",
+      data: result,
+    })
+  })
+})
+
 module.exports = router
