@@ -22,35 +22,46 @@ content-type: {{contentType}}
 ###
 
 ### update user
-POST {{protocol}}://{{host}}/users/update HTTP/1.1
+POST {{protocol}}://{{host}}/users/update-notification HTTP/1.1
 content-type: {{contentType}}
 
-# {
-#     "updateType": "notification",
-#     "id": "1",
-#     "email_notification_flag": "1",
-#     "push_notification_flag": "1",
-#     "email_message_flag": "1",
-#     "push_message_flag": "1"
-# }
+{
+    "id": "1",
+    "email_notification_flag": "1",
+    "push_notification_flag": "1",
+    "email_message_flag": "1",
+    "push_message_flag": "1"
+}
+###
 
-# {
-#     "updateType": "personal",
-#     "id": "1",
-#     "last_name": "Sutar",
-#     "first_name": "Shubham",
-#     "username": "shubhamstr",
-#     "email": "shubhamsutar5799@gmail.com"
-# }
-
-# {
-#     "updateType": "image",
-#     "id": "1",
-#     "image": "user.png"
-# }
+### update user
+POST {{protocol}}://{{host}}/users/update-personal HTTP/1.1
+content-type: {{contentType}}
 
 {
-    "updateType": "password",
+    "id": "1",
+    "last_name": "Sutar",
+    "first_name": "Shubham",
+    "username": "shubhamstr",
+    "email": "shubhamsutar5799@gmail.com"
+}
+###
+
+### update user
+POST {{protocol}}://{{host}}/users/update-image HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "id": "1",
+    "image": "user.png"
+}
+###
+
+### update user
+POST {{protocol}}://{{host}}/users/update-image HTTP/1.1
+content-type: {{contentType}}
+
+{
     "id": "1",
     "password": "1234"
 }
@@ -61,6 +72,6 @@ POST {{protocol}}://{{host}}/users/delete HTTP/1.1
 content-type: {{contentType}}
 
 {
-    "id": "661e5dc73093fa034df34867"
+    "id": "1"
 }
 ###

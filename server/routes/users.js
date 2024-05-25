@@ -30,23 +30,57 @@ router.post("/register", (req, res) => {
   })
 })
 
-router.post("/update", (req, res) => {
+router.post("/update-notification", (req, res) => {
   // console.log(req.body);
-  if (req.body.updateType === "notification") {
-    var sql = `UPDATE users SET email_notification_flag = ${req.body.email_notification_flag}, push_notification_flag = ${req.body.push_notification_flag}, email_message_flag = ${req.body.email_message_flag}, push_message_flag = ${req.body.push_message_flag} WHERE id = ${req.body.id}`
-  } else if (req.body.updateType === "personal") {
-    var sql = `UPDATE users SET last_name = '${req.body.last_name}', first_name = '${req.body.first_name}', username = '${req.body.username}', email = '${req.body.email}' WHERE id = ${req.body.id}`
-  } else if (req.body.updateType === "image") {
-    var sql = `UPDATE users SET image = '${req.body.image}' WHERE id = ${req.body.id}`
-  } else if (req.body.updateType === "password") {
-    var sql = `UPDATE users SET password = '${req.body.password}' WHERE id = ${req.body.id}`
-  }
+  var sql = `UPDATE users SET email_notification_flag = ${req.body.email_notification_flag}, push_notification_flag = ${req.body.push_notification_flag}, email_message_flag = ${req.body.email_message_flag}, push_message_flag = ${req.body.push_message_flag} WHERE id = ${req.body.id}`
   db.query(sql, function (err, result) {
     if (err) throw err
     console.log(result)
     res.send({
       err: false,
-      msg: "User Updated Successfully!!",
+      msg: "User Notification Updated Successfully!!",
+      data: result,
+    })
+  })
+})
+
+router.post("/update-personal", (req, res) => {
+  // console.log(req.body);
+  var sql = `UPDATE users SET last_name = '${req.body.last_name}', first_name = '${req.body.first_name}', username = '${req.body.username}', email = '${req.body.email}' WHERE id = ${req.body.id}`
+  db.query(sql, function (err, result) {
+    if (err) throw err
+    console.log(result)
+    res.send({
+      err: false,
+      msg: "User Details Updated Successfully!!",
+      data: result,
+    })
+  })
+})
+
+router.post("/update-image", (req, res) => {
+  // console.log(req.body);
+  var sql = `UPDATE users SET image = '${req.body.image}' WHERE id = ${req.body.id}`
+  db.query(sql, function (err, result) {
+    if (err) throw err
+    console.log(result)
+    res.send({
+      err: false,
+      msg: "User Image Updated Successfully!!",
+      data: result,
+    })
+  })
+})
+
+router.post("/update-password", (req, res) => {
+  // console.log(req.body);
+  var sql = `UPDATE users SET password = '${req.body.password}' WHERE id = ${req.body.id}`
+  db.query(sql, function (err, result) {
+    if (err) throw err
+    console.log(result)
+    res.send({
+      err: false,
+      msg: "User Password Updated Successfully!!",
       data: result,
     })
   })
