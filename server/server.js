@@ -2,13 +2,9 @@ const express = require("express")
 const app = express()
 const http = require("http").createServer(app)
 
-const db = require("./db")
+const users = require("./routes/users")
 
 const PORT = process.env.PORT || 5000
-
-http.listen(PORT, () => {
-  console.log(`listening on http://localhost:${PORT}`)
-})
 
 app.use(express.static(__dirname + "/public"))
 
@@ -20,8 +16,9 @@ app.get("/html", (req, res) => {
   res.sendFile(__dirname + "/index.html")
 })
 
-// socket code
-const io = require("socket.io")(http)
+app.use("/users", users)
+
+// socket io
 io.on("connection", (socket) => {
   console.log("connected..")
 
@@ -33,4 +30,9 @@ io.on("connection", (socket) => {
     // console.log(msg);
     socket.broadcast.emit("message", msg)
   })
+})
+
+// listen on port
+http.listen(PORT, () => {
+  console.log(`listening on http://localhost:${PORT}`)
 })

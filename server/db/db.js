@@ -11,4 +11,4 @@ db.connect(function (err) {
   console.log("Connected!")
 })
 
-export default db
+module.exports = db
