@@ -35,7 +35,7 @@ const Routes = () => {
         component={RegisterView}
         exact
         layout={MinimalLayout}
-        path="/admin/register"
+        path="/register"
       />
       <RouteWithLayout
         component={NotFoundView}
