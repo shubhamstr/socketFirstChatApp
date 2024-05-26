@@ -11,7 +11,7 @@ import {
   Button,
   // IconButton,
   TextField,
-  // Link,
+  Link,
   ButtonGroup,
   Typography
 } from '@material-ui/core';
@@ -32,15 +32,6 @@ const schema = {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 128
-    }
-  }
-};
-
-const schemaNew = {
-  username: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 64
     }
   }
 };
@@ -143,6 +134,10 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     display: 'flex',
     justifyContent: 'center'
+  },
+  linkText: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   }
 }));
 
@@ -156,13 +151,6 @@ const LogIn = props => {
   const [loginType, setLoginType] = useState('social');
 
   const [formStateEmail, setFormStateEmail] = useState({
-    isValid: false,
-    values: {},
-    touched: {},
-    errors: {}
-  });
-
-  const [formStateGuest, setFormStateGuest] = useState({
     isValid: false,
     values: {},
     touched: {},
@@ -196,25 +184,6 @@ const LogIn = props => {
     }));
   };
 
-  const handleChangeGuest = event => {
-    event.persist();
-
-    setFormStateGuest(formStateEmail => ({
-      ...formStateEmail,
-      values: {
-        ...formStateEmail.values,
-        [event.target.name]:
-          event.target.type === 'checkbox'
-            ? event.target.checked
-            : event.target.value
-      },
-      touched: {
-        ...formStateEmail.touched,
-        [event.target.name]: true
-      }
-    }));
-  };
-
   const handleSocialLogIn = event => {
     event.preventDefault();
     // eslint-disable-next-line no-console
@@ -227,9 +196,7 @@ const LogIn = props => {
     console.log('handleLogIn', type);
     // eslint-disable-next-line no-console
     let token = '';
-    if (type === 'guest') {
-      token = formStateGuest.values.username;
-    } else if (type === 'email') {
+    if (type === 'email') {
       token = formStateEmail.values.email;
     }
     localStorage.setItem('token', token);
@@ -248,11 +215,6 @@ const LogIn = props => {
       ? true
       : false;
 
-  const hasErrorGuest = field =>
-    formStateGuest.touched[field] && formStateGuest.errors[field]
-      ? true
-      : false;
-
   useEffect(() => {
     const errors = validate(formStateEmail.values, schema);
 
@@ -262,16 +224,6 @@ const LogIn = props => {
       errors: errors || {}
     }));
   }, [formStateEmail.values]);
-
-  useEffect(() => {
-    const errorsNew = validate(formStateGuest.values, schemaNew);
-
-    setFormStateGuest(formStateGuest => ({
-      ...formStateGuest,
-      isValid: errorsNew ? false : true,
-      errors: errorsNew || {}
-    }));
-  }, [formStateGuest.values]);
 
   return (
     <div className={classes.root}>
@@ -313,9 +265,6 @@ const LogIn = props => {
                   <Button onClick={() => changeLoginType('social')}>
                     With Social Media
                   </Button>
-                  <Button onClick={() => changeLoginType('guest')}>
-                    As Guest
-                  </Button>
                   <Button onClick={() => changeLoginType('email')}>
                     With Email
                   </Button>
@@ -354,45 +303,6 @@ const LogIn = props => {
                         </Button>
                       </Grid>
                     </Grid>
-                  </>
-                )}
-
-                {loginType === 'guest' && (
-                  <>
-                    <Typography
-                      align="center"
-                      className={classes.sugestion}
-                      color="textSecondary"
-                      variant="body1">
-                      Log in as guest
-                    </Typography>
-                    <TextField
-                      className={classes.textField}
-                      error={hasErrorGuest('username')}
-                      fullWidth
-                      helperText={
-                        hasErrorGuest('username')
-                          ? formStateGuest.errors.username[0]
-                          : null
-                      }
-                      label="Username"
-                      name="username"
-                      onChange={handleChangeGuest}
-                      type="username"
-                      value={formStateGuest.values.username || ''}
-                      variant="outlined"
-                    />
-                    <Button
-                      className={classes.logInButton}
-                      color="primary"
-                      disabled={!formStateGuest.isValid}
-                      fullWidth
-                      onClick={e => handleLogIn(e, 'guest')}
-                      size="large"
-                      type="button"
-                      variant="contained">
-                      Log in
-                    </Button>
                   </>
                 )}
 
@@ -450,19 +360,16 @@ const LogIn = props => {
                     </Button>
                   </>
                 )}
-                {/* <Typography
+
+                <Typography
+                  className={classes.linkText}
                   color="textSecondary"
-                  variant="body1"
-                >
+                  variant="body1">
                   Don't have an account?{' '}
-                  <Link
-                    component={RouterLink}
-                    to="/sign-up"
-                    variant="h6"
-                  >
-                    Sign up
+                  <Link component={RouterLink} to="/register" variant="h6">
+                    Register
                   </Link>
-                </Typography> */}
+                </Typography>
               </form>
             </div>
           </div>
