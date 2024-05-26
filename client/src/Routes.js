@@ -13,8 +13,8 @@ import {
   Icons as IconsView,
   Account as AccountView,
   Settings as SettingsView,
-  // SignUp as SignUpView,
-  AdminLogIn as SignInView,
+  Register as RegisterView,
+  AdminLogIn as AdminLogInView,
   LogIn as LogInView,
   NotFound as NotFoundView
 } from './views';
@@ -30,6 +30,12 @@ const Routes = () => {
         exact
         layout={MinimalLayout}
         path="/log-in"
+      />
+      <RouteWithLayout
+        component={RegisterView}
+        exact
+        layout={MinimalLayout}
+        path="/admin/register"
       />
       <RouteWithLayout
         component={NotFoundView}
@@ -85,14 +91,8 @@ const Routes = () => {
 
       {/* admin routes */}
       <Redirect exact from="/admin/" to="/admin/log-in" />
-      {/* <RouteWithLayout
-        component={SignUpView}
-        exact
-        layout={MinimalLayout}
-        path="/admin/sign-up"
-      /> */}
       <RouteWithLayout
-        component={SignInView}
+        component={AdminLogInView}
         exact
         layout={MinimalLayout}
         path="/admin/log-in"

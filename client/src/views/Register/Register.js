@@ -140,7 +140,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignUp = props => {
+const Register = props => {
   const { history } = props;
 
   const classes = useStyles();
@@ -378,8 +378,8 @@ const SignUp = props => {
   );
 };
 
-SignUp.propTypes = {
+Register.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignUp);
+export default withRouter(Register);
