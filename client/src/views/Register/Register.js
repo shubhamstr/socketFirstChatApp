@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { logIn, setDetails } from '../../store/authSlice';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
 import {
   Grid,
   Button,
-  IconButton,
+  // IconButton,
   TextField,
   Link,
-  FormHelperText,
-  Checkbox,
+  // FormHelperText,
+  ButtonGroup,
+  // Checkbox,
   Typography
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+// import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const schema = {
   firstName: {
@@ -23,6 +26,12 @@ const schema = {
     }
   },
   lastName: {
+    presence: { allowEmpty: false, message: 'is required' },
+    length: {
+      maximum: 32
+    }
+  },
+  userName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 32
@@ -40,10 +49,19 @@ const schema = {
     length: {
       maximum: 128
     }
-  },
-  policy: {
+  }
+  // policy: {
+  //   presence: { allowEmpty: false, message: 'is required' },
+  //   checked: true
+  // }
+};
+
+const schemaNew = {
+  username: {
     presence: { allowEmpty: false, message: 'is required' },
-    checked: true
+    length: {
+      maximum: 64
+    }
   }
 };
 
@@ -137,15 +155,40 @@ const useStyles = makeStyles(theme => ({
   },
   signUpButton: {
     margin: theme.spacing(2, 0)
+  },
+  logInButton: {
+    margin: theme.spacing(2, 0)
+  },
+  btnGroup: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
+  },
+  linkText: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3)
   }
 }));
 
 const Register = props => {
+  const dispatch = useDispatch();
+
   const { history } = props;
 
   const classes = useStyles();
 
-  const [formState, setFormState] = useState({
+  const [loginType, setLoginType] = useState('guest');
+
+  const [formStateEmail, setFormStateEmail] = useState({
+    isValid: false,
+    values: {},
+    touched: {},
+    errors: {}
+  });
+
+  const [formStateGuest, setFormStateGuest] = useState({
     isValid: false,
     values: {},
     touched: {},
@@ -153,36 +196,91 @@ const Register = props => {
   });
 
   useEffect(() => {
-    const errors = validate(formState.values, schema);
+    const errors = validate(formStateEmail.values, schema);
 
-    setFormState(formState => ({
-      ...formState,
+    setFormStateEmail(formStateEmail => ({
+      ...formStateEmail,
       isValid: errors ? false : true,
       errors: errors || {}
     }));
-  }, [formState.values]);
+  }, [formStateEmail.values]);
 
-  const handleChange = event => {
+  useEffect(() => {
+    const errorsNew = validate(formStateGuest.values, schemaNew);
+
+    setFormStateGuest(formStateGuest => ({
+      ...formStateGuest,
+      isValid: errorsNew ? false : true,
+      errors: errorsNew || {}
+    }));
+  }, [formStateGuest.values]);
+
+  const handleChangeEmail = event => {
     event.persist();
 
-    setFormState(formState => ({
-      ...formState,
+    setFormStateEmail(formStateEmail => ({
+      ...formStateEmail,
       values: {
-        ...formState.values,
+        ...formStateEmail.values,
         [event.target.name]:
           event.target.type === 'checkbox'
             ? event.target.checked
             : event.target.value
       },
       touched: {
-        ...formState.touched,
+        ...formStateEmail.touched,
         [event.target.name]: true
       }
     }));
   };
 
-  const handleBack = () => {
-    history.goBack();
+  const handleChangeGuest = event => {
+    event.persist();
+
+    setFormStateGuest(formStateEmail => ({
+      ...formStateEmail,
+      values: {
+        ...formStateEmail.values,
+        [event.target.name]:
+          event.target.type === 'checkbox'
+            ? event.target.checked
+            : event.target.value
+      },
+      touched: {
+        ...formStateEmail.touched,
+        [event.target.name]: true
+      }
+    }));
+  };
+
+  const handleLogIn = (event, type) => {
+    event.preventDefault();
+    // eslint-disable-next-line no-console
+    console.log('handleLogIn', type);
+    // eslint-disable-next-line no-console
+    let token = '';
+    if (type === 'guest') {
+      token = formStateGuest.values.username;
+    } else if (type === 'email') {
+      token = formStateEmail.values.email;
+    }
+    localStorage.setItem('token', token);
+    dispatch(logIn());
+    dispatch(
+      setDetails({
+        type: 'userType',
+        value: 'user'
+      })
+    );
+    history.push('/dashboard');
+  };
+
+  // const handleBack = () => {
+  //   history.goBack();
+  // };
+
+  const changeLoginType = loginType => {
+    setLoginType(loginType);
   };
 
   const handleSignUp = event => {
@@ -190,132 +288,209 @@ const Register = props => {
     history.push('/');
   };
 
-  const hasError = field =>
-    formState.touched[field] && formState.errors[field] ? true : false;
+  const hasErrorEmail = field =>
+    formStateEmail.touched[field] && formStateEmail.errors[field]
+      ? true
+      : false;
+
+  const hasErrorGuest = field =>
+    formStateGuest.touched[field] && formStateGuest.errors[field]
+      ? true
+      : false;
 
   return (
     <div className={classes.root}>
-      <Grid
-        className={classes.grid}
-        container
-      >
-        <Grid
-          className={classes.quoteContainer}
-          item
-          lg={5}
-        >
+      <Grid className={classes.grid} container>
+        <Grid className={classes.quoteContainer} item lg={5}>
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
-              <Typography
-                className={classes.quoteText}
-                variant="h1"
-              >
+              <Typography className={classes.quoteText} variant="h1">
                 Hella narwhal Cosby sweater McSweeney's, salvia kitsch before
                 they sold out High Life.
               </Typography>
               <div className={classes.person}>
-                <Typography
-                  className={classes.name}
-                  variant="body1"
-                >
+                <Typography className={classes.name} variant="body1">
                   Takamaru Ayako
                 </Typography>
-                <Typography
-                  className={classes.bio}
-                  variant="body2"
-                >
+                <Typography className={classes.bio} variant="body2">
                   Manager at inVision
                 </Typography>
               </div>
             </div>
           </div>
         </Grid>
-        <Grid
-          className={classes.content}
-          item
-          lg={7}
-          xs={12}
-        >
+        <Grid className={classes.content} item lg={7} xs={12}>
           <div className={classes.content}>
-            <div className={classes.contentHeader}>
+            {/* <div className={classes.contentHeader}>
               <IconButton onClick={handleBack}>
                 <ArrowBackIcon />
               </IconButton>
-            </div>
+            </div> */}
             <div className={classes.contentBody}>
-              <form
-                className={classes.form}
-                onSubmit={handleSignUp}
-              >
-                <Typography
-                  className={classes.title}
-                  variant="h2"
-                >
+              <form className={classes.form} onSubmit={handleSignUp}>
+                <Typography className={classes.title} variant="h2">
                   Create new account
                 </Typography>
-                <Typography
+                {/* <Typography
                   color="textSecondary"
                   gutterBottom
                 >
                   Use your email to create new account
-                </Typography>
-                <TextField
-                  className={classes.textField}
-                  error={hasError('firstName')}
-                  fullWidth
-                  helperText={
-                    hasError('firstName') ? formState.errors.firstName[0] : null
-                  }
-                  label="First name"
-                  name="firstName"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.firstName || ''}
-                  variant="outlined"
-                />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('lastName')}
-                  fullWidth
-                  helperText={
-                    hasError('lastName') ? formState.errors.lastName[0] : null
-                  }
-                  label="Last name"
-                  name="lastName"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.lastName || ''}
-                  variant="outlined"
-                />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('email')}
-                  fullWidth
-                  helperText={
-                    hasError('email') ? formState.errors.email[0] : null
-                  }
-                  label="Email address"
-                  name="email"
-                  onChange={handleChange}
-                  type="text"
-                  value={formState.values.email || ''}
-                  variant="outlined"
-                />
-                <TextField
-                  className={classes.textField}
-                  error={hasError('password')}
-                  fullWidth
-                  helperText={
-                    hasError('password') ? formState.errors.password[0] : null
-                  }
-                  label="Password"
-                  name="password"
-                  onChange={handleChange}
-                  type="password"
-                  value={formState.values.password || ''}
-                  variant="outlined"
-                />
-                <div className={classes.policy}>
+                </Typography> */}
+                <ButtonGroup
+                  aria-label="outlined primary button group"
+                  className={classes.btnGroup}
+                  color="primary">
+                  <Button onClick={() => changeLoginType('guest')}>
+                    As Guest
+                  </Button>
+                  <Button onClick={() => changeLoginType('email')}>
+                    With Email
+                  </Button>
+                </ButtonGroup>
+
+                {loginType === 'email' && (
+                  <>
+                    <Typography
+                      align="center"
+                      className={classes.sugestion}
+                      color="textSecondary"
+                      variant="body1">
+                      Register with email
+                    </Typography>
+                    <TextField
+                      className={classes.textField}
+                      error={hasErrorEmail('userName')}
+                      fullWidth
+                      helperText={
+                        hasErrorEmail('userName')
+                          ? formStateEmail.errors.userName[0]
+                          : null
+                      }
+                      label="User Name"
+                      name="userName"
+                      onChange={handleChangeEmail}
+                      type="text"
+                      value={formStateEmail.values.userName || ''}
+                      variant="outlined"
+                    />
+                    <TextField
+                      className={classes.textField}
+                      error={hasErrorEmail('firstName')}
+                      fullWidth
+                      helperText={
+                        hasErrorEmail('firstName')
+                          ? formStateEmail.errors.firstName[0]
+                          : null
+                      }
+                      label="First name"
+                      name="firstName"
+                      onChange={handleChangeEmail}
+                      type="text"
+                      value={formStateEmail.values.firstName || ''}
+                      variant="outlined"
+                    />
+                    <TextField
+                      className={classes.textField}
+                      error={hasErrorEmail('lastName')}
+                      fullWidth
+                      helperText={
+                        hasErrorEmail('lastName')
+                          ? formStateEmail.errors.lastName[0]
+                          : null
+                      }
+                      label="Last name"
+                      name="lastName"
+                      onChange={handleChangeEmail}
+                      type="text"
+                      value={formStateEmail.values.lastName || ''}
+                      variant="outlined"
+                    />
+                    <TextField
+                      className={classes.textField}
+                      error={hasErrorEmail('email')}
+                      fullWidth
+                      helperText={
+                        hasErrorEmail('email')
+                          ? formStateEmail.errors.email[0]
+                          : null
+                      }
+                      label="Email address"
+                      name="email"
+                      onChange={handleChangeEmail}
+                      type="text"
+                      value={formStateEmail.values.email || ''}
+                      variant="outlined"
+                    />
+                    <TextField
+                      className={classes.textField}
+                      error={hasErrorEmail('password')}
+                      fullWidth
+                      helperText={
+                        hasErrorEmail('password')
+                          ? formStateEmail.errors.password[0]
+                          : null
+                      }
+                      label="Password"
+                      name="password"
+                      onChange={handleChangeEmail}
+                      type="password"
+                      value={formStateEmail.values.password || ''}
+                      variant="outlined"
+                    />
+                    <Button
+                      className={classes.signUpButton}
+                      color="primary"
+                      disabled={!formStateEmail.isValid}
+                      fullWidth
+                      size="large"
+                      type="submit"
+                      variant="contained">
+                      Register now
+                    </Button>
+                  </>
+                )}
+
+                {loginType === 'guest' && (
+                  <>
+                    <Typography
+                      align="center"
+                      className={classes.sugestion}
+                      color="textSecondary"
+                      variant="body1">
+                      Register as guest
+                    </Typography>
+                    <TextField
+                      className={classes.textField}
+                      error={hasErrorGuest('username')}
+                      fullWidth
+                      helperText={
+                        hasErrorGuest('username')
+                          ? formStateGuest.errors.username[0]
+                          : null
+                      }
+                      label="Username"
+                      name="username"
+                      onChange={handleChangeGuest}
+                      type="username"
+                      value={formStateGuest.values.username || ''}
+                      variant="outlined"
+                    />
+                    <Button
+                      className={classes.logInButton}
+                      color="primary"
+                      disabled={!formStateGuest.isValid}
+                      fullWidth
+                      onClick={e => handleLogIn(e, 'guest')}
+                      size="large"
+                      type="button"
+                      variant="contained">
+                      Register
+                    </Button>
+                  </>
+                )}
+
+                {/* <div className={classes.policy}>
                   <Checkbox
                     checked={formState.values.policy || false}
                     className={classes.policyCheckbox}
@@ -339,34 +514,19 @@ const Register = props => {
                       Terms and Conditions
                     </Link>
                   </Typography>
-                </div>
-                {hasError('policy') && (
+                </div> */}
+                {/* {hasError('policy') && (
                   <FormHelperText error>
                     {formState.errors.policy[0]}
                   </FormHelperText>
-                )}
-                <Button
-                  className={classes.signUpButton}
-                  color="primary"
-                  disabled={!formState.isValid}
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                  Sign up now
-                </Button>
+                )} */}
                 <Typography
+                  className={classes.linkText}
                   color="textSecondary"
-                  variant="body1"
-                >
-                  Have an account?{' '}
-                  <Link
-                    component={RouterLink}
-                    to="/sign-in"
-                    variant="h6"
-                  >
-                    Sign in
+                  variant="body1">
+                  Already an account?{' '}
+                  <Link component={RouterLink} to="/log-in" variant="h6">
+                    Log In
                   </Link>
                 </Typography>
               </form>
