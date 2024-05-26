@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
@@ -12,6 +12,7 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -22,13 +23,16 @@ const AccountDetails = props => {
 
   const classes = useStyles();
 
+  const auth = useSelector(state => state.auth);
+  const { userDetails } = auth;
+
   const [values, setValues] = useState({
     firstName: 'Shen',
     lastName: 'Zhi',
-    email: 'shen.zhi@devias.io',
-    phone: '',
-    state: 'Alabama',
-    country: 'USA'
+    email: 'shen.zhi@devias.io'
+    // phone: '',
+    // state: 'Alabama',
+    // country: 'USA'
   });
 
   const handleChange = event => {
@@ -52,6 +56,17 @@ const AccountDetails = props => {
   //     label: 'San Francisco'
   //   }
   // ];
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(userDetails);
+    setValues({
+      ...values,
+      firstName: userDetails.firstName,
+      lastName: userDetails.lastName,
+      email: userDetails.email
+    });
+  }, [userDetails]);
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
