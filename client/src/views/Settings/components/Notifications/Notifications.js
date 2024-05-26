@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -14,6 +14,7 @@ import {
   Typography,
   Button
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -26,7 +27,23 @@ const useStyles = makeStyles(() => ({
 const Notifications = props => {
   const { className, ...rest } = props;
 
+  const [user, setUser] = useState({});
+
   const classes = useStyles();
+
+  const auth = useSelector(state => state.auth);
+  const { userDetails } = auth;
+
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(userDetails);
+    setUser({
+      email_notification_flag: userDetails.email_notification_flag,
+      push_notification_flag: userDetails.push_notification_flag,
+      email_message_flag: userDetails.email_message_flag,
+      push_message_flag: userDetails.push_message_flag
+    });
+  }, [userDetails]);
 
   return (
     <Card {...rest} className={clsx(classes.root, className)}>
@@ -45,8 +62,8 @@ const Notifications = props => {
               <FormControlLabel
                 control={
                   <Checkbox
+                    checked={user.email_notification_flag === 1}
                     color="primary"
-                    defaultChecked //
                   />
                 }
                 label="Email"
@@ -54,8 +71,8 @@ const Notifications = props => {
               <FormControlLabel
                 control={
                   <Checkbox
+                    checked={user.push_notification_flag === 1}
                     color="primary"
-                    defaultChecked //
                   />
                 }
                 label="Push Notifications"
@@ -81,14 +98,19 @@ const Notifications = props => {
               <FormControlLabel
                 control={
                   <Checkbox
+                    checked={user.email_message_flag === 1}
                     color="primary"
-                    defaultChecked //
                   />
                 }
                 label="Email"
               />
               <FormControlLabel
-                control={<Checkbox color="primary" />}
+                control={
+                  <Checkbox
+                    checked={user.push_message_flag === 1}
+                    color="primary"
+                  />
+                }
                 label="Push Notifications"
               />
               {/* <FormControlLabel
