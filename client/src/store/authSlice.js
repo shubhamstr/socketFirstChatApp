@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoggedIn: false,
-  userType: ''
+  userType: '',
+  userDetails: {}
 };
 
 export const authSlice = createSlice({
@@ -19,10 +20,13 @@ export const authSlice = createSlice({
     logOut: state => {
       state.isLoggedIn = false;
       state.userType = '';
+      state.userDetails = {};
     },
     setDetails: (state, data) => {
       if (data.payload.type === 'userType') {
         state.userType = data.payload.value;
+      } else if (data.payload.type === 'userDetails') {
+        state.userDetails = data.payload.value;
       }
     }
   }

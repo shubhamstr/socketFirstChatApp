@@ -3,6 +3,9 @@ import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { logIn, setDetails } from '../../store/authSlice';
+import { jwtDecode } from 'jwt-decode';
+import axiosClient from '../../api/api-client';
+import { signUpApi } from '../../api/auth';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
 import {
@@ -57,7 +60,7 @@ const schema = {
 };
 
 const schemaNew = {
-  username: {
+  userName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
       maximum: 64
@@ -253,26 +256,51 @@ const Register = props => {
     }));
   };
 
-  const handleLogIn = (event, type) => {
-    event.preventDefault();
+  const setHeaderToken = token => {
+    axiosClient.defaults.headers.common.Authorization = token;
+  };
+
+  const setToken = userToken => {
+    localStorage.setItem('token', JSON.stringify(userToken));
+  };
+
+  const setTokenAndRedirect = resp => {
     // eslint-disable-next-line no-console
-    console.log('handleLogIn', type);
+    console.log('setTokenAndRedirect', resp);
+    setHeaderToken(resp.data.data);
+    setToken(resp.data.data);
+    const userDetails = jwtDecode(resp.data.data);
     // eslint-disable-next-line no-console
-    let token = '';
-    if (type === 'guest') {
-      token = formStateGuest.values.username;
-    } else if (type === 'email') {
-      token = formStateEmail.values.email;
-    }
-    localStorage.setItem('token', token);
-    dispatch(logIn());
+    // console.log(userDetails);
     dispatch(
       setDetails({
         type: 'userType',
         value: 'user'
       })
     );
+    dispatch(
+      setDetails({
+        type: 'userDetails',
+        value: userDetails
+      })
+    );
+    dispatch(logIn());
     history.push('/dashboard');
+  };
+
+  const handleLogIn = async (event, type) => {
+    event.preventDefault();
+    // eslint-disable-next-line no-console
+    console.log('handleLogIn', type);
+    const resp = await signUpApi({
+      registerType: 'guest',
+      userName: formStateGuest.values.userName
+    });
+    if (resp.data.err) {
+      alert(resp.data.msg);
+    } else {
+      setTokenAndRedirect(resp);
+    }
   };
 
   // const handleBack = () => {
@@ -462,18 +490,18 @@ const Register = props => {
                     </Typography>
                     <TextField
                       className={classes.textField}
-                      error={hasErrorGuest('username')}
+                      error={hasErrorGuest('userName')}
                       fullWidth
                       helperText={
-                        hasErrorGuest('username')
-                          ? formStateGuest.errors.username[0]
+                        hasErrorGuest('userName')
+                          ? formStateGuest.errors.userName[0]
                           : null
                       }
-                      label="Username"
-                      name="username"
+                      label="UserName"
+                      name="userName"
                       onChange={handleChangeGuest}
-                      type="username"
-                      value={formStateGuest.values.username || ''}
+                      type="userName"
+                      value={formStateGuest.values.userName || ''}
                       variant="outlined"
                     />
                     <Button
