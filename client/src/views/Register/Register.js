@@ -261,7 +261,7 @@ const Register = props => {
   };
 
   const setToken = userToken => {
-    localStorage.setItem('token', JSON.stringify(userToken));
+    localStorage.setItem('token', userToken);
   };
 
   const setTokenAndRedirect = resp => {
