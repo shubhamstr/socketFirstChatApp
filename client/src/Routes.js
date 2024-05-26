@@ -14,7 +14,7 @@ import {
   Account as AccountView,
   Settings as SettingsView,
   // SignUp as SignUpView,
-  SignIn as SignInView,
+  AdminLogIn as SignInView,
   LogIn as LogInView,
   NotFound as NotFoundView
 } from './views';
@@ -84,7 +84,7 @@ const Routes = () => {
       />
 
       {/* admin routes */}
-      <Redirect exact from="/admin/" to="/admin/sign-in" />
+      <Redirect exact from="/admin/" to="/admin/log-in" />
       {/* <RouteWithLayout
         component={SignUpView}
         exact
@@ -95,7 +95,7 @@ const Routes = () => {
         component={SignInView}
         exact
         layout={MinimalLayout}
-        path="/admin/sign-in"
+        path="/admin/log-in"
       />
     </Switch>
   );

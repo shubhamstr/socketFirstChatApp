@@ -128,7 +128,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SignIn = props => {
+const AdminLogIn = props => {
   const dispatch = useDispatch();
 
   const { history } = props;
@@ -309,8 +309,8 @@ const SignIn = props => {
   );
 };
 
-SignIn.propTypes = {
+AdminLogIn.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(SignIn);
+export default withRouter(AdminLogIn);
