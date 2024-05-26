@@ -6,6 +6,8 @@ import { Chart } from 'react-chartjs-2';
 import { ThemeProvider } from '@material-ui/styles';
 import validate from 'validate.js';
 import propTypes from 'prop-types';
+import { jwtDecode } from 'jwt-decode';
+import axiosClient from './api/api-client';
 
 import { chartjs } from './helpers';
 import theme from './theme';
@@ -28,21 +30,32 @@ validate.validators = {
 };
 
 class App extends Component {
+  setHeaderToken = token => {
+    axiosClient.defaults.headers.common.Authorization = token;
+  };
+
   checkAuthAndRedirect = () => {
     let token = localStorage.getItem('token');
     // eslint-disable-next-line no-console
-    // console.log(token);
-
+    console.log('checkAuthAndRedirect');
     if (token) {
-      this.props.logIn();
-      let value = token === 'admin@gmail.com' ? 'admin' : 'user';
+      this.setHeaderToken(token);
+      const userDetails = jwtDecode(token);
+      // eslint-disable-next-line no-console
+      // console.log(userDetails);
       this.props.setDetails({
         type: 'userType',
-        value: value
+        value: 'user'
       });
+      this.props.setDetails({
+        type: 'userDetails',
+        value: userDetails
+      });
+      this.props.logIn();
       browserHistory.push('/dashboard');
     }
   };
+
   componentDidMount() {
     this.checkAuthAndRedirect();
   }
