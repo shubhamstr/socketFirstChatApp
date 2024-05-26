@@ -30,8 +30,8 @@ const generateToken = (result) => {
 
 router.post("/register", (req, res) => {
   // console.log(req.body);
-  if (req.body.registerType === "guest") {
-    var sql = `INSERT INTO users (username) VALUES ('${req.body.userName}')`
+  if (req.body.registerType === "email") {
+    var sql = `INSERT INTO users (username, first_name, last_name, email, password) VALUES ('${req.body.userName}', '${req.body.firstName}', '${req.body.lastName}', '${req.body.email}', '${req.body.password}')`
     db.query(sql, function (err, result) {
       if (err) throw err
       // console.log(result)

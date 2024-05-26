@@ -12,8 +12,12 @@ POST {{protocol}}://{{host}}/auth/register HTTP/1.1
 content-type: {{contentType}}
 
 {
-    "registerType": "guest",
-    "userName": "shubhamstr"
+    "registerType": "email",
+    "userName": "shubhamstr1",
+    "firstName": "Shubham",
+    "lastName": "Sutar",
+    "email": "shubham@gmail.com",
+    "password": "1234"
 }
 ###
 
