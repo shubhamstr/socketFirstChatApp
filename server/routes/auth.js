@@ -7,20 +7,47 @@ const dotenv = require("dotenv")
 // Set up Global configuration access
 dotenv.config()
 
+const generateToken = (result) => {
+  let jwtSecretKey = process.env.JWT_SECRET_KEY
+  // console.log(jwtSecretKey)
+  let data = {
+    time: Date(),
+    userId: result[0].id,
+    firstName: result[0].first_name,
+    lastName: result[0].last_name,
+    userName: result[0].username,
+    image: result[0].image,
+    email: result[0].email,
+    email_notification_flag: result[0].email_notification_flag,
+    push_notification_flag: result[0].push_notification_flag,
+    email_message_flag: result[0].email_message_flag,
+    push_message_flag: result[0].push_message_flag,
+  }
+  // console.log(data)
+  const token = jwt.sign(data, jwtSecretKey)
+  return token
+}
+
 router.post("/register", (req, res) => {
   // console.log(req.body);
   if (req.body.registerType === "guest") {
     var sql = `INSERT INTO users (username) VALUES ('${req.body.userName}')`
-  }
-  db.query(sql, function (err, result) {
-    if (err) throw err
-    console.log(result)
-    res.send({
-      err: false,
-      msg: "User Register Successfully!!",
-      data: result,
+    db.query(sql, function (err, result) {
+      if (err) throw err
+      // console.log(result)
+      var sql2 = `SELECT * FROM users WHERE id = '${result.insertId}';`
+      db.query(sql2, function (err2, result2) {
+        if (err2) throw err2
+        // console.log(result2)
+        let token = generateToken(result2)
+        res.send({
+          err: false,
+          msg: "User Register Successfully!!",
+          data: token,
+        })
+      })
     })
-  })
+  }
 })
 
 router.post("/login", (req, res) => {
@@ -33,23 +60,7 @@ router.post("/login", (req, res) => {
   db.query(sql, function (err, result) {
     if (err) throw err
     // console.log(result)
-    let jwtSecretKey = process.env.JWT_SECRET_KEY
-    // console.log(jwtSecretKey)
-    let data = {
-      time: Date(),
-      userId: result[0].id,
-      firstName: result[0].first_name,
-      lastName: result[0].last_name,
-      userName: result[0].username,
-      image: result[0].image,
-      email: result[0].email,
-      email_notification_flag: result[0].email_notification_flag,
-      push_notification_flag: result[0].push_notification_flag,
-      email_message_flag: result[0].email_message_flag,
-      push_message_flag: result[0].push_message_flag,
-    }
-    // console.log(data)
-    const token = jwt.sign(data, jwtSecretKey)
+    let token = generateToken(result)
     res.send({
       err: false,
       msg: "User LoggedIn Successfully!!",
