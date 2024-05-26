@@ -12,7 +12,7 @@ import {
   // IconButton,
   TextField,
   Link,
-  ButtonGroup,
+  // ButtonGroup,
   Typography
 } from '@material-ui/core';
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -148,7 +148,8 @@ const LogIn = props => {
 
   const classes = useStyles();
 
-  const [loginType, setLoginType] = useState('social');
+  // eslint-disable-next-line no-unused-vars
+  const [loginType, setLoginType] = useState('email');
 
   const [formStateEmail, setFormStateEmail] = useState({
     isValid: false,
@@ -161,9 +162,9 @@ const LogIn = props => {
   //   history.goBack();
   // };
 
-  const changeLoginType = loginType => {
-    setLoginType(loginType);
-  };
+  // const changeLoginType = loginType => {
+  //   setLoginType(loginType);
+  // };
 
   const handleChangeEmail = event => {
     event.persist();
@@ -258,7 +259,7 @@ const LogIn = props => {
                 <Typography className={classes.title} variant="h2">
                   Log in
                 </Typography>
-                <ButtonGroup
+                {/* <ButtonGroup
                   aria-label="outlined primary button group"
                   className={classes.btnGroup}
                   color="primary">
@@ -268,7 +269,7 @@ const LogIn = props => {
                   <Button onClick={() => changeLoginType('email')}>
                     With Email
                   </Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
                 {loginType === 'social' && (
                   <>
                     <Typography
