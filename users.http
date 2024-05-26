@@ -11,16 +11,6 @@
 GET {{protocol}}://{{host}}/users/get-all HTTP/1.1
 ###
 
-### register user
-POST {{protocol}}://{{host}}/users/register HTTP/1.1
-content-type: {{contentType}}
-
-{
-    "registerType": "guest",
-    "userName": "shubhamstr"
-}
-###
-
 ### update user
 POST {{protocol}}://{{host}}/users/update-notification HTTP/1.1
 content-type: {{contentType}}
