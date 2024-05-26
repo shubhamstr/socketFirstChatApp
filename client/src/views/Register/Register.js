@@ -15,7 +15,7 @@ import {
   TextField,
   Link,
   // FormHelperText,
-  ButtonGroup,
+  // ButtonGroup,
   // Checkbox,
   Typography
 } from '@material-ui/core';
@@ -57,15 +57,6 @@ const schema = {
   //   presence: { allowEmpty: false, message: 'is required' },
   //   checked: true
   // }
-};
-
-const schemaNew = {
-  userName: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 64
-    }
-  }
 };
 
 const useStyles = makeStyles(theme => ({
@@ -182,16 +173,10 @@ const Register = props => {
 
   const classes = useStyles();
 
-  const [loginType, setLoginType] = useState('guest');
+  // eslint-disable-next-line no-unused-vars
+  const [loginType, setLoginType] = useState('email');
 
   const [formStateEmail, setFormStateEmail] = useState({
-    isValid: false,
-    values: {},
-    touched: {},
-    errors: {}
-  });
-
-  const [formStateGuest, setFormStateGuest] = useState({
     isValid: false,
     values: {},
     touched: {},
@@ -208,39 +193,10 @@ const Register = props => {
     }));
   }, [formStateEmail.values]);
 
-  useEffect(() => {
-    const errorsNew = validate(formStateGuest.values, schemaNew);
-
-    setFormStateGuest(formStateGuest => ({
-      ...formStateGuest,
-      isValid: errorsNew ? false : true,
-      errors: errorsNew || {}
-    }));
-  }, [formStateGuest.values]);
-
   const handleChangeEmail = event => {
     event.persist();
 
     setFormStateEmail(formStateEmail => ({
-      ...formStateEmail,
-      values: {
-        ...formStateEmail.values,
-        [event.target.name]:
-          event.target.type === 'checkbox'
-            ? event.target.checked
-            : event.target.value
-      },
-      touched: {
-        ...formStateEmail.touched,
-        [event.target.name]: true
-      }
-    }));
-  };
-
-  const handleChangeGuest = event => {
-    event.persist();
-
-    setFormStateGuest(formStateEmail => ({
       ...formStateEmail,
       values: {
         ...formStateEmail.values,
@@ -288,13 +244,25 @@ const Register = props => {
     history.push('/dashboard');
   };
 
-  const handleLogIn = async (event, type) => {
+  // const handleBack = () => {
+  //   history.goBack();
+  // };
+
+  // const changeLoginType = loginType => {
+  //   setLoginType(loginType);
+  // };
+
+  const handleSignUp = async event => {
     event.preventDefault();
     // eslint-disable-next-line no-console
-    console.log('handleLogIn', type);
+    console.log('handleSignUp');
     const resp = await signUpApi({
-      registerType: 'guest',
-      userName: formStateGuest.values.userName
+      registerType: 'email',
+      userName: formStateEmail.values.userName,
+      firstName: formStateEmail.values.firstName,
+      lastName: formStateEmail.values.lastName,
+      email: formStateEmail.values.email,
+      password: formStateEmail.values.password
     });
     if (resp.data.err) {
       alert(resp.data.msg);
@@ -303,26 +271,8 @@ const Register = props => {
     }
   };
 
-  // const handleBack = () => {
-  //   history.goBack();
-  // };
-
-  const changeLoginType = loginType => {
-    setLoginType(loginType);
-  };
-
-  const handleSignUp = event => {
-    event.preventDefault();
-    history.push('/');
-  };
-
   const hasErrorEmail = field =>
     formStateEmail.touched[field] && formStateEmail.errors[field]
-      ? true
-      : false;
-
-  const hasErrorGuest = field =>
-    formStateGuest.touched[field] && formStateGuest.errors[field]
       ? true
       : false;
 
@@ -365,7 +315,7 @@ const Register = props => {
                 >
                   Use your email to create new account
                 </Typography> */}
-                <ButtonGroup
+                {/* <ButtonGroup
                   aria-label="outlined primary button group"
                   className={classes.btnGroup}
                   color="primary">
@@ -375,7 +325,7 @@ const Register = props => {
                   <Button onClick={() => changeLoginType('email')}>
                     With Email
                   </Button>
-                </ButtonGroup>
+                </ButtonGroup> */}
 
                 {loginType === 'email' && (
                   <>
@@ -395,7 +345,7 @@ const Register = props => {
                           ? formStateEmail.errors.userName[0]
                           : null
                       }
-                      label="User Name"
+                      label="User name"
                       name="userName"
                       onChange={handleChangeEmail}
                       type="text"
@@ -475,45 +425,6 @@ const Register = props => {
                       type="submit"
                       variant="contained">
                       Register now
-                    </Button>
-                  </>
-                )}
-
-                {loginType === 'guest' && (
-                  <>
-                    <Typography
-                      align="center"
-                      className={classes.sugestion}
-                      color="textSecondary"
-                      variant="body1">
-                      Register as guest
-                    </Typography>
-                    <TextField
-                      className={classes.textField}
-                      error={hasErrorGuest('userName')}
-                      fullWidth
-                      helperText={
-                        hasErrorGuest('userName')
-                          ? formStateGuest.errors.userName[0]
-                          : null
-                      }
-                      label="UserName"
-                      name="userName"
-                      onChange={handleChangeGuest}
-                      type="userName"
-                      value={formStateGuest.values.userName || ''}
-                      variant="outlined"
-                    />
-                    <Button
-                      className={classes.logInButton}
-                      color="primary"
-                      disabled={!formStateGuest.isValid}
-                      fullWidth
-                      onClick={e => handleLogIn(e, 'guest')}
-                      size="large"
-                      type="button"
-                      variant="contained">
-                      Register
                     </Button>
                   </>
                 )}
