@@ -13,15 +13,7 @@ const generateToken = (result) => {
   let data = {
     time: Date(),
     userId: result[0].id,
-    firstName: result[0].first_name,
-    lastName: result[0].last_name,
-    userName: result[0].username,
-    image: result[0].image,
-    email: result[0].email,
-    email_notification_flag: result[0].email_notification_flag,
-    push_notification_flag: result[0].push_notification_flag,
-    email_message_flag: result[0].email_message_flag,
-    push_message_flag: result[0].push_message_flag,
+    userType: "user",
   }
   // console.log(data)
   const token = jwt.sign(data, jwtSecretKey)
