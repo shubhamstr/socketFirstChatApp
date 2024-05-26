@@ -13,6 +13,7 @@ import {
   TextField
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import { updatePersonalApi } from '../../../../api/users';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -57,11 +58,25 @@ const AccountDetails = props => {
   //   }
   // ];
 
+  const onSubmit = async event => {
+    event.preventDefault();
+    // eslint-disable-next-line no-console
+    console.log('onSubmit', values);
+    const resp = await updatePersonalApi(values);
+    if (resp.data.err) {
+      alert(resp.data.msg);
+    } else {
+      alert(resp.data.msg);
+    }
+  };
+
   useEffect(() => {
     // eslint-disable-next-line no-console
     console.log(userDetails);
     setValues({
       ...values,
+      id: userDetails.userId,
+      userName: userDetails.userName,
       firstName: userDetails.firstName,
       lastName: userDetails.lastName,
       email: userDetails.email
@@ -176,7 +191,7 @@ const AccountDetails = props => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button color="primary" variant="contained">
+          <Button color="primary" onClick={onSubmit} variant="contained">
             Save details
           </Button>
         </CardActions>
