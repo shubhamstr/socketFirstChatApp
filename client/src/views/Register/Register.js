@@ -225,9 +225,9 @@ const Register = props => {
     console.log('setTokenAndRedirect', resp);
     setHeaderToken(resp.data.data);
     setToken(resp.data.data);
-    const userDetails = jwtDecode(resp.data.data);
+    const tokenDetails = jwtDecode(resp.data.data);
     // eslint-disable-next-line no-console
-    // console.log(userDetails);
+    // console.log(tokenDetails);
     dispatch(
       setDetails({
         type: 'userType',
@@ -236,8 +236,8 @@ const Register = props => {
     );
     dispatch(
       setDetails({
-        type: 'userDetails',
-        value: userDetails
+        type: 'tokenDetails',
+        value: tokenDetails
       })
     );
     dispatch(logIn());

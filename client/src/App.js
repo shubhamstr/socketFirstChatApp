@@ -40,16 +40,16 @@ class App extends Component {
     console.log('checkAuthAndRedirect');
     if (token) {
       this.setHeaderToken(token);
-      const userDetails = jwtDecode(token);
+      const tokenDetails = jwtDecode(token);
       // eslint-disable-next-line no-console
-      // console.log(userDetails);
+      console.log(tokenDetails);
       this.props.setDetails({
         type: 'userType',
         value: 'user'
       });
       this.props.setDetails({
-        type: 'userDetails',
-        value: userDetails
+        type: 'tokenDetails',
+        value: tokenDetails
       });
       this.props.logIn();
       browserHistory.push('/dashboard');
