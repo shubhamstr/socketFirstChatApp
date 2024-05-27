@@ -37,7 +37,7 @@ router.post("/update-notification", (req, res) => {
 
 router.post("/update-personal", (req, res) => {
   // console.log(req.body);
-  var sql = `UPDATE users SET last_name = '${req.body.last_name}', first_name = '${req.body.first_name}', username = '${req.body.username}', email = '${req.body.email}' WHERE id = ${req.body.id}`
+  var sql = `UPDATE users SET last_name = '${req.body.lastName}', first_name = '${req.body.firstName}', username = '${req.body.userName}', email = '${req.body.email}' WHERE id = ${req.body.id}`
   db.query(sql, function (err, result) {
     if (err) throw err
     console.log(result)
