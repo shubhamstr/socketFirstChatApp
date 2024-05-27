@@ -36,7 +36,7 @@ const Notifications = props => {
 
   useEffect(() => {
     // eslint-disable-next-line no-console
-    console.log(userDetails);
+    // console.log(userDetails);
     setUser({
       email_notification_flag: userDetails.email_notification_flag,
       push_notification_flag: userDetails.push_notification_flag,

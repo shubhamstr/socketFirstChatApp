@@ -72,13 +72,13 @@ const AccountDetails = props => {
 
   useEffect(() => {
     // eslint-disable-next-line no-console
-    console.log(userDetails);
+    // console.log(userDetails);
     setValues({
       ...values,
-      id: userDetails.userId,
-      userName: userDetails.userName,
-      firstName: userDetails.firstName,
-      lastName: userDetails.lastName,
+      id: userDetails.id,
+      userName: userDetails.username,
+      firstName: userDetails.first_name,
+      lastName: userDetails.last_name,
       email: userDetails.email
     });
   }, [userDetails]);

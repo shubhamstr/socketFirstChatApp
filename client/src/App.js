@@ -42,7 +42,7 @@ class App extends Component {
       this.setHeaderToken(token);
       const tokenDetails = jwtDecode(token);
       // eslint-disable-next-line no-console
-      console.log(tokenDetails);
+      // console.log(tokenDetails);
       this.props.setDetails({
         type: 'userType',
         value: 'user'
