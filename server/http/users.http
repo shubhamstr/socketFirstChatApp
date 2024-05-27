@@ -11,6 +11,10 @@
 GET {{protocol}}://{{host}}/users/get-all HTTP/1.1
 ###
 
+### get user details
+GET {{protocol}}://{{host}}/users/get-all?userId=1 HTTP/1.1
+###
+
 ### update user
 POST {{protocol}}://{{host}}/users/update-notification HTTP/1.1
 content-type: {{contentType}}
