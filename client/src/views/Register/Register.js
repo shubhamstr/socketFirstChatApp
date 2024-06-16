@@ -22,18 +22,6 @@ import {
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const schema = {
-  firstName: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 32
-    }
-  },
-  lastName: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 32
-    }
-  },
   userName: {
     presence: { allowEmpty: false, message: 'is required' },
     length: {
@@ -259,8 +247,6 @@ const Register = props => {
     const resp = await signUpApi({
       registerType: 'email',
       userName: formStateEmail.values.userName,
-      firstName: formStateEmail.values.firstName,
-      lastName: formStateEmail.values.lastName,
       email: formStateEmail.values.email,
       password: formStateEmail.values.password
     });
@@ -350,38 +336,6 @@ const Register = props => {
                       onChange={handleChangeEmail}
                       type="text"
                       value={formStateEmail.values.userName || ''}
-                      variant="outlined"
-                    />
-                    <TextField
-                      className={classes.textField}
-                      error={hasErrorEmail('firstName')}
-                      fullWidth
-                      helperText={
-                        hasErrorEmail('firstName')
-                          ? formStateEmail.errors.firstName[0]
-                          : null
-                      }
-                      label="First name"
-                      name="firstName"
-                      onChange={handleChangeEmail}
-                      type="text"
-                      value={formStateEmail.values.firstName || ''}
-                      variant="outlined"
-                    />
-                    <TextField
-                      className={classes.textField}
-                      error={hasErrorEmail('lastName')}
-                      fullWidth
-                      helperText={
-                        hasErrorEmail('lastName')
-                          ? formStateEmail.errors.lastName[0]
-                          : null
-                      }
-                      label="Last name"
-                      name="lastName"
-                      onChange={handleChangeEmail}
-                      type="text"
-                      value={formStateEmail.values.lastName || ''}
                       variant="outlined"
                     />
                     <TextField
