@@ -35,9 +35,7 @@ const Profile = props => {
   useEffect(() => {
     // eslint-disable-next-line no-console
     // console.log(userDetails);
-    const name = userDetails.first_name
-      ? userDetails.first_name + ' ' + userDetails.last_name
-      : userDetails.username;
+    const name = userDetails.username;
     const avatar = userDetails.image
       ? userDetails.image
       : '/images/avatars/avatar_11.png';

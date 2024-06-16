@@ -77,8 +77,6 @@ const AccountDetails = props => {
       ...values,
       id: userDetails.id,
       userName: userDetails.username,
-      firstName: userDetails.first_name,
-      lastName: userDetails.last_name,
       email: userDetails.email
     });
   }, [userDetails]);
@@ -90,31 +88,6 @@ const AccountDetails = props => {
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                margin="dense"
-                name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
-                variant="outlined"
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Last name"
-                margin="dense"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
-            </Grid>
             <Grid item md={6} xs={12}>
               <TextField
                 disabled
