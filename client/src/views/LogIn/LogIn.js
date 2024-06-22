@@ -5,7 +5,10 @@ import { logIn, setDetails } from '../../store/authSlice';
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
+import { jwtDecode } from 'jwt-decode';
 import { makeStyles } from '@material-ui/styles';
+import axiosClient from '../../api/api-client';
+import { signInApi } from '../../api/auth';
 import {
   Grid,
   Button,
@@ -191,24 +194,46 @@ const LogIn = props => {
     console.log('handleSocialLogIn');
   };
 
-  const handleLogIn = (event, type) => {
+  const setHeaderToken = token => {
+    axiosClient.defaults.headers.common.Authorization = token;
+  };
+
+  const setToken = userToken => {
+    localStorage.setItem('token', userToken);
+  };
+
+  const handleLogIn = async (event, type) => {
     event.preventDefault();
     // eslint-disable-next-line no-console
-    console.log('handleLogIn', type);
-    // eslint-disable-next-line no-console
-    let token = '';
-    if (type === 'email') {
-      token = formStateEmail.values.email;
+    console.log('handleLogIn');
+    const resp = await signInApi({
+      loginType: type,
+      email: formStateEmail.values.email,
+      password: formStateEmail.values.password
+    });
+    if (resp.data.err) {
+      alert(resp.data.msg);
+    } else {
+      setHeaderToken(resp.data.data);
+      setToken(resp.data.data);
+      const tokenDetails = jwtDecode(resp.data.data);
+      // eslint-disable-next-line no-console
+      // console.log(tokenDetails);
+      dispatch(
+        setDetails({
+          type: 'userType',
+          value: 'user'
+        })
+      );
+      dispatch(
+        setDetails({
+          type: 'tokenDetails',
+          value: tokenDetails
+        })
+      );
+      dispatch(logIn());
+      history.push('/dashboard');
     }
-    localStorage.setItem('token', token);
-    dispatch(logIn());
-    dispatch(
-      setDetails({
-        type: 'userType',
-        value: 'user'
-      })
-    );
-    history.push('/dashboard');
   };
 
   const hasErrorEmail = field =>
