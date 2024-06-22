@@ -43,10 +43,16 @@ router.post("/update-notification", (req, res) => {
 
 router.post("/update-personal", (req, res) => {
   // console.log(req.body);
-  var sql = `UPDATE users SET last_name = '${req.body.lastName}', first_name = '${req.body.firstName}', username = '${req.body.userName}', email = '${req.body.email}' WHERE id = ${req.body.id}`
+  var sql = `UPDATE users SET username = '${req.body.userName}', email = '${req.body.email}' WHERE id = ${req.body.id}`
   db.query(sql, function (err, result) {
-    if (err) throw err
-    console.log(result)
+    if (err) {
+      res.send({
+        err: true,
+        msg: "Server Error",
+        data: err,
+      })
+    }
+    // console.log(result)
     res.send({
       err: false,
       msg: "User Details Updated Successfully!!",

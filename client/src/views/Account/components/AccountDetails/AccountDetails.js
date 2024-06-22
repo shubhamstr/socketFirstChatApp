@@ -61,7 +61,7 @@ const AccountDetails = props => {
   const onSubmit = async event => {
     event.preventDefault();
     // eslint-disable-next-line no-console
-    console.log('onSubmit', values);
+    // console.log('onSubmit', values);
     const resp = await updatePersonalApi(values);
     if (resp.data.err) {
       alert(resp.data.msg);
@@ -90,9 +90,8 @@ const AccountDetails = props => {
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
               <TextField
-                disabled
                 fullWidth
-                label="User name"
+                label="User Name"
                 margin="dense"
                 name="userName"
                 onChange={handleChange}
