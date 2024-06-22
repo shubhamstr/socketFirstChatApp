@@ -25,39 +25,71 @@ router.post("/register", (req, res) => {
   if (req.body.registerType === "email") {
     var sql = `INSERT INTO users (username, email, password) VALUES ('${req.body.userName}', '${req.body.email}', '${req.body.password}')`
     db.query(sql, function (err, result) {
-      if (err) throw err
+      if (err) {
+        res.send({
+          err: true,
+          msg: err.sqlMessage ? err.sqlMessage : "Server Error",
+          data: err,
+        })
+      }
       // console.log(result)
       var sql2 = `SELECT * FROM users WHERE id = '${result.insertId}';`
       db.query(sql2, function (err2, result2) {
-        if (err2) throw err2
+        if (err2) {
+          res.send({
+            err: true,
+            msg: "Server Error",
+            data: err2,
+          })
+        }
         // console.log(result2)
-        let token = generateToken(result2)
-        res.send({
-          err: false,
-          msg: "User Register Successfully!!",
-          data: token,
-        })
+        if (result2.length > 0) {
+          let token = generateToken(result2)
+          res.send({
+            err: false,
+            msg: "User Register Successfully!!",
+            data: token,
+          })
+        } else {
+          res.send({
+            err: true,
+            msg: "Server Error",
+          })
+        }
       })
     })
   }
 })
 
 router.post("/login", (req, res) => {
-  // console.log(req.body);
+  // console.log(req.body)
   if (req.body.loginType === "email") {
     var sql = `SELECT * FROM users WHERE is_active = 1 AND email = '${req.body.email}' AND password = '${req.body.password}';`
   } else if (req.body.loginType === "google") {
     var sql = `SELECT * FROM users WHERE is_active = 1 AND email = '${req.body.email}';`
   }
   db.query(sql, function (err, result) {
-    if (err) throw err
+    if (err) {
+      res.send({
+        err: true,
+        msg: "Server Error",
+        data: err,
+      })
+    }
     // console.log(result)
-    let token = generateToken(result)
-    res.send({
-      err: false,
-      msg: "User LoggedIn Successfully!!",
-      data: token,
-    })
+    if (result.length > 0) {
+      let token = generateToken(result)
+      res.send({
+        err: false,
+        msg: "User LoggedIn Successfully!!",
+        data: token,
+      })
+    } else {
+      res.send({
+        err: true,
+        msg: "Invalid Username/Password",
+      })
+    }
   })
 })
 
