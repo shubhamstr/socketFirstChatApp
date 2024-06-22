@@ -22,12 +22,6 @@ import {
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const schema = {
-  userName: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 32
-    }
-  },
   email: {
     presence: { allowEmpty: false, message: 'is required' },
     email: true,
@@ -243,10 +237,12 @@ const Register = props => {
   const handleSignUp = async event => {
     event.preventDefault();
     // eslint-disable-next-line no-console
-    console.log('handleSignUp');
+    // console.log('handleSignUp', formStateEmail);
+    let username = formStateEmail.values.email.split('@')[0];
+    // console.log(username);
     const resp = await signUpApi({
       registerType: 'email',
-      userName: formStateEmail.values.userName,
+      userName: username,
       email: formStateEmail.values.email,
       password: formStateEmail.values.password
     });
@@ -322,22 +318,6 @@ const Register = props => {
                       variant="body1">
                       Register with email
                     </Typography>
-                    <TextField
-                      className={classes.textField}
-                      error={hasErrorEmail('userName')}
-                      fullWidth
-                      helperText={
-                        hasErrorEmail('userName')
-                          ? formStateEmail.errors.userName[0]
-                          : null
-                      }
-                      label="User name"
-                      name="userName"
-                      onChange={handleChangeEmail}
-                      type="text"
-                      value={formStateEmail.values.userName || ''}
-                      variant="outlined"
-                    />
                     <TextField
                       className={classes.textField}
                       error={hasErrorEmail('email')}
