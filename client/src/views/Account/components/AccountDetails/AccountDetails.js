@@ -12,8 +12,9 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { updatePersonalApi } from '../../../../api/users';
+import { setDetails } from '../../../../store/authSlice';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -21,6 +22,7 @@ const useStyles = makeStyles(() => ({
 
 const AccountDetails = props => {
   const { className, ...rest } = props;
+  const dispatch = useDispatch();
 
   const classes = useStyles();
 
@@ -66,6 +68,14 @@ const AccountDetails = props => {
     if (resp.data.err) {
       alert(resp.data.msg);
     } else {
+      let userData = { ...userDetails, username: values.userName };
+      // console.log(userData);
+      dispatch(
+        setDetails({
+          type: 'userDetails',
+          value: userData
+        })
+      );
       alert(resp.data.msg);
     }
   };
