@@ -25,8 +25,14 @@ router.post("/update-notification", (req, res) => {
   // console.log(req.body);
   var sql = `UPDATE users SET email_notification_flag = ${req.body.email_notification_flag}, push_notification_flag = ${req.body.push_notification_flag}, email_message_flag = ${req.body.email_message_flag}, push_message_flag = ${req.body.push_message_flag} WHERE id = ${req.body.id}`
   db.query(sql, function (err, result) {
-    if (err) throw err
-    console.log(result)
+    if (err) {
+      res.send({
+        err: true,
+        msg: "Server Error",
+        data: err,
+      })
+    }
+    // console.log(result)
     res.send({
       err: false,
       msg: "User Notification Updated Successfully!!",
