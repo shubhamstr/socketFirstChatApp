@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 
 import {
+  Chat,
   Budget,
   TotalUsers,
   TasksProgress,
@@ -55,7 +56,9 @@ const Dashboard = () => {
     <div className={classes.root}>
       {userType === 'user' ? (
         <Grid container spacing={4}>
-          demo
+          <Grid item lg={12} sm={12} xl={12} xs={12}>
+            <Chat />
+          </Grid>
         </Grid>
       ) : (
         <Grid container spacing={4}>
