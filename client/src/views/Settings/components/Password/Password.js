@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
@@ -11,6 +11,8 @@ import {
   Button,
   TextField
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import { updatePasswordApi } from '../../../../api/users';
 
 const useStyles = makeStyles(() => ({
   root: {}
@@ -18,6 +20,8 @@ const useStyles = makeStyles(() => ({
 
 const Password = props => {
   const { className, ...rest } = props;
+  const auth = useSelector(state => state.auth);
+  const { userDetails } = auth;
 
   const classes = useStyles();
 
@@ -33,16 +37,31 @@ const Password = props => {
     });
   };
 
+  const handleUpdate = async () => {
+    // console.log(values);
+    if (values.password === values.confirm) {
+      const resp = await updatePasswordApi({
+        id: userDetails.id,
+        newPassword: values.password
+      });
+      if (resp.data.err) {
+        alert(resp.data.msg);
+      } else {
+        alert(resp.data.msg);
+      }
+    } else {
+      alert('Password not matched!!');
+    }
+  };
+
+  useEffect(() => {
+    // console.log(userDetails);
+  }, []);
+
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card {...rest} className={clsx(classes.root, className)}>
       <form>
-        <CardHeader
-          subheader="Update password"
-          title="Password"
-        />
+        <CardHeader subheader="Update password" title="Password" />
         <Divider />
         <CardContent>
           <TextField
@@ -67,10 +86,7 @@ const Password = props => {
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            color="primary"
-            variant="outlined"
-          >
+          <Button color="primary" onClick={handleUpdate} variant="outlined">
             Update
           </Button>
         </CardActions>

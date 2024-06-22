@@ -71,10 +71,16 @@ router.post("/update-image", (req, res) => {
 
 router.post("/update-password", (req, res) => {
   // console.log(req.body);
-  var sql = `UPDATE users SET password = '${req.body.password}' WHERE id = ${req.body.id}`
+  var sql = `UPDATE users SET password = '${req.body.newPassword}' WHERE id = ${req.body.id}`
   db.query(sql, function (err, result) {
-    if (err) throw err
-    console.log(result)
+    if (err) {
+      res.send({
+        err: true,
+        msg: "Server Error",
+        data: err,
+      })
+    }
+    // console.log(result)
     res.send({
       err: false,
       msg: "User Password Updated Successfully!!",
