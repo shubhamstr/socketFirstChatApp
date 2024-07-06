@@ -50,18 +50,11 @@ router.get("/get-all", (req, res) => {
       })
     }
     // console.log(result)
-    if (result.length > 0) {
-      res.send({
-        err: false,
-        msg: "Chat Fetched Successfully!!",
-        data: result,
-      })
-    } else {
-      res.send({
-        err: true,
-        msg: "Error While Fetching Chat",
-      })
-    }
+    res.send({
+      err: false,
+      msg: "Chat Fetched Successfully!!",
+      data: result,
+    })
   })
 })
 
