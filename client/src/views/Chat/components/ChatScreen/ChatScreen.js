@@ -17,8 +17,8 @@ import { useSelector } from 'react-redux';
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
-  console.log(auth);
-  const { userDetails } = auth;
+  // console.log(auth);
+  const { userDetails, userList } = auth;
   const avatar = userDetails.image
     ? userDetails.image
     : '/images/avatars/avatar_11.png';
@@ -26,7 +26,21 @@ const ChatScreen = () => {
     <div style={{ position: 'relative', height: '90vh' }}>
       <MainContainer>
         <ConversationList>
-          <Conversation
+          {userList.length > 0 &&
+            userList.map(user => {
+              return (
+                <Conversation
+                  info="Yes i can do it for you"
+                  lastSenderName="Lilly"
+                  name={user.username}>
+                  <Avatar
+                    name={user.username}
+                    src="https://chatscope.io/storybook/react/assets/lilly-aj6lnGPk.svg"
+                  />
+                </Conversation>
+              );
+            })}
+          {/* <Conversation
             info="Yes i can do it for you"
             lastSenderName="Lilly"
             name="Lilly">
@@ -97,7 +111,7 @@ const ChatScreen = () => {
               name="Patrik"
               src="https://chatscope.io/storybook/react/assets/patrik-yC7svbAR.svg"
             />
-          </Conversation>
+          </Conversation> */}
         </ConversationList>
         <ChatContainer>
           <ConversationHeader>

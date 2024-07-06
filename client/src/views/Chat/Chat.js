@@ -44,7 +44,7 @@ const Chat = () => {
     if (Object.keys(userList).length === 0) {
       const resp = getUserDetailsApi({});
       resp.then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.err) {
           alert(res.msg);
         } else {
