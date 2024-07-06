@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useState } from 'react';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
   Avatar,
@@ -13,15 +14,25 @@ import {
   InfoButton,
   ConversationHeader
 } from '@chatscope/chat-ui-kit-react';
-import { useSelector } from 'react-redux';
+import { useSelector, useStore } from 'react-redux';
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
   // console.log(auth);
+  const [message, setMessage] = useState('');
   const { userDetails, userList } = auth;
   const avatar = userDetails.image
     ? userDetails.image
     : '/images/avatars/avatar_11.png';
+
+  const handleMsg = value => {
+    // console.log(value);
+    setMessage(value);
+  };
+
+  const handleSend = () => {
+    console.log(message);
+  }
   return (
     <div style={{ position: 'relative', height: '90vh' }}>
       <MainContainer>
@@ -152,7 +163,12 @@ const ChatScreen = () => {
               <Avatar src={avatar} />
             </Message>
           </MessageList>
-          <MessageInput attachButton={false} placeholder="Type message here" />
+          <MessageInput
+            attachButton={false}
+            onChange={handleMsg}
+            onSend={handleSend}
+            placeholder="Type message here"
+          />
         </ChatContainer>
       </MainContainer>
     </div>
