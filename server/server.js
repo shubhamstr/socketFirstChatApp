@@ -6,6 +6,7 @@ const cors = require("cors")
 
 const users = require("./routes/users")
 const auth = require("./routes/auth")
+const chat = require("./routes/chat")
 
 const PORT = process.env.PORT || 5000
 
@@ -23,6 +24,7 @@ app.get("/html", (req, res) => {
 
 app.use("/users", users)
 app.use("/auth", auth)
+app.use("/chat", chat)
 
 // socket io
 io.on("connection", (socket) => {
