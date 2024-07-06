@@ -15,12 +15,13 @@ import {
   ConversationHeader
 } from '@chatscope/chat-ui-kit-react';
 import { useSelector, useStore } from 'react-redux';
-import { sendMessageAPI } from '../../../../api/chat';
+import { sendMessageAPI, getAllChatAPI } from '../../../../api/chat';
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
   // console.log(auth);
   const [message, setMessage] = useState('');
+  const [chatList, setChatList] = useState([]);
   const [selectedChat, setSelectedChat] = useState({});
   const { userDetails, userList } = auth;
   const avatar = userDetails.image
@@ -45,6 +46,7 @@ const ChatScreen = () => {
         alert(res.msg);
       } else {
         // console.log(auth);
+        loadChat();
       }
     });
   };
@@ -54,11 +56,31 @@ const ChatScreen = () => {
     setSelectedChat(user);
   };
 
+  const loadChat = () => {
+    const resp = getAllChatAPI({
+      sent_by_user_id: userDetails.id,
+      sent_to_user_id: selectedChat.id
+    });
+    // console.log(resp);
+    resp.then(res => {
+      if (res.err) {
+        alert(res.msg);
+      } else {
+        setChatList(res.data);
+        // console.log(auth);
+      }
+    });
+  };
+
   useEffect(() => {
     if (userList.length > 0) {
       setSelectedChat(userList[0]);
     }
   }, [userList]);
+
+  useEffect(() => {
+    loadChat();
+  }, []);
 
   return (
     <div style={{ position: 'relative', height: '90vh' }}>
@@ -171,9 +193,31 @@ const ChatScreen = () => {
             </ConversationHeader.Actions>
           </ConversationHeader>
           <MessageList>
-            <Message
+            {chatList.length > 0 &&
+              chatList.map((chat, index) => {
+                {
+                  /* console.log(chat, userDetails.id); */
+                }
+                const dir =
+                  userDetails.id === chat.sent_by_user_id
+                    ? 'outgoing'
+                    : 'incoming';
+                return (
+                  <Message
+                    key={index}
+                    model={{
+                      message: chat.message,
+                      sentTime: 'just now',
+                      sender: 'Joe',
+                      direction: dir
+                    }}>
+                    <Avatar src={avatar} />
+                  </Message>
+                );
+              })}
+            {/* <Message
               model={{
-                message: 'Hello my friend',
+                message: 'Hello my friend1',
                 sentTime: 'just now',
                 sender: 'Joe',
                 direction: 'outgoing'
@@ -188,7 +232,7 @@ const ChatScreen = () => {
                 direction: 'incoming'
               }}>
               <Avatar src={avatar} />
-            </Message>
+            </Message> */}
           </MessageList>
           <MessageInput
             attachButton={false}
