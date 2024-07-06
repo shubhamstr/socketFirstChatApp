@@ -225,7 +225,7 @@ const LogIn = props => {
         })
       );
       dispatch(logIn());
-      history.push('/dashboard');
+      history.push('/chat');
     }
   };
 

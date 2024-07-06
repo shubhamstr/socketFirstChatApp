@@ -52,7 +52,7 @@ class App extends Component {
         value: tokenDetails
       });
       this.props.logIn();
-      browserHistory.push('/dashboard');
+      browserHistory.push('/chat');
     }
   };
 

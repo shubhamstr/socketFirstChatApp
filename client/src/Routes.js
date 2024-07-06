@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -7,13 +8,14 @@ import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 
 import {
   Dashboard as DashboardView,
-  ProductList as ProductListView,
-  UserList as UserListView,
-  Typography as TypographyView,
-  Icons as IconsView,
-  Account as AccountView,
-  Settings as SettingsView,
-  Register as RegisterView,
+  // ProductList as ProductListView,
+  // UserList as UserListView,
+  // Typography as TypographyView,
+  // Icons as IconsView,
+  // Account as AccountView,
+  // Settings as SettingsView,
+  // Register as RegisterView,
+  Chat as ChatView,
   AdminLogIn as AdminLogInView,
   LogIn as LogInView,
   NotFound as NotFoundView
@@ -24,19 +26,19 @@ const Routes = () => {
   return (
     <Switch>
       {/* guest routes */}
-      <Redirect exact from="/" to={auth.isLoggedIn ? '/dashboard' : 'login'} />
+      <Redirect exact from="/" to={auth.isLoggedIn ? '/chat' : 'login'} />
       <RouteWithLayout
         component={LogInView}
         exact
         layout={MinimalLayout}
         path="/login"
       />
-      <RouteWithLayout
+      {/* <RouteWithLayout
         component={RegisterView}
         exact
         layout={MinimalLayout}
         path="/register"
-      />
+      /> */}
       <RouteWithLayout
         component={NotFoundView}
         exact
@@ -47,12 +49,18 @@ const Routes = () => {
 
       {/* protected routes */}
       <PrivateRouteWithLayout
+        component={ChatView}
+        exact
+        layout={MinimalLayout}
+        path="/chat"
+      />
+      {/* <PrivateRouteWithLayout
         component={DashboardView}
         exact
         layout={MainLayout}
         path="/dashboard"
-      />
-      <PrivateRouteWithLayout
+      /> */}
+      {/* <PrivateRouteWithLayout
         component={UserListView}
         exact
         layout={MainLayout}
@@ -87,7 +95,7 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/settings"
-      />
+      /> */}
 
       {/* admin routes */}
       <Redirect exact from="/admin/" to="/admin/login" />
