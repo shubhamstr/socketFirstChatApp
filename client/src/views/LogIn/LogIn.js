@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { logIn, setDetails } from '../../store/authSlice';
@@ -14,7 +15,7 @@ import {
   Button,
   // IconButton,
   TextField,
-  Link,
+  // Link,
   // ButtonGroup,
   Typography
 } from '@material-ui/core';
@@ -24,17 +25,10 @@ import {
 import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
 
 const schema = {
-  email: {
+  userName: {
     presence: { allowEmpty: false, message: 'is required' },
-    email: true,
     length: {
       maximum: 64
-    }
-  },
-  password: {
-    presence: { allowEmpty: false, message: 'is required' },
-    length: {
-      maximum: 128
     }
   }
 };
@@ -152,9 +146,9 @@ const LogIn = props => {
   const classes = useStyles();
 
   // eslint-disable-next-line no-unused-vars
-  const [loginType, setLoginType] = useState('email');
+  const [loginType, setLoginType] = useState('userName');
 
-  const [formStateEmail, setFormStateEmail] = useState({
+  const [formStateUserName, setFormStateUserName] = useState({
     isValid: false,
     values: {},
     touched: {},
@@ -169,20 +163,20 @@ const LogIn = props => {
   //   setLoginType(loginType);
   // };
 
-  const handleChangeEmail = event => {
+  const handleChangeUserName = event => {
     event.persist();
 
-    setFormStateEmail(formStateEmail => ({
-      ...formStateEmail,
+    setFormStateUserName(formStateUserName => ({
+      ...formStateUserName,
       values: {
-        ...formStateEmail.values,
+        ...formStateUserName.values,
         [event.target.name]:
           event.target.type === 'checkbox'
             ? event.target.checked
             : event.target.value
       },
       touched: {
-        ...formStateEmail.touched,
+        ...formStateUserName.touched,
         [event.target.name]: true
       }
     }));
@@ -205,11 +199,10 @@ const LogIn = props => {
   const handleLogIn = async (event, type) => {
     event.preventDefault();
     // eslint-disable-next-line no-console
-    console.log('handleLogIn');
+    console.log('handleLogIn', type, formStateUserName.values.userName);
     const resp = await signInApi({
       loginType: type,
-      email: formStateEmail.values.email,
-      password: formStateEmail.values.password
+      userName: formStateUserName.values.userName
     });
     if (resp.data.err) {
       alert(resp.data.msg);
@@ -236,20 +229,20 @@ const LogIn = props => {
     }
   };
 
-  const hasErrorEmail = field =>
-    formStateEmail.touched[field] && formStateEmail.errors[field]
+  const hasErrorUserName = field =>
+    formStateUserName.touched[field] && formStateUserName.errors[field]
       ? true
       : false;
 
   useEffect(() => {
-    const errors = validate(formStateEmail.values, schema);
+    const errors = validate(formStateUserName.values, schema);
 
-    setFormStateEmail(formStateEmail => ({
-      ...formStateEmail,
+    setFormStateUserName(formStateUserName => ({
+      ...formStateUserName,
       isValid: errors ? false : true,
       errors: errors || {}
     }));
-  }, [formStateEmail.values]);
+  }, [formStateUserName.values]);
 
   return (
     <div className={classes.root}>
@@ -274,27 +267,11 @@ const LogIn = props => {
         </Grid>
         <Grid className={classes.content} item lg={7} xs={12}>
           <div className={classes.content}>
-            {/* <div className={classes.contentHeader}>
-              <IconButton onClick={handleBack}>
-                <ArrowBackIcon />
-              </IconButton>
-            </div> */}
             <div className={classes.contentBody}>
               <form className={classes.form}>
                 <Typography className={classes.title} variant="h2">
                   Log in
                 </Typography>
-                {/* <ButtonGroup
-                  aria-label="outlined primary button group"
-                  className={classes.btnGroup}
-                  color="primary">
-                  <Button onClick={() => changeLoginType('social')}>
-                    With Social Media
-                  </Button>
-                  <Button onClick={() => changeLoginType('email')}>
-                    With Email
-                  </Button>
-                </ButtonGroup> */}
                 {loginType === 'social' && (
                   <>
                     <Typography
@@ -307,17 +284,6 @@ const LogIn = props => {
                       className={classes.socialButtons}
                       container
                       spacing={2}>
-                      {/* <Grid item>
-                    <Button
-                      color="primary"
-                      onClick={handleSocialLogIn}
-                      size="large"
-                      variant="contained"
-                    >
-                      <FacebookIcon className={classes.socialIcon} />
-                      Login with Facebook
-                    </Button>
-                  </Grid> */}
                       <Grid container>
                         <Button
                           fullWidth
@@ -332,53 +298,37 @@ const LogIn = props => {
                   </>
                 )}
 
-                {loginType === 'email' && (
+                {loginType === 'userName' && (
                   <>
                     <Typography
                       align="center"
                       className={classes.sugestion}
                       color="textSecondary"
                       variant="body1">
-                      Log in with email address
+                      Log in with User Name
                     </Typography>
                     <TextField
                       className={classes.textField}
-                      error={hasErrorEmail('email')}
+                      error={hasErrorUserName('userName')}
                       fullWidth
                       helperText={
-                        hasErrorEmail('email')
-                          ? formStateEmail.errors.email[0]
+                        hasErrorUserName('userName')
+                          ? formStateUserName.errors.userName[0]
                           : null
                       }
-                      label="Email address"
-                      name="email"
-                      onChange={handleChangeEmail}
+                      label="User Name"
+                      name="userName"
+                      onChange={handleChangeUserName}
                       type="text"
-                      value={formStateEmail.values.email || ''}
-                      variant="outlined"
-                    />
-                    <TextField
-                      className={classes.textField}
-                      error={hasErrorEmail('password')}
-                      fullWidth
-                      helperText={
-                        hasErrorEmail('password')
-                          ? formStateEmail.errors.password[0]
-                          : null
-                      }
-                      label="Password"
-                      name="password"
-                      onChange={handleChangeEmail}
-                      type="password"
-                      value={formStateEmail.values.password || ''}
+                      value={formStateUserName.values.userName || ''}
                       variant="outlined"
                     />
                     <Button
                       className={classes.logInButton}
                       color="primary"
-                      disabled={!formStateEmail.isValid}
+                      disabled={!formStateUserName.isValid}
                       fullWidth
-                      onClick={e => handleLogIn(e, 'email')}
+                      onClick={e => handleLogIn(e, 'userName')}
                       size="large"
                       type="submit"
                       variant="contained">
@@ -386,16 +336,6 @@ const LogIn = props => {
                     </Button>
                   </>
                 )}
-
-                <Typography
-                  className={classes.linkText}
-                  color="textSecondary"
-                  variant="body1">
-                  Don't have an account?{' '}
-                  <Link component={RouterLink} to="/register" variant="h6">
-                    Register
-                  </Link>
-                </Typography>
               </form>
             </div>
           </div>

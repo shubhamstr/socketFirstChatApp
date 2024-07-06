@@ -20,10 +20,10 @@ const generateToken = (result) => {
   return token
 }
 
-router.post("/register", (req, res) => {
-  // console.log(req.body);
-  if (req.body.registerType === "email") {
-    var sql = `INSERT INTO users (username, email, password) VALUES ('${req.body.userName}', '${req.body.email}', '${req.body.password}')`
+router.post("/login", (req, res) => {
+  // console.log(req.body)
+  if (req.body.loginType === "userName") {
+    var sql = `INSERT INTO users (username) VALUES ('${req.body.userName}')`
     db.query(sql, function (err, result) {
       if (err) {
         res.send({
@@ -47,7 +47,7 @@ router.post("/register", (req, res) => {
           let token = generateToken(result2)
           res.send({
             err: false,
-            msg: "User Register Successfully!!",
+            msg: "User Logged In Successfully!!",
             data: token,
           })
         } else {
@@ -59,38 +59,6 @@ router.post("/register", (req, res) => {
       })
     })
   }
-})
-
-router.post("/login", (req, res) => {
-  // console.log(req.body)
-  if (req.body.loginType === "email") {
-    var sql = `SELECT * FROM users WHERE is_active = 1 AND email = '${req.body.email}' AND password = '${req.body.password}';`
-  } else if (req.body.loginType === "google") {
-    var sql = `SELECT * FROM users WHERE is_active = 1 AND email = '${req.body.email}';`
-  }
-  db.query(sql, function (err, result) {
-    if (err) {
-      res.send({
-        err: true,
-        msg: "Server Error",
-        data: err,
-      })
-    }
-    // console.log(result)
-    if (result.length > 0) {
-      let token = generateToken(result)
-      res.send({
-        err: false,
-        msg: "User LoggedIn Successfully!!",
-        data: token,
-      })
-    } else {
-      res.send({
-        err: true,
-        msg: "Invalid Username/Password",
-      })
-    }
-  })
 })
 
 module.exports = router
