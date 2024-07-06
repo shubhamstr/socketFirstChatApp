@@ -398,7 +398,7 @@ const Register = props => {
                   color="textSecondary"
                   variant="body1">
                   Already an account?{' '}
-                  <Link component={RouterLink} to="/log-in" variant="h6">
+                  <Link component={RouterLink} to="/login" variant="h6">
                     Log In
                   </Link>
                 </Typography>

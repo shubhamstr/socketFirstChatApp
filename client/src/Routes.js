@@ -24,12 +24,12 @@ const Routes = () => {
   return (
     <Switch>
       {/* guest routes */}
-      <Redirect exact from="/" to={auth.isLoggedIn ? '/dashboard' : 'log-in'} />
+      <Redirect exact from="/" to={auth.isLoggedIn ? '/dashboard' : 'login'} />
       <RouteWithLayout
         component={LogInView}
         exact
         layout={MinimalLayout}
-        path="/log-in"
+        path="/login"
       />
       <RouteWithLayout
         component={RegisterView}
@@ -90,12 +90,12 @@ const Routes = () => {
       />
 
       {/* admin routes */}
-      <Redirect exact from="/admin/" to="/admin/log-in" />
+      <Redirect exact from="/admin/" to="/admin/login" />
       <RouteWithLayout
         component={AdminLogInView}
         exact
         layout={MinimalLayout}
-        path="/admin/log-in"
+        path="/admin/login"
       />
     </Switch>
   );
