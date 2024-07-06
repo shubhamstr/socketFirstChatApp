@@ -33,23 +33,20 @@ const ChatScreen = () => {
   };
 
   const handleSend = () => {
-    console.log(message);
-    // const resp = sendMessageAPI({
-    //   userId: tokenDetails.userId
-    // });
-    // resp.then(res => {
-    //   if (res.err) {
-    //     alert(res.msg);
-    //   } else {
-    //     dispatch(
-    //       setDetails({
-    //         type: 'userDetails',
-    //         value: res.data[0]
-    //       })
-    //     );
-    //     // console.log(auth);
-    //   }
-    // });
+    // console.log(userDetails.id, selectedChat.id, message);
+    const resp = sendMessageAPI({
+      sent_by_user_id: userDetails.id,
+      sent_to_user_id: selectedChat.id,
+      message: message
+    });
+    // console.log(resp);
+    resp.then(res => {
+      if (res.err) {
+        alert(res.msg);
+      } else {
+        // console.log(auth);
+      }
+    });
   };
 
   const handleChat = user => {
