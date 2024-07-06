@@ -9,6 +9,7 @@ dotenv.config()
 router.post("/insert", (req, res) => {
   // console.log(req.body)
   var sql = `INSERT INTO messages (sent_by_user_id, sent_to_user_id, message) VALUES ('${req.body.sent_by_user_id}', '${req.body.sent_to_user_id}', '${req.body.message}')`
+  // console.log(sql)
   db.query(sql, function (err, result) {
     if (err) {
       res.send({
@@ -18,11 +19,10 @@ router.post("/insert", (req, res) => {
       })
     }
     // console.log(result)
-    if (result.length > 0) {
+    if (result.insertId) {
       res.send({
         err: false,
         msg: "Message Sent Successfully!!",
-        data: token,
       })
     } else {
       res.send({
