@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '@chatscope/chat-ui-kit-styles/dist/default/styles.min.css';
 import {
   Avatar,
@@ -15,11 +15,13 @@ import {
   ConversationHeader
 } from '@chatscope/chat-ui-kit-react';
 import { useSelector, useStore } from 'react-redux';
+import { sendMessageAPI } from '../../../../api/chat';
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
   // console.log(auth);
   const [message, setMessage] = useState('');
+  const [selectedChat, setSelectedChat] = useState({});
   const { userDetails, userList } = auth;
   const avatar = userDetails.image
     ? userDetails.image
@@ -32,7 +34,35 @@ const ChatScreen = () => {
 
   const handleSend = () => {
     console.log(message);
-  }
+    // const resp = sendMessageAPI({
+    //   userId: tokenDetails.userId
+    // });
+    // resp.then(res => {
+    //   if (res.err) {
+    //     alert(res.msg);
+    //   } else {
+    //     dispatch(
+    //       setDetails({
+    //         type: 'userDetails',
+    //         value: res.data[0]
+    //       })
+    //     );
+    //     // console.log(auth);
+    //   }
+    // });
+  };
+
+  const handleChat = user => {
+    console.log(user);
+    setSelectedChat(user);
+  };
+
+  useEffect(() => {
+    if (userList.length > 0) {
+      setSelectedChat(userList[0]);
+    }
+  }, [userList]);
+
   return (
     <div style={{ position: 'relative', height: '90vh' }}>
       <MainContainer>
@@ -44,11 +74,13 @@ const ChatScreen = () => {
                   info="Yes i can do it for you"
                   key={index}
                   lastSenderName="Lilly"
-                  name={user.username}>
+                  name={user.username}
+                  onClick={() => handleChat(user)}>
                   <Avatar
                     name={user.username}
                     src="https://chatscope.io/storybook/react/assets/lilly-aj6lnGPk.svg"
                   />
+                  {/* <Conversation.Operations onClick={() => handleChat(user)} /> */}
                 </Conversation>
               );
             })}
@@ -126,23 +158,21 @@ const ChatScreen = () => {
           </Conversation> */}
         </ConversationList>
         <ChatContainer>
-          {userList.length > 0 && (
-            <ConversationHeader>
-              {/* <ConversationHeader.Back /> */}
-              <Avatar
-                name={userList[0].username}
-                src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
-              />
-              <ConversationHeader.Content
-                info="Active 10 mins ago"
-                userName={userList[0].username}
-              />
-              <ConversationHeader.Actions>
-                <StarButton title="Add to favourites" />
-                <InfoButton title="Show info" />
-              </ConversationHeader.Actions>
-            </ConversationHeader>
-          )}
+          <ConversationHeader>
+            {/* <ConversationHeader.Back /> */}
+            <Avatar
+              name={selectedChat.username}
+              src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
+            />
+            <ConversationHeader.Content
+              info="Active 10 mins ago"
+              userName={selectedChat.username}
+            />
+            <ConversationHeader.Actions>
+              <StarButton title="Add to favourites" />
+              <InfoButton title="Show info" />
+            </ConversationHeader.Actions>
+          </ConversationHeader>
           <MessageList>
             <Message
               model={{
