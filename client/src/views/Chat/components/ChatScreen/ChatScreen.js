@@ -54,6 +54,7 @@ const ChatScreen = () => {
   const handleChat = user => {
     console.log(user);
     setSelectedChat(user);
+    setChatList([]);
   };
 
   const loadChat = () => {
@@ -79,8 +80,10 @@ const ChatScreen = () => {
   }, [userList]);
 
   useEffect(() => {
-    loadChat();
-  }, []);
+    if (userDetails.id && selectedChat.id) {
+      loadChat();
+    }
+  }, [selectedChat, userDetails]);
 
   return (
     <div style={{ position: 'relative', height: '90vh' }}>
