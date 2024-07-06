@@ -17,17 +17,15 @@ import { useSelector } from 'react-redux';
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
+  console.log(auth);
   const { userDetails } = auth;
   const avatar = userDetails.image
     ? userDetails.image
     : '/images/avatars/avatar_11.png';
   return (
-    <div style={{ position: 'relative', height: '500px' }}>
+    <div style={{ position: 'relative', height: '90vh' }}>
       <MainContainer>
-        <ConversationList
-          style={{
-            height: '500px'
-          }}>
+        <ConversationList>
           <Conversation
             info="Yes i can do it for you"
             lastSenderName="Lilly"
@@ -105,12 +103,12 @@ const ChatScreen = () => {
           <ConversationHeader>
             {/* <ConversationHeader.Back /> */}
             <Avatar
-              name="Emily"
+              name={userDetails.username}
               src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
             />
             <ConversationHeader.Content
               info="Active 10 mins ago"
-              userName="Emily"
+              userName={userDetails.username}
             />
             <ConversationHeader.Actions>
               <StarButton title="Add to favourites" />
