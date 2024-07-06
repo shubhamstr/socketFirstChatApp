@@ -8,7 +8,7 @@ dotenv.config()
 
 router.post("/insert", (req, res) => {
   // console.log(req.body)
-  var sql = `INSERT INTO users (sent_by_user_id, send_to_user_id, message) VALUES ('${req.body.sent_by_user_id}', '${req.body.send_to_user_id}', '${req.body.message}')`
+  var sql = `INSERT INTO users (sent_by_user_id, sent_to_user_id, message) VALUES ('${req.body.sent_by_user_id}', '${req.body.sent_to_user_id}', '${req.body.message}')`
   db.query(sql, function (err, result) {
     if (err) {
       res.send({
