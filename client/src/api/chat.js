@@ -6,3 +6,14 @@ export function sendMessageAPI(payload) {
     return resp.data;
   });
 }
+
+export function getAllChatAPI(payload) {
+  return axiosClient
+    .get('/chat/get-all', {
+      params: payload
+    })
+    .then(resp => {
+      // console.log(resp);
+      return resp.data;
+    });
+}

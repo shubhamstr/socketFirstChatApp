@@ -33,4 +33,36 @@ router.post("/insert", (req, res) => {
   })
 })
 
+router.get("/get-all", (req, res) => {
+  let sql = ``
+  // console.log(req.query)
+  if (req.query.sent_by_user_id && req.query.sent_to_user_id) {
+    sql = `SELECT * FROM messages WHERE sent_by_user_id=${req.query.sent_by_user_id} AND sent_to_user_id=${req.query.sent_to_user_id}`
+  } else {
+    sql = `SELECT * FROM messages`
+  }
+  db.query(sql, function (err, result, fields) {
+    if (err) {
+      res.send({
+        err: true,
+        msg: "Server Error",
+        data: err,
+      })
+    }
+    // console.log(result)
+    if (result.length > 0) {
+      res.send({
+        err: false,
+        msg: "Chat Fetched Successfully!!",
+        data: result,
+      })
+    } else {
+      res.send({
+        err: true,
+        msg: "Error While Fetching Chat",
+      })
+    }
+  })
+})
+
 module.exports = router
