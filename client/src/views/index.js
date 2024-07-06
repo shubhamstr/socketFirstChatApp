@@ -9,3 +9,4 @@ export { default as AdminLogIn } from './AdminLogIn';
 export { default as Register } from './Register';
 export { default as Typography } from './Typography';
 export { default as UserList } from './UserList';
+export { default as Chat } from './Chat';
