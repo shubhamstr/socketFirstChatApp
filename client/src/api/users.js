@@ -1,9 +1,10 @@
 import axiosClient from './api-client';
 
 export function getUserDetailsApi(payload) {
-  return axiosClient.get('/users/get-all', {
+  const resp = axiosClient.get('/users/get-all', {
     params: payload
   });
+  return resp.data;
 }
 
 export function updateNotificationApi(payload) {

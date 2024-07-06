@@ -19,7 +19,7 @@ const Chat = () => {
   const classes = useStyles();
 
   const auth = useSelector(state => state.auth);
-  const { userDetails, tokenDetails, userType } = auth;
+  const { userDetails, tokenDetails, userType, userList } = auth;
 
   useEffect(() => {
     // console.log(userType);
@@ -28,13 +28,30 @@ const Chat = () => {
         userId: tokenDetails.userId
       });
       resp.then(res => {
-        if (res.data.err) {
-          alert(res.data.msg);
+        if (res.err) {
+          alert(res.msg);
         } else {
           dispatch(
             setDetails({
               type: 'userDetails',
-              value: res.data.data[0]
+              value: res.data[0]
+            })
+          );
+          // console.log(auth);
+        }
+      });
+    }
+    if (Object.keys(userList).length === 0) {
+      const resp = getUserDetailsApi({});
+      resp.then(res => {
+        console.log(res);
+        if (res.err) {
+          alert(res.msg);
+        } else {
+          dispatch(
+            setDetails({
+              type: 'userList',
+              value: res.data
             })
           );
           // console.log(auth);

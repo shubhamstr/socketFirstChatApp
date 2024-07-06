@@ -38,13 +38,13 @@ const Dashboard = () => {
         userId: tokenDetails.userId
       });
       resp.then(res => {
-        if (res.data.err) {
-          alert(res.data.msg);
+        if (res.err) {
+          alert(res.msg);
         } else {
           dispatch(
             setDetails({
               type: 'userDetails',
-              value: res.data.data[0]
+              value: res.data[0]
             })
           );
           // console.log(auth);

@@ -4,7 +4,8 @@ const initialState = {
   isLoggedIn: false,
   userType: '',
   tokenDetails: {},
-  userDetails: {}
+  userDetails: {},
+  userList: []
 };
 
 export const authSlice = createSlice({
@@ -23,6 +24,7 @@ export const authSlice = createSlice({
       state.userType = '';
       state.tokenDetails = {};
       state.userDetails = {};
+      state.userList = [];
     },
     setDetails: (state, data) => {
       if (data.payload.type === 'userType') {
@@ -31,6 +33,8 @@ export const authSlice = createSlice({
         state.tokenDetails = data.payload.value;
       } else if (data.payload.type === 'userDetails') {
         state.userDetails = data.payload.value;
+      } else if (data.payload.type === 'userList') {
+        state.userList = data.payload.value;
       }
     }
   }
