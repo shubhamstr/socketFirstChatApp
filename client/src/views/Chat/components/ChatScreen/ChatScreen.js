@@ -27,10 +27,11 @@ const ChatScreen = () => {
       <MainContainer>
         <ConversationList>
           {userList.length > 0 &&
-            userList.map(user => {
+            userList.map((user, index) => {
               return (
                 <Conversation
                   info="Yes i can do it for you"
+                  key={index}
                   lastSenderName="Lilly"
                   name={user.username}>
                   <Avatar
@@ -114,21 +115,23 @@ const ChatScreen = () => {
           </Conversation> */}
         </ConversationList>
         <ChatContainer>
-          <ConversationHeader>
-            {/* <ConversationHeader.Back /> */}
-            <Avatar
-              name={userDetails.username}
-              src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
-            />
-            <ConversationHeader.Content
-              info="Active 10 mins ago"
-              userName={userDetails.username}
-            />
-            <ConversationHeader.Actions>
-              <StarButton title="Add to favourites" />
-              <InfoButton title="Show info" />
-            </ConversationHeader.Actions>
-          </ConversationHeader>
+          {userList.length > 0 && (
+            <ConversationHeader>
+              {/* <ConversationHeader.Back /> */}
+              <Avatar
+                name={userList[0].username}
+                src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
+              />
+              <ConversationHeader.Content
+                info="Active 10 mins ago"
+                userName={userList[0].username}
+              />
+              <ConversationHeader.Actions>
+                <StarButton title="Add to favourites" />
+                <InfoButton title="Show info" />
+              </ConversationHeader.Actions>
+            </ConversationHeader>
+          )}
           <MessageList>
             <Message
               model={{
