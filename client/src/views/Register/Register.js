@@ -199,7 +199,7 @@ const Register = props => {
   };
 
   const setToken = userToken => {
-    localStorage.setItem('token', userToken);
+    localStorage.setItem('chatToken', userToken);
   };
 
   const setTokenAndRedirect = resp => {

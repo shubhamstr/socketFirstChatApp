@@ -178,7 +178,7 @@ const AdminLogIn = props => {
   const handleSignIn = event => {
     event.preventDefault();
     let token = formState.values.email;
-    localStorage.setItem('token', token);
+    localStorage.setItem('chatToken', token);
     dispatch(logIn());
     dispatch(
       setDetails({

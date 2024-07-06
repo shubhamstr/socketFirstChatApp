@@ -36,7 +36,7 @@ const Topbar = props => {
     event.preventDefault();
     // eslint-disable-next-line no-console
     console.log('handleLogOut');
-    localStorage.removeItem('token');
+    localStorage.removeItem('chatToken');
     dispatch(logOut());
   };
 

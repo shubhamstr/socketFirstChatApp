@@ -193,7 +193,7 @@ const LogIn = props => {
   };
 
   const setToken = userToken => {
-    localStorage.setItem('token', userToken);
+    localStorage.setItem('chatToken', userToken);
   };
 
   const handleLogIn = async (event, type) => {

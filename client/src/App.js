@@ -35,7 +35,7 @@ class App extends Component {
   };
 
   checkAuthAndRedirect = () => {
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('chatToken');
     // eslint-disable-next-line no-console
     console.log('checkAuthAndRedirect');
     if (token) {
