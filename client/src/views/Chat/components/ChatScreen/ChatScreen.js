@@ -12,13 +12,16 @@ import {
   Conversation,
   StarButton,
   InfoButton,
+  ArrowButton,
   ConversationHeader
 } from '@chatscope/chat-ui-kit-react';
-import { useSelector, useStore } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { sendMessageAPI, getAllChatAPI } from '../../../../api/chat';
+import { logOut } from '../../../../store/authSlice';
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   // console.log(auth);
   const [message, setMessage] = useState('');
   const [chatList, setChatList] = useState([]);
@@ -57,6 +60,12 @@ const ChatScreen = () => {
     setChatList([]);
   };
 
+  const handleLogOut = () => {
+    console.log('handleLogOut');
+    localStorage.removeItem('chatToken');
+    dispatch(logOut());
+  };
+
   const loadChat = () => {
     // console.log(userDetails.id, selectedChat.id);
     const resp = getAllChatAPI({
@@ -75,12 +84,6 @@ const ChatScreen = () => {
   };
 
   useEffect(() => {
-    if (userList.length > 0) {
-      setSelectedChat(userList[0]);
-    }
-  }, [userList]);
-
-  useEffect(() => {
     if (userDetails.id && selectedChat.id) {
       loadChat();
     }
@@ -90,6 +93,21 @@ const ChatScreen = () => {
     <div style={{ position: 'relative', height: '90vh' }}>
       <MainContainer>
         <ConversationList>
+          <ConversationHeader onClick={() => handleLogOut()}>
+            <Avatar
+              name={userDetails.username}
+              src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
+            />
+            <ConversationHeader.Content userName={userDetails.username} />
+            <ConversationHeader.Actions>
+              <ArrowButton
+                border
+                direction="right"
+                style={{ padding: '0px 10px' }}
+                title="Log Out"
+              />
+            </ConversationHeader.Actions>
+          </ConversationHeader>
           {userList.length > 0 &&
             userList.map((user, index) => {
               return (
@@ -180,46 +198,48 @@ const ChatScreen = () => {
             />
           </Conversation> */}
         </ConversationList>
-        <ChatContainer>
-          <ConversationHeader>
-            {/* <ConversationHeader.Back /> */}
-            <Avatar
-              name={selectedChat.username}
-              src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
-            />
-            <ConversationHeader.Content
-              info="Active 10 mins ago"
-              userName={selectedChat.username}
-            />
-            <ConversationHeader.Actions>
-              <StarButton title="Add to favourites" />
-              <InfoButton title="Show info" />
-            </ConversationHeader.Actions>
-          </ConversationHeader>
-          <MessageList>
-            {chatList.length > 0 &&
-              chatList.map((chat, index) => {
-                {
-                  /* console.log(chat, userDetails.id); */
-                }
-                const dir =
-                  userDetails.id === chat.sent_by_user_id
-                    ? 'outgoing'
-                    : 'incoming';
-                return (
-                  <Message
-                    key={index}
-                    model={{
-                      message: chat.message,
-                      sentTime: 'just now',
-                      sender: 'Joe',
-                      direction: dir
-                    }}>
-                    <Avatar src={avatar} />
-                  </Message>
-                );
-              })}
-            {/* <Message
+
+        {Object.keys(selectedChat).length > 0 ? (
+          <ChatContainer>
+            <ConversationHeader>
+              {/* <ConversationHeader.Back /> */}
+              <Avatar
+                name={selectedChat.username}
+                src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
+              />
+              <ConversationHeader.Content
+                info="Active 10 mins ago"
+                userName={selectedChat.username}
+              />
+              <ConversationHeader.Actions>
+                <StarButton title="Add to favourites" />
+                <InfoButton title="Show info" />
+              </ConversationHeader.Actions>
+            </ConversationHeader>
+            <MessageList>
+              {chatList.length > 0 &&
+                chatList.map((chat, index) => {
+                  {
+                    /* console.log(chat, userDetails.id); */
+                  }
+                  const dir =
+                    userDetails.id === chat.sent_by_user_id
+                      ? 'outgoing'
+                      : 'incoming';
+                  return (
+                    <Message
+                      key={index}
+                      model={{
+                        message: chat.message,
+                        sentTime: 'just now',
+                        sender: 'Joe',
+                        direction: dir
+                      }}>
+                      <Avatar src={avatar} />
+                    </Message>
+                  );
+                })}
+              {/* <Message
               model={{
                 message: 'Hello my friend1',
                 sentTime: 'just now',
@@ -237,14 +257,27 @@ const ChatScreen = () => {
               }}>
               <Avatar src={avatar} />
             </Message> */}
-          </MessageList>
-          <MessageInput
-            attachButton={false}
-            onChange={handleMsg}
-            onSend={handleSend}
-            placeholder="Type message here"
-          />
-        </ChatContainer>
+            </MessageList>
+            <MessageInput
+              attachButton={false}
+              onChange={handleMsg}
+              onSend={handleSend}
+              placeholder="Type message here"
+            />
+          </ChatContainer>
+        ) : (
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <div className="text-center">
+              Select a user to start a conversation
+            </div>
+          </div>
+        )}
       </MainContainer>
     </div>
   );
