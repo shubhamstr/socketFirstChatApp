@@ -20,44 +20,61 @@ const generateToken = (result) => {
   return token
 }
 
-router.post("/login", (req, res) => {
-  // console.log(req.body)
-  if (req.body.loginType === "userName") {
-    var sql = `INSERT INTO users (username) VALUES ('${req.body.userName}')`
-    db.query(sql, function (err, result) {
+const runQuery = (sql) => {
+  return new Promise((resolve, reject) => {
+    db.query(sql, (err, result) => {
       if (err) {
-        res.send({
-          err: true,
+        resolve({
+          error: true,
           msg: err.sqlMessage ? err.sqlMessage : "Server Error",
           data: err,
         })
       }
-      // console.log(result)
-      var sql2 = `SELECT * FROM users WHERE id = '${result.insertId}';`
-      db.query(sql2, function (err2, result2) {
-        if (err2) {
-          res.send({
-            err: true,
-            msg: "Server Error",
-            data: err2,
-          })
-        }
-        // console.log(result2)
-        if (result2.length > 0) {
-          let token = generateToken(result2)
-          res.send({
-            err: false,
-            msg: "User Logged In Successfully!!",
-            data: token,
-          })
-        } else {
-          res.send({
-            err: true,
-            msg: "Server Error",
-          })
-        }
+      resolve({
+        error: false,
+        data: result,
       })
     })
+  })
+}
+
+router.post("/login", async (req, res) => {
+  // console.log(req.body)
+  if (req.body.loginType === "userName") {
+    var sql1 = `INSERT INTO users (username) VALUES ('${req.body.userName}')`
+    const resp1 = await runQuery(sql1)
+    // console.log(resp1)
+    if (resp1.err) {
+      res.send({
+        err: resp1.err,
+        msg: resp1.msg,
+        data: resp1.data,
+      })
+    }
+    var sql2 = `SELECT * FROM users WHERE id = '${resp1.data.insertId}';`
+    const resp2 = await runQuery(sql2)
+    // console.log(resp2)
+    if (resp2.err) {
+      res.send({
+        err: true,
+        msg: resp2.msg,
+        data: resp2.data,
+      })
+    } else {
+      if (resp2.data.length > 0) {
+        let token = generateToken(resp2.data)
+        res.send({
+          err: false,
+          msg: "User Logged In Successfully!!",
+          data: token,
+        })
+      } else {
+        res.send({
+          err: true,
+          msg: "Server Error",
+        })
+      }
+    }
   }
 })
 
