@@ -8,7 +8,8 @@ dotenv.config()
 
 router.post("/insert", (req, res) => {
   // console.log(req.body)
-  var sql = `INSERT INTO messages (sent_by_user_id, sent_to_user_id, message) VALUES ('${req.body.sent_by_user_id}', '${req.body.sent_to_user_id}', '${req.body.message}')`
+  const ids = req.body.user_ids.toString()
+  var sql = `INSERT INTO messages (user_ids, message) VALUES ('${ids}', '${req.body.message}')`
   // console.log(sql)
   db.query(sql, function (err, result) {
     if (err) {
@@ -36,8 +37,9 @@ router.post("/insert", (req, res) => {
 router.get("/get-all", (req, res) => {
   let sql = ``
   // console.log(req.query)
-  if (req.query.sent_by_user_id && req.query.sent_to_user_id) {
-    sql = `SELECT * FROM messages WHERE sent_by_user_id=${req.query.sent_by_user_id} AND sent_to_user_id=${req.query.sent_to_user_id}`
+  if (req.query.user_ids) {
+    const ids = req.query.user_ids
+    sql = `SELECT * FROM messages WHERE user_ids LIKE '%${ids[0]}%' AND user_ids LIKE '%${ids[0]}%'`
   } else {
     sql = `SELECT * FROM messages`
   }

@@ -39,8 +39,7 @@ const ChatScreen = () => {
   const handleSend = () => {
     // console.log(userDetails.id, selectedChat.id, message);
     const resp = sendMessageAPI({
-      sent_by_user_id: userDetails.id,
-      sent_to_user_id: selectedChat.id,
+      user_ids: [userDetails.id, selectedChat.id],
       message: message
     });
     // console.log(resp);
@@ -69,8 +68,7 @@ const ChatScreen = () => {
   const loadChat = () => {
     // console.log(userDetails.id, selectedChat.id);
     const resp = getAllChatAPI({
-      sent_by_user_id: userDetails.id,
-      sent_to_user_id: selectedChat.id
+      user_ids: [userDetails.id, selectedChat.id]
     });
     // console.log(resp);
     resp.then(res => {
@@ -219,11 +217,13 @@ const ChatScreen = () => {
             <MessageList>
               {chatList.length > 0 &&
                 chatList.map((chat, index) => {
+                  const arr = chat.user_ids.split(',');
                   {
-                    /* console.log(chat, userDetails.id); */
+                    /* console.log(arr[0]);
+                  console.log(userDetails.id); */
                   }
                   const dir =
-                    userDetails.id === chat.sent_by_user_id
+                    userDetails.id === parseInt(arr[0])
                       ? 'outgoing'
                       : 'incoming';
                   return (
@@ -235,7 +235,7 @@ const ChatScreen = () => {
                         sender: 'Joe',
                         direction: dir
                       }}>
-                      <Avatar src={avatar} />
+                      <Avatar src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg" />
                     </Message>
                   );
                 })}
