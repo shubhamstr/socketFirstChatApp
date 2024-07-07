@@ -68,7 +68,8 @@ const ChatScreen = () => {
   const loadChat = () => {
     // console.log(userDetails.id, selectedChat.id);
     const resp = getAllChatAPI({
-      user_ids: [userDetails.id, selectedChat.id]
+      loggedInId: userDetails.id,
+      selectedChatId: selectedChat.id
     });
     // console.log(resp);
     resp.then(res => {

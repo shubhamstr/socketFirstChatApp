@@ -37,9 +37,8 @@ router.post("/insert", (req, res) => {
 router.get("/get-all", (req, res) => {
   let sql = ``
   // console.log(req.query)
-  if (req.query.user_ids) {
-    const ids = req.query.user_ids
-    sql = `SELECT * FROM messages WHERE user_ids LIKE '%${ids[0]}%' AND user_ids LIKE '%${ids[0]}%'`
+  if (req.query.loggedInId && req.query.selectedChatId) {
+    sql = `SELECT * FROM messages WHERE user_ids LIKE '%${req.query.loggedInId}%' AND user_ids LIKE '%${req.query.selectedChatId}%'`
   } else {
     sql = `SELECT * FROM messages`
   }
