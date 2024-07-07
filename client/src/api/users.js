@@ -1,6 +1,6 @@
 import axiosClient from './api-client';
 
-export function getUserDetailsApi(payload) {
+export function getAllUsersAPI(payload) {
   return axiosClient
     .get('/users/get-all', {
       params: payload

@@ -58,6 +58,7 @@ const ChatScreen = () => {
   };
 
   const loadChat = () => {
+    // console.log(userDetails.id, selectedChat.id);
     const resp = getAllChatAPI({
       sent_by_user_id: userDetails.id,
       sent_to_user_id: selectedChat.id

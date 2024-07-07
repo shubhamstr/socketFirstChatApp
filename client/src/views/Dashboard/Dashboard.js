@@ -15,7 +15,7 @@ import {
   LatestOrders
 } from './components';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserDetailsApi } from '../../api/users';
+import { getAllUsersAPI } from '../../api/users';
 import { setDetails } from '../../store/authSlice';
 
 const useStyles = makeStyles(theme => ({
@@ -34,7 +34,7 @@ const Dashboard = () => {
   useEffect(() => {
     // console.log(userType);
     if (Object.keys(userDetails).length === 0) {
-      const resp = getUserDetailsApi({
+      const resp = getAllUsersAPI({
         userId: tokenDetails.userId
       });
       resp.then(res => {

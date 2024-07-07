@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 
 import { ChatScreen } from './components';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUserDetailsApi } from '../../api/users';
+import { getAllUsersAPI } from '../../api/users';
 import { setDetails } from '../../store/authSlice';
 
 const useStyles = makeStyles(theme => ({
@@ -24,7 +24,7 @@ const Chat = () => {
   useEffect(() => {
     // console.log(userType);
     if (Object.keys(userDetails).length === 0) {
-      const resp = getUserDetailsApi({
+      const resp = getAllUsersAPI({
         userId: tokenDetails.userId
       });
       resp.then(res => {
@@ -42,7 +42,7 @@ const Chat = () => {
       });
     }
     if (Object.keys(userList).length === 0) {
-      const resp = getUserDetailsApi({});
+      const resp = getAllUsersAPI({});
       resp.then(res => {
         // console.log(res);
         if (res.err) {
