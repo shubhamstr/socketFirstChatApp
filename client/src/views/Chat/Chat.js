@@ -42,7 +42,9 @@ const Chat = () => {
       });
     }
     if (Object.keys(userList).length === 0) {
-      const resp = getAllUsersAPI({});
+      const resp = getAllUsersAPI({
+        ignoreUserId: tokenDetails.userId
+      });
       resp.then(res => {
         // console.log(res);
         if (res.err) {

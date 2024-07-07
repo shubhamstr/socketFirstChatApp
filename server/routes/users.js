@@ -7,6 +7,8 @@ router.get("/get-all", (req, res) => {
   // console.log(req.query)
   if (req.query.userId) {
     sql = `SELECT * FROM users WHERE id=${req.query.userId}`
+  } else if (req.query.ignoreUserId) {
+    sql = `SELECT * FROM users WHERE id!=${req.query.ignoreUserId}`
   } else {
     sql = `SELECT * FROM users`
   }
