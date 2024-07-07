@@ -134,7 +134,7 @@ const ChatScreen = () => {
                 src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
               />
               <ConversationHeader.Content
-                info="Active 10 mins ago"
+                // info="Active 10 mins ago"
                 userName={selectedChat.username}
               />
               <ConversationHeader.Actions>
