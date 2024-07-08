@@ -41,17 +41,38 @@ const runQuery = (sql) => {
 router.post("/login", async (req, res) => {
   // console.log(req.body)
   if (req.body.loginType === "userName") {
-    var sql1 = `INSERT INTO users (username) VALUES ('${req.body.userName}')`
-    const resp1 = await runQuery(sql1)
-    // console.log(resp1)
-    if (resp1.err) {
+    let userId = ""
+    // checking if user exists
+    var sql0 = `SELECT * FROM users WHERE username = '${req.body.userName}';`
+    const resp0 = await runQuery(sql0)
+    // console.log(resp0)
+    if (resp0.err) {
       res.send({
-        err: resp1.err,
-        msg: resp1.msg,
-        data: resp1.data,
+        err: resp0.err,
+        msg: resp0.msg,
+        data: resp0.data,
       })
+    } else {
+      console.log(resp0.data)
+      // if user not present create user
+      if (resp0.data.length === 0) {
+        var sql1 = `INSERT INTO users (username) VALUES ('${req.body.userName}')`
+        const resp1 = await runQuery(sql1)
+        // console.log(resp1)
+        if (resp1.err) {
+          res.send({
+            err: resp1.err,
+            msg: resp1.msg,
+            data: resp1.data,
+          })
+        } else {
+          userId = resp1.data.insertId
+        }
+      } else {
+        userId = resp0.data[0].id
+      }
     }
-    var sql2 = `SELECT * FROM users WHERE id = '${resp1.data.insertId}';`
+    var sql2 = `SELECT * FROM users WHERE id = '${userId}';`
     const resp2 = await runQuery(sql2)
     // console.log(resp2)
     if (resp2.err) {
