@@ -1,9 +1,9 @@
 var mysql = require("mysql")
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "socket_chat",
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASS,
+  database: process.env.DB,
 })
 
 db.connect(function (err) {
