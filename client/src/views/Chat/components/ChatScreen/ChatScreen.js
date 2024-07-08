@@ -85,13 +85,6 @@ const ChatScreen = () => {
     });
   };
 
-  socket.on('connected', user => {
-    console.log('socket connected', user);
-    if (userDetails.id && selectedChat.id) {
-      loadChat();
-    }
-  });
-
   socket.on('message', msg => {
     console.log('socket message', msg);
     if (userDetails.id && selectedChat.id) {
