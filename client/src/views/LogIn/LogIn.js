@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { io } from 'socket.io-client';
 import { logIn, setDetails } from '../../store/authSlice';
 // eslint-disable-next-line no-unused-vars
 import { Link as RouterLink, withRouter } from 'react-router-dom';
@@ -140,6 +141,7 @@ const useStyles = makeStyles(theme => ({
 
 const LogIn = props => {
   const dispatch = useDispatch();
+  const socket = io('http://localhost:5000', { transports : ['websocket'] });
 
   const { history } = props;
 
@@ -207,6 +209,7 @@ const LogIn = props => {
     if (resp.data.err) {
       alert(resp.data.msg);
     } else {
+      socket.emit('connected', formStateUserName.values.userName);
       setHeaderToken(resp.data.data);
       setToken(resp.data.data);
       const tokenDetails = jwtDecode(resp.data.data);

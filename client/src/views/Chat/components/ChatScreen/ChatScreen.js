@@ -16,12 +16,14 @@ import {
   ConversationHeader
 } from '@chatscope/chat-ui-kit-react';
 import { useSelector, useDispatch } from 'react-redux';
+import { io } from 'socket.io-client';
 import { sendMessageAPI, getAllChatAPI } from '../../../../api/chat';
 import { logOut } from '../../../../store/authSlice';
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const socket = io('http://localhost:5000', { transports : ['websocket'] });
   // console.log(auth);
   const [message, setMessage] = useState('');
   const [chatList, setChatList] = useState([]);
@@ -42,6 +44,7 @@ const ChatScreen = () => {
       user_ids: [userDetails.id, selectedChat.id],
       message: message
     });
+    socket.emit('message', message);
     // console.log(resp);
     resp.then(res => {
       if (res.err) {
@@ -81,6 +84,20 @@ const ChatScreen = () => {
       }
     });
   };
+
+  socket.on('connected', user => {
+    console.log('socket connected', user);
+    if (userDetails.id && selectedChat.id) {
+      loadChat();
+    }
+  });
+
+  socket.on('message', msg => {
+    console.log('socket message', msg);
+    if (userDetails.id && selectedChat.id) {
+      loadChat();
+    }
+  });
 
   useEffect(() => {
     if (userDetails.id && selectedChat.id) {
