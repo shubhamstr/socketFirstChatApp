@@ -31,11 +31,12 @@ io.on("connection", (socket) => {
   console.log("connected..")
 
   socket.on("connected", (username) => {
+    console.log("socket connected", username);
     socket.broadcast.emit("connected", username)
   })
 
   socket.on("message", (msg) => {
-    // console.log(msg);
+    console.log("socket message", msg);
     socket.broadcast.emit("message", msg)
   })
 })
