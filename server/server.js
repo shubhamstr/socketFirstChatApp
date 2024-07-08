@@ -4,6 +4,8 @@ const http = require("http").createServer(app)
 const io = require("socket.io")(http)
 const cors = require("cors")
 
+require("dotenv").config()
+
 const users = require("./routes/users")
 const auth = require("./routes/auth")
 const chat = require("./routes/chat")
@@ -31,12 +33,12 @@ io.on("connection", (socket) => {
   console.log("connected..")
 
   socket.on("connected", (username) => {
-    console.log("socket connected", username);
+    console.log("socket connected", username)
     socket.broadcast.emit("connected", username)
   })
 
   socket.on("message", (msg) => {
-    console.log("socket message", msg);
+    console.log("socket message", msg)
     socket.broadcast.emit("message", msg)
   })
 })
