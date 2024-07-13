@@ -19,11 +19,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import { sendMessageAPI, getAllChatAPI } from '../../../../api/chat';
 import { logOut } from '../../../../store/authSlice';
+import { BASE_URL } from '../../../../constants'
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  const socket = io('http://localhost:5000', { transports : ['websocket'] });
+  const socket = io(BASE_URL, { transports : ['websocket'] });
   // console.log(auth);
   const [message, setMessage] = useState('');
   const [chatList, setChatList] = useState([]);

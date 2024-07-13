@@ -8,6 +8,7 @@ import { ChatScreen } from './components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllUsersAPI } from '../../api/users';
 import { setDetails } from '../../store/authSlice';
+import { BASE_URL } from '../../constants'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 const Chat = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const socket = io('http://localhost:5000', { transports : ['websocket'] });
+  const socket = io(BASE_URL, { transports : ['websocket'] });
 
   const auth = useSelector(state => state.auth);
   const { userDetails, tokenDetails, userType, userList } = auth;

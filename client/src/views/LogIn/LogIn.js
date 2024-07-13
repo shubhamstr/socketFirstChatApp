@@ -21,6 +21,7 @@ import {
   Typography
 } from '@material-ui/core';
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { BASE_URL } from '../../constants'
 
 // eslint-disable-next-line no-unused-vars
 import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
@@ -141,7 +142,7 @@ const useStyles = makeStyles(theme => ({
 
 const LogIn = props => {
   const dispatch = useDispatch();
-  const socket = io('http://localhost:5000', { transports : ['websocket'] });
+  const socket = io(BASE_URL, { transports : ['websocket'] });
 
   const { history } = props;
 
