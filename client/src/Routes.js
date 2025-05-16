@@ -23,10 +23,15 @@ import {
 
 const Routes = () => {
   const auth = useSelector(state => state.auth);
+  const chatURL = localStorage.getItem('chatURL');
   return (
     <Switch>
       {/* guest routes */}
-      <Redirect exact from="/" to={auth.isLoggedIn ? '/chat' : 'login'} />
+      <Redirect
+        exact
+        from="/"
+        to={auth.isLoggedIn ? `/chat/${chatURL}` : 'login'}
+      />
       <RouteWithLayout
         component={LogInView}
         exact

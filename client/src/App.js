@@ -36,8 +36,9 @@ class App extends Component {
 
   checkAuthAndRedirect = () => {
     let token = localStorage.getItem('chatToken');
+    let chatURL = localStorage.getItem('chatURL');
     // eslint-disable-next-line no-console
-    console.log('checkAuthAndRedirect');
+    console.log('checkAuthAndRedirect', chatURL, token);
     if (token) {
       this.setHeaderToken(token);
       const tokenDetails = jwtDecode(token);
@@ -52,7 +53,7 @@ class App extends Component {
         value: tokenDetails
       });
       this.props.logIn();
-      browserHistory.push('/chat');
+      browserHistory.push(`/chat/${chatURL}`);
     }
   };
 

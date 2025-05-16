@@ -214,6 +214,7 @@ const LogIn = props => {
       socket.emit('connected', formStateUserName.values.userName);
       setHeaderToken(resp.data.data);
       setToken(resp.data.data);
+      localStorage.setItem('chatURL', resp.data.chatURL);
       const tokenDetails = jwtDecode(resp.data.data);
       // eslint-disable-next-line no-console
       // console.log(tokenDetails);
