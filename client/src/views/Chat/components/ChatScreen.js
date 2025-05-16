@@ -19,12 +19,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import { sendMessageAPI, getAllChatAPI } from '../../../api/chat';
 import { logOut } from '../../../store/authSlice';
-import { BASE_URL } from '../../../constants'
+import { BASE_URL } from '../../../constants';
 
 const ChatScreen = () => {
+  const url = window.location.pathname.split('/')[2];
   const auth = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  const socket = io(BASE_URL, { transports : ['websocket'] });
+  const socket = io(BASE_URL, { transports: ['websocket'] });
   // console.log(auth);
   const [message, setMessage] = useState('');
   const [chatList, setChatList] = useState([]);
@@ -102,7 +103,7 @@ const ChatScreen = () => {
   return (
     <div style={{ position: 'relative', height: '90vh' }}>
       <MainContainer>
-        <ConversationList>
+        {/* <ConversationList>
           <ConversationHeader onClick={() => handleLogOut()}>
             <Avatar
               name={userDetails.username}
@@ -130,55 +131,61 @@ const ChatScreen = () => {
                     name={user.username}
                     src="https://chatscope.io/storybook/react/assets/lilly-aj6lnGPk.svg"
                   />
-                  {/* <Conversation.Operations onClick={() => handleChat(user)} /> */}
+                  <Conversation.Operations onClick={() => handleChat(user)} />
                 </Conversation>
               );
             })}
-        </ConversationList>
+        </ConversationList> */}
 
-        {Object.keys(selectedChat).length > 0 ? (
-          <ChatContainer>
-            <ConversationHeader>
-              {/* <ConversationHeader.Back /> */}
-              <Avatar
-                name={selectedChat.username}
-                src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
+        {/* {Object.keys(selectedChat).length > 0 ? ( */}
+        <ChatContainer>
+          <ConversationHeader>
+            {/* <ConversationHeader.Back /> */}
+            <Avatar
+              name={selectedChat.username}
+              src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
+            />
+            <ConversationHeader.Content
+              // info="Active 10 mins ago"
+              // userName={selectedChat.username}
+              userName={`Room ID - (${url})`}
+            />
+            <ConversationHeader.Actions>
+              <StarButton title="Add to favourites" />
+              <InfoButton title="Show info" />
+              <ArrowButton
+                border
+                direction="right"
+                onClick={() => handleLogOut()}
+                style={{ padding: '0px 10px' }}
+                title="Log Out"
               />
-              <ConversationHeader.Content
-                // info="Active 10 mins ago"
-                userName={selectedChat.username}
-              />
-              <ConversationHeader.Actions>
-                <StarButton title="Add to favourites" />
-                <InfoButton title="Show info" />
-              </ConversationHeader.Actions>
-            </ConversationHeader>
-            <MessageList>
-              {chatList.length > 0 &&
-                chatList.map((chat, index) => {
-                  const arr = chat.user_ids.split(',');
-                  {
-                    /* console.log(arr[0]);
+            </ConversationHeader.Actions>
+          </ConversationHeader>
+          <MessageList>
+            {chatList.length > 0 &&
+              chatList.map((chat, index) => {
+                const arr = chat.user_ids.split(',');
+                {
+                  /* console.log(arr[0]);
                   console.log(userDetails.id); */
-                  }
-                  const dir =
-                    userDetails.id === parseInt(arr[0])
-                      ? 'outgoing'
-                      : 'incoming';
-                  return (
-                    <Message
-                      key={index}
-                      model={{
-                        message: chat.message,
-                        sentTime: 'just now',
-                        sender: 'Joe',
-                        direction: dir
-                      }}>
-                      <Avatar src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg" />
-                    </Message>
-                  );
-                })}
-              {/* <Message
+                }
+                const dir =
+                  userDetails.id === parseInt(arr[0]) ? 'outgoing' : 'incoming';
+                return (
+                  <Message
+                    key={index}
+                    model={{
+                      message: chat.message,
+                      sentTime: 'just now',
+                      sender: 'Joe',
+                      direction: dir
+                    }}>
+                    <Avatar src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg" />
+                  </Message>
+                );
+              })}
+            {/* <Message
               model={{
                 message: 'Hello my friend1',
                 sentTime: 'just now',
@@ -196,15 +203,16 @@ const ChatScreen = () => {
               }}>
               <Avatar src={avatar} />
             </Message> */}
-            </MessageList>
-            <MessageInput
-              attachButton={false}
-              onChange={handleMsg}
-              onSend={handleSend}
-              placeholder="Type message here"
-            />
-          </ChatContainer>
-        ) : (
+          </MessageList>
+          <MessageInput
+            attachButton={false}
+            onChange={handleMsg}
+            onSend={handleSend}
+            placeholder="Type message here"
+          />
+        </ChatContainer>
+        {/* ) : null} */}
+        {/* {Object.keys(selectedChat).length === 0 && (
           <div
             style={{
               width: '100%',
@@ -216,7 +224,7 @@ const ChatScreen = () => {
               Select a user to start a conversation
             </div>
           </div>
-        )}
+        )} */}
       </MainContainer>
     </div>
   );
