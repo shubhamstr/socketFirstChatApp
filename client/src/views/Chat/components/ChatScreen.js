@@ -74,8 +74,8 @@ const ChatScreen = () => {
   const loadChat = () => {
     // console.log(userDetails.id, selectedChat.id);
     const resp = getAllChatAPI({
-      loggedInId: userDetails.id,
-      selectedChatId: selectedChat.id
+      user_id: userDetails.id,
+      room_id: url
     });
     // console.log(resp);
     resp.then(res => {
@@ -90,16 +90,16 @@ const ChatScreen = () => {
 
   socket.on('message', msg => {
     console.log('socket message', msg);
-    if (userDetails.id && selectedChat.id) {
+    if (userDetails.id && url) {
       loadChat();
     }
   });
 
   useEffect(() => {
-    if (userDetails.id && selectedChat.id) {
+    if (userDetails.id && url) {
       loadChat();
     }
-  }, [selectedChat, userDetails]);
+  }, [userDetails]);
 
   return (
     <div style={{ position: 'relative', height: '90vh' }}>
@@ -167,12 +167,12 @@ const ChatScreen = () => {
             {chatList.length > 0 &&
               chatList.map((chat, index) => {
                 const arr = chat.user_ids.split(',');
-                {
-                  /* console.log(arr[0]);
-                  console.log(userDetails.id); */
-                }
+                console.log(chat);
+                console.log(userDetails.id);
                 const dir =
-                  userDetails.id === parseInt(arr[0]) ? 'outgoing' : 'incoming';
+                  userDetails.id === parseInt(chat.user_id)
+                    ? 'outgoing'
+                    : 'incoming';
                 return (
                   <Message
                     key={index}

@@ -39,10 +39,14 @@ router.post("/insert", (req, res) => {
 router.get("/get-all", (req, res) => {
   let sql = ``
   // console.log(req.query)
-  if (req.query.loggedInId && req.query.selectedChatId) {
-    sql = `SELECT * FROM messages WHERE user_ids LIKE '%${req.query.loggedInId}%' AND user_ids LIKE '%${req.query.selectedChatId}%'`
+  if (req.query.user_id && req.query.room_id) {
+    sql = `SELECT * FROM messages WHERE user_id = '${req.query.user_id}' AND room_id = '${req.query.room_id}'`
   } else {
-    sql = `SELECT * FROM messages`
+    res.send({
+      err: true,
+      msg: "Server Error",
+      data: "",
+    })
   }
   db.query(sql, function (err, result, fields) {
     if (err) {
