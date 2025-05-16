@@ -12,6 +12,7 @@ import {
   Conversation,
   StarButton,
   InfoButton,
+  SendButton,
   ArrowButton,
   ConversationHeader
 } from '@chatscope/chat-ui-kit-react';
@@ -19,7 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import { sendMessageAPI, getAllChatAPI } from '../../../api/chat';
 import { logOut } from '../../../store/authSlice';
-import { BASE_URL } from '../../../constants';
+import { BASE_URL, CLIENT_URL } from '../../../constants';
 
 const ChatScreen = () => {
   const url = window.location.pathname.split('/')[2];
@@ -152,8 +153,18 @@ const ChatScreen = () => {
               userName={`Room ID - (${url})`}
             />
             <ConversationHeader.Actions>
-              <StarButton title="Add to favourites" />
-              <InfoButton title="Show info" />
+              {/* <StarButton title="Add to favourites" />
+              <InfoButton title="Show info" /> */}
+              <SendButton
+                border
+                onClick={() => {
+                  // Create a ClipboardItem and write to clipboard
+                  navigator.clipboard.writeText(`${CLIENT_URL}/login/${url}`);
+                  console.log('Chat URL copied to clipboard!');
+                }}
+                style={{ padding: '0px 10px' }}
+                title="Share Chat"
+              />
               <ArrowButton
                 border
                 direction="right"
