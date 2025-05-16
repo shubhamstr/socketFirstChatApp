@@ -57,7 +57,7 @@ const Routes = () => {
         component={ChatView}
         exact
         layout={MinimalLayout}
-        path="/chat"
+        path="/chat/:url"
       />
       {/* <PrivateRouteWithLayout
         component={DashboardView}

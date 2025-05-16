@@ -3,12 +3,12 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Grid } from '@material-ui/core';
 import { io } from 'socket.io-client';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { ChatScreen } from './components';
-import { useSelector, useDispatch } from 'react-redux';
 import { getAllUsersAPI } from '../../api/users';
 import { setDetails } from '../../store/authSlice';
-import { BASE_URL } from '../../constants'
+import { BASE_URL } from '../../constants';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,9 +17,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Chat = () => {
+  const url = window.location.pathname.split('/')[2];
   const dispatch = useDispatch();
   const classes = useStyles();
-  const socket = io(BASE_URL, { transports : ['websocket'] });
+  const socket = io(BASE_URL, { transports: ['websocket'] });
 
   const auth = useSelector(state => state.auth);
   const { userDetails, tokenDetails, userType, userList } = auth;
@@ -69,6 +70,7 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    console.log(url);
     // console.log(userType);
     if (Object.keys(userDetails).length === 0) {
       getUserDetails();
