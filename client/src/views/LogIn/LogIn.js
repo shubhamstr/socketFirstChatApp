@@ -230,7 +230,7 @@ const LogIn = props => {
         })
       );
       dispatch(logIn());
-      history.push('/chat');
+      history.push(`/chat/${resp.data.chatURL}`);
     }
   };
 

@@ -64,6 +64,9 @@ router.post("/login", async (req, res) => {
   // console.log(req.body)
   if (req.body.loginType === "userName") {
     let userId = ""
+    // create encrypted url
+    const encryptedUrlToken = generateEncryptedURL(req.body.userName)
+    console.log("Encrypted URL-safe token:", encryptedUrlToken)
     // checking if user exists
     var sql0 = `SELECT * FROM users WHERE username = '${req.body.userName}';`
     const resp0 = await runQuery(sql0)
@@ -76,9 +79,6 @@ router.post("/login", async (req, res) => {
       })
     } else {
       console.log(resp0.data)
-      // create encrypted url
-      const encryptedUrlToken = generateEncryptedURL(req.body.userName)
-      console.log("Encrypted URL-safe token:", encryptedUrlToken)
       // if user not present create user
       if (resp0.data.length === 0) {
         var sql1 = `INSERT INTO users (username, chatURL) VALUES ('${req.body.userName}', '${encryptedUrlToken}')`
