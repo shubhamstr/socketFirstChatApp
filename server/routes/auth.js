@@ -3,9 +3,14 @@ const router = express.Router()
 const db = require("../db/db")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
+const crypto = require("crypto")
 
 // Set up Global configuration access
 dotenv.config()
+
+// Configuration
+const secretKey = crypto.randomBytes(32) // Or a constant key for decryption later
+const iv = crypto.randomBytes(16) // Initialization Vector
 
 const generateToken = (result) => {
   let jwtSecretKey = process.env.JWT_SECRET_KEY
@@ -18,6 +23,23 @@ const generateToken = (result) => {
   // console.log(data)
   const token = jwt.sign(data, jwtSecretKey)
   return token
+}
+
+function generateEncryptedURL(name) {
+  const uniqueData = `${name}-${Date.now()}` // name + timestamp for uniqueness
+
+  // Encrypt
+  const cipher = crypto.createCipheriv("aes-256-cbc", secretKey, iv)
+  let encrypted = cipher.update(uniqueData, "utf8", "base64")
+  encrypted += cipher.final("base64")
+
+  // Convert to URL-safe Base64 (replacing +, / and =)
+  const urlSafe = encrypted
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "")
+
+  return urlSafe
 }
 
 const runQuery = (sql) => {
@@ -54,9 +76,12 @@ router.post("/login", async (req, res) => {
       })
     } else {
       console.log(resp0.data)
+      // create encrypted url
+      const encryptedUrlToken = generateEncryptedURL(req.body.userName)
+      console.log("Encrypted URL-safe token:", encryptedUrlToken)
       // if user not present create user
       if (resp0.data.length === 0) {
-        var sql1 = `INSERT INTO users (username) VALUES ('${req.body.userName}')`
+        var sql1 = `INSERT INTO users (username, chatURL) VALUES ('${req.body.userName}', '${encryptedUrlToken}')`
         const resp1 = await runQuery(sql1)
         // console.log(resp1)
         if (resp1.err) {
@@ -72,6 +97,7 @@ router.post("/login", async (req, res) => {
         userId = resp0.data[0].id
       }
     }
+
     var sql2 = `SELECT * FROM users WHERE id = '${userId}';`
     const resp2 = await runQuery(sql2)
     // console.log(resp2)
@@ -88,6 +114,7 @@ router.post("/login", async (req, res) => {
           err: false,
           msg: "User Logged In Successfully!!",
           data: token,
+          chatURL: encryptedUrlToken,
         })
       } else {
         res.send({

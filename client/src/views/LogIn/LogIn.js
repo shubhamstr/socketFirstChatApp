@@ -21,7 +21,7 @@ import {
   Typography
 } from '@material-ui/core';
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { BASE_URL } from '../../constants'
+import { BASE_URL } from '../../constants';
 
 // eslint-disable-next-line no-unused-vars
 import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
@@ -94,6 +94,7 @@ const useStyles = makeStyles(theme => ({
   contentBody: {
     flexGrow: 1,
     display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center',
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center'
@@ -142,7 +143,7 @@ const useStyles = makeStyles(theme => ({
 
 const LogIn = props => {
   const dispatch = useDispatch();
-  const socket = io(BASE_URL, { transports : ['websocket'] });
+  const socket = io(BASE_URL, { transports: ['websocket'] });
 
   const { history } = props;
 
