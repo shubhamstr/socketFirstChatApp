@@ -43,7 +43,8 @@ const ChatScreen = () => {
   const handleSend = () => {
     // console.log(userDetails.id, selectedChat.id, message);
     const resp = sendMessageAPI({
-      user_ids: [userDetails.id, selectedChat.id],
+      user_id: userDetails.id,
+      room_id: url,
       message: message
     });
     socket.emit('message', message);

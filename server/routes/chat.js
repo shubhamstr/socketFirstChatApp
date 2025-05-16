@@ -8,8 +8,10 @@ dotenv.config()
 
 router.post("/insert", (req, res) => {
   // console.log(req.body)
-  const ids = req.body.user_ids.toString()
-  var sql = `INSERT INTO messages (user_ids, message) VALUES ('${ids}', '${req.body.message}')`
+  // const ids = req.body.user_ids.toString()
+  const user_id = req.body.user_id.toString()
+  const room_id = req.body.room_id.toString()
+  var sql = `INSERT INTO messages (user_id, room_id, message) VALUES ('${user_id}', '${room_id}', '${req.body.message}')`
   // console.log(sql)
   db.query(sql, function (err, result) {
     if (err) {
