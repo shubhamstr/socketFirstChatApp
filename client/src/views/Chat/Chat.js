@@ -27,28 +27,28 @@ const Chat = () => {
 
   socket.on('connected', user => {
     console.log('socket connected', user);
-    getAllUsersList();
+    // getAllUsersList();
   });
 
-  const getAllUsersList = () => {
-    const resp = getAllUsersAPI({
-      ignoreUserId: tokenDetails.userId
-    });
-    resp.then(res => {
-      // console.log(res);
-      if (res.err) {
-        alert(res.msg);
-      } else {
-        dispatch(
-          setDetails({
-            type: 'userList',
-            value: res.data
-          })
-        );
-        // console.log(auth);
-      }
-    });
-  };
+  // const getAllUsersList = () => {
+  //   const resp = getAllUsersAPI({
+  //     ignoreUserId: tokenDetails.userId
+  //   });
+  //   resp.then(res => {
+  //     // console.log(res);
+  //     if (res.err) {
+  //       alert(res.msg);
+  //     } else {
+  //       dispatch(
+  //         setDetails({
+  //           type: 'userList',
+  //           value: res.data
+  //         })
+  //       );
+  //       // console.log(auth);
+  //     }
+  //   });
+  // };
 
   const getUserDetails = () => {
     const resp = getAllUsersAPI({
@@ -75,9 +75,9 @@ const Chat = () => {
     if (Object.keys(userDetails).length === 0) {
       getUserDetails();
     }
-    if (Object.keys(userList).length === 0) {
-      getAllUsersList();
-    }
+    // if (Object.keys(userList).length === 0) {
+    //   getAllUsersList();
+    // }
   }, []);
 
   return (

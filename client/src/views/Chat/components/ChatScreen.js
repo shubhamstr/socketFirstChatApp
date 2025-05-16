@@ -17,9 +17,9 @@ import {
 } from '@chatscope/chat-ui-kit-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
-import { sendMessageAPI, getAllChatAPI } from '../../../../api/chat';
-import { logOut } from '../../../../store/authSlice';
-import { BASE_URL } from '../../../../constants'
+import { sendMessageAPI, getAllChatAPI } from '../../../api/chat';
+import { logOut } from '../../../store/authSlice';
+import { BASE_URL } from '../../../constants'
 
 const ChatScreen = () => {
   const auth = useSelector(state => state.auth);
