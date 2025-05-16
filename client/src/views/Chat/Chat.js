@@ -64,14 +64,23 @@ const Chat = () => {
             value: res.data[0]
           })
         );
-        // console.log(auth);
+        // console.log(res.data[0]);
+        joinRoom(res.data[0].username);
       }
+    });
+  };
+
+  const joinRoom = username => {
+    socket.emit('joinRoom', { roomName: url, username: username });
+
+    socket.on('roomJoined', username => {
+      console.log('room joined', username);
     });
   };
 
   useEffect(() => {
     console.log(url);
-    // console.log(userType);
+
     if (Object.keys(userDetails).length === 0) {
       getUserDetails();
     }

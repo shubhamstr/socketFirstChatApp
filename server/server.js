@@ -32,6 +32,14 @@ app.use("/chat", chat)
 io.on("connection", (socket) => {
   console.log("connected..")
 
+  socket.on("joinRoom", (obj) => {
+    console.log(obj)
+    console.log(socket.rooms) // Set { <socket.id> }
+    socket.join(obj.roomName)
+    console.log(socket.rooms) // Set { <socket.id>, "room1" }
+    socket.broadcast.emit("roomJoined", obj.username)
+  })
+
   socket.on("connected", (username) => {
     console.log("socket connected", username)
     socket.broadcast.emit("connected", username)
