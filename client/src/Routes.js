@@ -65,12 +65,12 @@ const Routes = () => {
         layout={MinimalLayout}
         path="/chat/:url"
       />
-      {/* <PrivateRouteWithLayout
+      <PrivateRouteWithLayout
         component={DashboardView}
         exact
         layout={MainLayout}
         path="/dashboard"
-      /> */}
+      />
       {/* <PrivateRouteWithLayout
         component={UserListView}
         exact

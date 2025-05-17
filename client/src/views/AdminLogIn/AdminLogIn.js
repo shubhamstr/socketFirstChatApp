@@ -258,6 +258,7 @@ const AdminLogIn = props => {
                 </Typography>
                 <TextField
                   className={classes.textField}
+                  disabled
                   error={hasError('email')}
                   fullWidth
                   helperText={
@@ -267,7 +268,7 @@ const AdminLogIn = props => {
                   name="email"
                   onChange={handleChange}
                   type="text"
-                  value={formState.values.email || ''}
+                  value={formState.values.email || 'shubhamsutar5799@gmail.com'}
                   variant="outlined"
                 />
                 <TextField
@@ -281,13 +282,13 @@ const AdminLogIn = props => {
                   name="password"
                   onChange={handleChange}
                   type="password"
-                  value={formState.values.password || ''}
+                  value={formState.values.password || 'Admin@123'}
                   variant="outlined"
                 />
                 <Button
                   className={classes.signInButton}
                   color="primary"
-                  disabled={!formState.isValid}
+                  // disabled={!formState.isValid}
                   fullWidth
                   size="large"
                   type="submit"
