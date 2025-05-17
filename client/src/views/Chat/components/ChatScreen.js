@@ -30,7 +30,7 @@ const ChatScreen = () => {
   // console.log(auth);
   const [message, setMessage] = useState('');
   const [chatList, setChatList] = useState([]);
-  const [selectedChat, setSelectedChat] = useState({});
+  const [loading, setLoading] = useState(false);
   const { userDetails, userList } = auth;
   const avatar = userDetails.image
     ? userDetails.image
@@ -42,7 +42,7 @@ const ChatScreen = () => {
   };
 
   const handleSend = () => {
-    // console.log(userDetails.id, selectedChat.id, message);
+    // console.log(userDetails.id, message);
     const resp = sendMessageAPI({
       user_id: userDetails.id,
       room_id: url,
@@ -60,11 +60,11 @@ const ChatScreen = () => {
     });
   };
 
-  const handleChat = user => {
-    console.log(user);
-    setSelectedChat(user);
-    setChatList([]);
-  };
+  // const handleChat = user => {
+  //   console.log(user);
+  //   setSelectedChat(user);
+  //   setChatList([]);
+  // };
 
   const handleLogOut = () => {
     console.log('handleLogOut');
@@ -73,6 +73,7 @@ const ChatScreen = () => {
   };
 
   const loadChat = () => {
+    setLoading(true);
     console.log('loadChat', url);
     const resp = getAllChatAPI({
       room_id: url
@@ -84,6 +85,7 @@ const ChatScreen = () => {
       } else {
         setChatList(res.data);
         // console.log(auth);
+        setLoading(false);
       }
     });
   };
@@ -138,17 +140,15 @@ const ChatScreen = () => {
             })}
         </ConversationList> */}
 
-        {/* {Object.keys(selectedChat).length > 0 ? ( */}
         <ChatContainer>
           <ConversationHeader>
             {/* <ConversationHeader.Back /> */}
             <Avatar
-              name={selectedChat.username}
+              name={userDetails.username}
               src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
             />
             <ConversationHeader.Content
               // info="Active 10 mins ago"
-              // userName={selectedChat.username}
               userName={`Room ID - (${url})`}
             />
             <ConversationHeader.Actions>
@@ -160,6 +160,7 @@ const ChatScreen = () => {
                   // Create a ClipboardItem and write to clipboard
                   navigator.clipboard.writeText(`${CLIENT_URL}/login/${url}`);
                   console.log('Chat URL copied to clipboard!');
+                  alert('Chat URL copied to clipboard!');
                 }}
                 style={{ padding: '0px 10px' }}
                 title="Share Chat"
@@ -222,8 +223,7 @@ const ChatScreen = () => {
             placeholder="Type message here"
           />
         </ChatContainer>
-        {/* ) : null} */}
-        {/* {Object.keys(selectedChat).length === 0 && (
+        {loading && (
           <div
             style={{
               width: '100%',
@@ -231,11 +231,9 @@ const ChatScreen = () => {
               justifyContent: 'center',
               alignItems: 'center'
             }}>
-            <div className="text-center">
-              Select a user to start a conversation
-            </div>
+            <div className="text-center">Chat is loading..</div>
           </div>
-        )} */}
+        )}
       </MainContainer>
     </div>
   );
