@@ -177,7 +177,6 @@ const ChatScreen = () => {
           <MessageList>
             {chatList.length > 0 &&
               chatList.map((chat, index) => {
-                const arr = chat.user_ids.split(',');
                 console.log(chat);
                 console.log(userDetails.id);
                 const dir =
