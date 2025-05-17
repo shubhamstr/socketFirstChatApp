@@ -73,9 +73,8 @@ const ChatScreen = () => {
   };
 
   const loadChat = () => {
-    // console.log(userDetails.id, selectedChat.id);
+    console.log('loadChat', url);
     const resp = getAllChatAPI({
-      user_id: userDetails.id,
       room_id: url
     });
     // console.log(resp);
@@ -91,13 +90,13 @@ const ChatScreen = () => {
 
   socket.on('message', msg => {
     console.log('socket message', msg);
-    if (userDetails.id && url) {
+    if (url) {
       loadChat();
     }
   });
 
   useEffect(() => {
-    if (userDetails.id && url) {
+    if (url) {
       loadChat();
     }
   }, [userDetails]);

@@ -15,7 +15,7 @@ router.post("/insert", (req, res) => {
   // console.log(sql)
   db.query(sql, function (err, result) {
     if (err) {
-      res.send({
+      return res.send({
         err: true,
         msg: err.sqlMessage ? err.sqlMessage : "Server Error",
         data: err,
@@ -23,12 +23,12 @@ router.post("/insert", (req, res) => {
     }
     // console.log(result)
     if (result.insertId) {
-      res.send({
+      return res.send({
         err: false,
         msg: "Message Sent Successfully!!",
       })
     } else {
-      res.send({
+      return res.send({
         err: true,
         msg: "Error While Sending Message",
       })
@@ -39,10 +39,10 @@ router.post("/insert", (req, res) => {
 router.get("/get-all", (req, res) => {
   let sql = ``
   // console.log(req.query)
-  if (req.query.user_id && req.query.room_id) {
-    sql = `SELECT * FROM messages WHERE user_id = '${req.query.user_id}' AND room_id = '${req.query.room_id}'`
+  if (req.query.room_id) {
+    sql = `SELECT * FROM messages WHERE room_id = '${req.query.room_id}'`
   } else {
-    res.send({
+    return res.send({
       err: true,
       msg: "Server Error",
       data: "",
@@ -50,14 +50,14 @@ router.get("/get-all", (req, res) => {
   }
   db.query(sql, function (err, result, fields) {
     if (err) {
-      res.send({
+      return res.send({
         err: true,
         msg: "Server Error",
         data: err,
       })
     }
     // console.log(result)
-    res.send({
+    return res.send({
       err: false,
       msg: "Chat Fetched Successfully!!",
       data: result,

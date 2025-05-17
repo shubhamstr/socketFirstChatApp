@@ -14,14 +14,14 @@ router.get("/get-all", (req, res) => {
   }
   db.query(sql, function (err, result, fields) {
     if (err) {
-      res.send({
+      return res.send({
         err: true,
         msg: "Server Error",
         data: err,
       })
     }
     // console.log(result)
-    res.send({
+    return res.send({
       err: false,
       msg: "Users Fetched Successfully!!",
       data: result,
@@ -34,14 +34,14 @@ router.post("/update-notification", (req, res) => {
   var sql = `UPDATE users SET email_notification_flag = ${req.body.email_notification_flag}, push_notification_flag = ${req.body.push_notification_flag}, email_message_flag = ${req.body.email_message_flag}, push_message_flag = ${req.body.push_message_flag} WHERE id = ${req.body.id}`
   db.query(sql, function (err, result) {
     if (err) {
-      res.send({
+      return res.send({
         err: true,
         msg: "Server Error",
         data: err,
       })
     }
     // console.log(result)
-    res.send({
+    return res.send({
       err: false,
       msg: "User Notification Updated Successfully!!",
       data: result,
@@ -54,14 +54,14 @@ router.post("/update-personal", (req, res) => {
   var sql = `UPDATE users SET username = '${req.body.userName}', email = '${req.body.email}' WHERE id = ${req.body.id}`
   db.query(sql, function (err, result) {
     if (err) {
-      res.send({
+      return res.send({
         err: true,
         msg: "Server Error",
         data: err,
       })
     }
     // console.log(result)
-    res.send({
+    return res.send({
       err: false,
       msg: "User Details Updated Successfully!!",
       data: result,
@@ -74,14 +74,14 @@ router.post("/update-personal", (req, res) => {
 //   var sql = `UPDATE users SET image = '${req.body.image}' WHERE id = ${req.body.id}`
 //   db.query(sql, function (err, result) {
 //     if (err) {
-//       res.send({
+//       return res.send({
 //         err: true,
 //         msg: "Server Error",
 //         data: err,
 //       })
 //     }
 //     // console.log(result)
-//     res.send({
+//     return res.send({
 //       err: false,
 //       msg: "User Image Updated Successfully!!",
 //       data: result,
@@ -94,14 +94,14 @@ router.post("/update-password", (req, res) => {
   var sql = `UPDATE users SET password = '${req.body.newPassword}' WHERE id = ${req.body.id}`
   db.query(sql, function (err, result) {
     if (err) {
-      res.send({
+      return res.send({
         err: true,
         msg: "Server Error",
         data: err,
       })
     }
     // console.log(result)
-    res.send({
+    return res.send({
       err: false,
       msg: "User Password Updated Successfully!!",
       data: result,
@@ -114,14 +114,14 @@ router.post("/update-password", (req, res) => {
 //   var sql = `DELETE FROM users WHERE id = ${req.body.id}`
 //   db.query(sql, function (err, result) {
 //     if (err) {
-//       res.send({
+//       return res.send({
 //         err: true,
 //         msg: "Server Error",
 //         data: err,
 //       })
 //     }
 //     // console.log(result)
-//     res.send({
+//     return res.send({
 //       err: false,
 //       msg: "User Deleted Successfully!!",
 //       data: result,
