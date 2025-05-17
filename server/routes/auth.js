@@ -64,16 +64,21 @@ router.post("/login", async (req, res) => {
   // console.log(req.body)
   if (req.body.loginType === "userName") {
     let userId = ""
-    // create encrypted url
-    const encryptedUrlToken = generateEncryptedURL(req.body.userName)
-    console.log("Encrypted URL-safe token:", encryptedUrlToken)
+    let encryptedUrlToken = ""
+    if (req.body.room_id) {
+      encryptedUrlToken = req.body.room_id
+    } else {
+      // create encrypted url
+      encryptedUrlToken = generateEncryptedURL(req.body.userName)
+      console.log("Encrypted URL-safe token:", encryptedUrlToken)
+    }
     // checking if user exists
     var sql0 = `SELECT * FROM users WHERE username = '${req.body.userName}';`
     const resp0 = await runQuery(sql0)
     // console.log(resp0)
     if (resp0.err) {
-      res.send({
-        err: resp0.err,
+      return res.send({
+        err: true,
         msg: resp0.msg,
         data: resp0.data,
       })
@@ -85,8 +90,8 @@ router.post("/login", async (req, res) => {
         const resp1 = await runQuery(sql1)
         // console.log(resp1)
         if (resp1.err) {
-          res.send({
-            err: resp1.err,
+          return res.send({
+            err: true,
             msg: resp1.msg,
             data: resp1.data,
           })
@@ -94,7 +99,10 @@ router.post("/login", async (req, res) => {
           userId = resp1.data.insertId
         }
       } else {
-        userId = resp0.data[0].id
+        return res.send({
+          err: true,
+          msg: "Userame already exists",
+        })
       }
     }
 
@@ -102,7 +110,7 @@ router.post("/login", async (req, res) => {
     const resp2 = await runQuery(sql2)
     // console.log(resp2)
     if (resp2.err) {
-      res.send({
+      return res.send({
         err: true,
         msg: resp2.msg,
         data: resp2.data,
@@ -110,14 +118,14 @@ router.post("/login", async (req, res) => {
     } else {
       if (resp2.data.length > 0) {
         let token = generateToken(resp2.data)
-        res.send({
+        return res.send({
           err: false,
           msg: "User Logged In Successfully!!",
           data: token,
           chatURL: encryptedUrlToken,
         })
       } else {
-        res.send({
+        return res.send({
           err: true,
           msg: "Server Error",
         })

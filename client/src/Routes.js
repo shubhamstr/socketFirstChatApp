@@ -38,6 +38,12 @@ const Routes = () => {
         layout={MinimalLayout}
         path="/login"
       />
+      <RouteWithLayout
+        component={LogInView}
+        exact
+        layout={MinimalLayout}
+        path="/login/:url"
+      />
       {/* <RouteWithLayout
         component={RegisterView}
         exact

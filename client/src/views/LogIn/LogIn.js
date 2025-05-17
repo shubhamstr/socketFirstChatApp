@@ -113,6 +113,9 @@ const useStyles = makeStyles(theme => ({
   title: {
     marginTop: theme.spacing(3)
   },
+  subTitle: {
+    marginTop: theme.spacing(2)
+  },
   socialButtons: {
     marginTop: theme.spacing(3)
   },
@@ -142,6 +145,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const LogIn = props => {
+  const url = window.location.pathname.split('/')[2];
   const dispatch = useDispatch();
   const socket = io(BASE_URL, { transports: ['websocket'] });
 
@@ -204,10 +208,14 @@ const LogIn = props => {
     event.preventDefault();
     // eslint-disable-next-line no-console
     console.log('handleLogIn', type, formStateUserName.values.userName);
-    const resp = await signInApi({
+    const payload = {
       loginType: type,
       userName: formStateUserName.values.userName
-    });
+    };
+    if (url && url.length) {
+      payload['room_id'] = url;
+    }
+    const resp = await signInApi(payload);
     if (resp.data.err) {
       alert(resp.data.msg);
     } else {
@@ -278,6 +286,11 @@ const LogIn = props => {
                 <Typography className={classes.title} variant="h2">
                   Log in
                 </Typography>
+                {url && url.length && (
+                  <Typography className={classes.subTitle} variant="h6">
+                    {`Room ID - ${url}`}
+                  </Typography>
+                )}
                 {loginType === 'social' && (
                   <>
                     <Typography
