@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "rules": {
     "no-console": "off",
     "comma-dangle": 0,
@@ -11,8 +11,8 @@
       }
     ],
     "jsx-quotes": 1,
-    "linebreak-style": [2, "unix"],
-    "quotes": [2, "single"],
+    "linebreak-style": "off",
+    "quotes": [2, "double"],
     "react/display-name": 1,
     "react/forbid-prop-types": 0,
     "react/sort-prop-types": 1,
