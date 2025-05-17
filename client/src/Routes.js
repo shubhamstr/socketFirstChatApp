@@ -9,7 +9,7 @@ import { Main as MainLayout, Minimal as MinimalLayout } from './layouts';
 import {
   Dashboard as DashboardView,
   // ProductList as ProductListView,
-  // UserList as UserListView,
+  UserList as UserListView,
   // Typography as TypographyView,
   // Icons as IconsView,
   // Account as AccountView,
@@ -26,7 +26,7 @@ const Routes = () => {
   const chatURL = localStorage.getItem('chatURL');
   return (
     <Switch>
-      {/* guest routes */}
+      {/* user routes */}
       <Redirect
         exact
         from="/"
@@ -65,19 +65,31 @@ const Routes = () => {
         layout={MinimalLayout}
         path="/chat/:url"
       />
+
+      {/* admin routes */}
+      <Redirect exact from="/admin/" to="/admin/login" />
+      <RouteWithLayout
+        component={AdminLogInView}
+        exact
+        layout={MinimalLayout}
+        path="/admin/login"
+      />
+
+      {/* protected routes */}
       <PrivateRouteWithLayout
         component={DashboardView}
         exact
         layout={MainLayout}
         path="/dashboard"
       />
-      {/* <PrivateRouteWithLayout
+      <PrivateRouteWithLayout
         component={UserListView}
         exact
         layout={MainLayout}
         path="/users"
       />
-      <PrivateRouteWithLayout
+
+      {/* <PrivateRouteWithLayout
         component={ProductListView}
         exact
         layout={MainLayout}
@@ -107,15 +119,6 @@ const Routes = () => {
         layout={MainLayout}
         path="/settings"
       /> */}
-
-      {/* admin routes */}
-      <Redirect exact from="/admin/" to="/admin/login" />
-      <RouteWithLayout
-        component={AdminLogInView}
-        exact
-        layout={MinimalLayout}
-        path="/admin/login"
-      />
     </Switch>
   );
 };

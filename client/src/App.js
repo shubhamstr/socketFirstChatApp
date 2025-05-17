@@ -36,10 +36,11 @@ class App extends Component {
 
   checkAuthAndRedirect = () => {
     let token = localStorage.getItem('chatToken');
+    let adminToken = localStorage.getItem('chatAdminToken');
     let chatURL = localStorage.getItem('chatURL');
     // eslint-disable-next-line no-console
-    console.log('checkAuthAndRedirect', chatURL, token);
-    if (token) {
+    console.log('checkAuthAndRedirect', chatURL, token, adminToken);
+    if (token && token !== 'undefined' && token !== 'null') {
       this.setHeaderToken(token);
       const tokenDetails = jwtDecode(token);
       // eslint-disable-next-line no-console
@@ -54,6 +55,26 @@ class App extends Component {
       });
       this.props.logIn();
       browserHistory.push(`/chat/${chatURL}`);
+    } else if (
+      adminToken &&
+      adminToken !== 'undefined' &&
+      adminToken !== 'null'
+    ) {
+      this.setHeaderToken(adminToken);
+      localStorage.setItem('chatAdminToken', adminToken);
+      // const tokenDetails = jwtDecode(adminToken);
+      // eslint-disable-next-line no-console
+      // console.log(tokenDetails);
+      this.props.setDetails({
+        type: 'userType',
+        value: 'admin'
+      });
+      // this.props.setDetails({
+      //   type: 'tokenDetails',
+      //   value: tokenDetails
+      // });
+      this.props.logIn();
+      browserHistory.push('/dashboard');
     }
   };
 

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { logIn, setDetails } from '../../store/authSlice';
 // eslint-disable-next-line no-unused-vars
 import { Link as RouterLink, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import validate from 'validate.js';
 import { makeStyles } from '@material-ui/styles';
+// import { jwtDecode } from 'jwt-decode';
 import {
   Grid,
   Button,
@@ -15,8 +15,9 @@ import {
   Typography
 } from '@material-ui/core';
 // import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
 // import { Facebook as FacebookIcon, Google as GoogleIcon } from 'icons';
+
+import { logIn, setDetails } from '../../store/authSlice';
 
 const schema = {
   email: {
@@ -94,6 +95,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
     [theme.breakpoints.down('md')]: {
       justifyContent: 'center'
     }
@@ -137,7 +139,10 @@ const AdminLogIn = props => {
 
   const [formState, setFormState] = useState({
     isValid: false,
-    values: {},
+    values: {
+      email: 'shubhamsutar5799@gmail.com',
+      password: 'Admin@123'
+    },
     touched: {},
     errors: {}
   });
@@ -178,7 +183,8 @@ const AdminLogIn = props => {
   const handleSignIn = event => {
     event.preventDefault();
     let token = formState.values.email;
-    localStorage.setItem('chatToken', token);
+    localStorage.setItem('chatAdminToken', token);
+    // const tokenDetails = jwtDecode(resp.data.data);
     dispatch(logIn());
     dispatch(
       setDetails({
@@ -186,6 +192,12 @@ const AdminLogIn = props => {
         value: 'admin'
       })
     );
+    // dispatch(
+    //   setDetails({
+    //     type: 'tokenDetails',
+    //     value: tokenDetails
+    //   })
+    // );
     history.push('/dashboard');
   };
 
@@ -268,11 +280,12 @@ const AdminLogIn = props => {
                   name="email"
                   onChange={handleChange}
                   type="text"
-                  value={formState.values.email || 'shubhamsutar5799@gmail.com'}
+                  value={formState.values.email || ''}
                   variant="outlined"
                 />
                 <TextField
                   className={classes.textField}
+                  disabled
                   error={hasError('password')}
                   fullWidth
                   helperText={
@@ -282,13 +295,13 @@ const AdminLogIn = props => {
                   name="password"
                   onChange={handleChange}
                   type="password"
-                  value={formState.values.password || 'Admin@123'}
+                  value={formState.values.password || ''}
                   variant="outlined"
                 />
                 <Button
                   className={classes.signInButton}
                   color="primary"
-                  // disabled={!formState.isValid}
+                  disabled={!formState.isValid}
                   fullWidth
                   size="large"
                   type="submit"
