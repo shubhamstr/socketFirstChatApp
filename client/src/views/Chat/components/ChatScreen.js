@@ -140,63 +140,64 @@ const ChatScreen = () => {
             })}
         </ConversationList> */}
 
-        <ChatContainer>
-          <ConversationHeader>
-            {/* <ConversationHeader.Back /> */}
-            <Avatar
-              name={userDetails.username}
-              src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
-            />
-            <ConversationHeader.Content
-              // info="Active 10 mins ago"
-              userName={`Room ID - (${url})`}
-            />
-            <ConversationHeader.Actions>
-              {/* <StarButton title="Add to favourites" />
+        {!loading && (
+          <ChatContainer>
+            <ConversationHeader>
+              {/* <ConversationHeader.Back /> */}
+              <Avatar
+                name={userDetails.username}
+                src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg"
+              />
+              <ConversationHeader.Content
+                // info="Active 10 mins ago"
+                userName={`Room ID - (${url})`}
+              />
+              <ConversationHeader.Actions>
+                {/* <StarButton title="Add to favourites" />
               <InfoButton title="Show info" /> */}
-              <SendButton
-                border
-                onClick={() => {
-                  // Create a ClipboardItem and write to clipboard
-                  navigator.clipboard.writeText(`${CLIENT_URL}/login/${url}`);
-                  console.log('Chat URL copied to clipboard!');
-                  alert('Chat URL copied to clipboard!');
-                }}
-                style={{ padding: '0px 10px' }}
-                title="Share Chat"
-              />
-              <ArrowButton
-                border
-                direction="right"
-                onClick={() => handleLogOut()}
-                style={{ padding: '0px 10px' }}
-                title="Log Out"
-              />
-            </ConversationHeader.Actions>
-          </ConversationHeader>
-          <MessageList>
-            {chatList.length > 0 &&
-              chatList.map((chat, index) => {
-                console.log(chat);
-                console.log(userDetails.id);
-                const dir =
-                  userDetails.id === parseInt(chat.user_id)
-                    ? 'outgoing'
-                    : 'incoming';
-                return (
-                  <Message
-                    key={index}
-                    model={{
-                      message: chat.message,
-                      sentTime: 'just now',
-                      sender: 'Joe',
-                      direction: dir
-                    }}>
-                    <Avatar src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg" />
-                  </Message>
-                );
-              })}
-            {/* <Message
+                <SendButton
+                  border
+                  onClick={() => {
+                    // Create a ClipboardItem and write to clipboard
+                    navigator.clipboard.writeText(`${CLIENT_URL}/login/${url}`);
+                    console.log('Chat URL copied to clipboard!');
+                    alert('Chat URL copied to clipboard!');
+                  }}
+                  style={{ padding: '0px 10px' }}
+                  title="Share Chat"
+                />
+                <ArrowButton
+                  border
+                  direction="right"
+                  onClick={() => handleLogOut()}
+                  style={{ padding: '0px 10px' }}
+                  title="Log Out"
+                />
+              </ConversationHeader.Actions>
+            </ConversationHeader>
+            <MessageList>
+              {chatList.length > 0 &&
+                chatList.map((chat, index) => {
+                  console.log(chat);
+                  console.log(userDetails.id);
+                  const dir =
+                    userDetails.id === parseInt(chat.user_id)
+                      ? 'outgoing'
+                      : 'incoming';
+                  return (
+                    <Message
+                      key={index}
+                      model={{
+                        message: chat.message,
+                        sentTime: 'just now',
+                        sender: 'Joe',
+                        direction: dir
+                      }}>
+                      <Avatar src="https://chatscope.io/storybook/react/assets/emily-xzL8sDL2.svg" />
+                    </Message>
+                  );
+                })}
+              {/* <Message
               model={{
                 message: 'Hello my friend1',
                 sentTime: 'just now',
@@ -214,14 +215,15 @@ const ChatScreen = () => {
               }}>
               <Avatar src={avatar} />
             </Message> */}
-          </MessageList>
-          <MessageInput
-            attachButton={false}
-            onChange={handleMsg}
-            onSend={handleSend}
-            placeholder="Type message here"
-          />
-        </ChatContainer>
+            </MessageList>
+            <MessageInput
+              attachButton={false}
+              onChange={handleMsg}
+              onSend={handleSend}
+              placeholder="Type message here"
+            />
+          </ChatContainer>
+        )}
         {loading && (
           <div
             style={{
